@@ -1,0 +1,21 @@
+Metti qui una foto per ogni fiore, in formato JPG, quadrata (es. 800 x 800 px),
+con questi nomi esatti:
+
+rosa-rossa.jpg
+rosa-gialla.jpg
+margherita.jpg
+girasole.jpg
+tulipano-rosso.jpg
+giglio-bianco.jpg
+orchidea.jpg
+lavanda.jpg
+papavero.jpg
+iris.jpg
+garofano-rosso.jpg
+gelsomino.jpg
+anemone.jpg
+viola.jpg
+edelweiss.jpg
+
+Se una foto manca, al suo posto compare un riquadro con il colore del fiore.
+Usa foto con licenza libera per uso commerciale (es. Pexels, Unsplash, Pixabay).

@@ -1,0 +1,163 @@
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  font-family: Georgia, "Times New Roman", serif;
+  color: #3b2a3a;
+  background: linear-gradient(180deg, #fdf7fb 0%, #f4eef8 100%);
+  min-height: 100vh;
+  padding-top: env(safe-area-inset-top, 0px);
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+header { text-align: center; padding: 20px 16px 8px; }
+header h1 { margin: 0; font-size: 30px; color: #7a2e5c; letter-spacing: 1px; }
+header p { margin: 4px 0 0; font-style: italic; color: #8a6b82; }
+main { max-width: 560px; margin: 0 auto; padding: 8px 16px 24px; }
+.schermata { display: none; }
+.schermata.attiva { display: block; }
+h2 { font-size: 20px; text-align: center; margin: 12px 0; }
+.griglia { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+.carta {
+  background: #fff; border: 1px solid #ead9e6; border-radius: 14px;
+  padding: 10px 6px; text-align: center; cursor: pointer;
+  box-shadow: 0 2px 6px rgba(122, 46, 92, 0.08);
+}
+.carta:active { transform: scale(0.98); }
+.foto-carta { width: 84px; height: 84px; object-fit: cover; border-radius: 50%; display: block; margin: 0 auto; }
+.senza-foto { display: flex; align-items: center; justify-content: center; color: #fff; font-size: 12px; text-align: center; padding: 6px; }
+.carta strong { display: block; font-size: 13px; margin-top: 4px; }
+.carta small { color: #8a6b82; font-size: 11px; }
+button {
+  font: inherit; background: #7a2e5c; color: #fff; border: 0;
+  border-radius: 999px; padding: 12px 20px; cursor: pointer; display: block;
+  margin: 12px auto;
+}
+button.secondario { background: transparent; color: #7a2e5c; border: 1px solid #7a2e5c; font-size: 14px; padding: 8px 14px; margin: 0; }
+.significato { text-align: center; font-style: italic; color: #8a6b82; margin: 0 0 8px; }
+#immagine-fiore { display: flex; justify-content: center; }
+.foto-fiore { width: 280px; height: 280px; max-width: 100%; object-fit: cover; border-radius: 50%; box-shadow: 0 4px 16px rgba(122, 46, 92, 0.2); }
+.foto-fiore.senza-foto { border-radius: 50%; }
+.scossa { animation: scossa 0.45s ease; }
+@keyframes scossa { 0% { transform: rotate(0deg); } 25% { transform: rotate(-4deg) scale(1.02); } 75% { transform: rotate(4deg) scale(1.02); } 100% { transform: rotate(0deg); } }
+.etichetta { text-align: center; font-size: 26px; font-weight: bold; min-height: 34px; color: #7a2e5c; margin: 4px 0; }
+.esito { text-align: center; background: #fff; border-radius: 16px; padding: 16px; margin-top: 12px; box-shadow: 0 2px 10px rgba(122, 46, 92, 0.12); }
+.esito[hidden] { display: none; }
+#esito-testo { font-size: 22px; font-weight: bold; color: #7a2e5c; margin: 0 0 6px; }
+#esito-messaggio { font-style: italic; margin: 0 0 8px; }
+.carta svg { width: 84px; height: 84px; display: block; margin: 0 auto; }
+#immagine-fiore svg { width: 280px; height: 280px; max-width: 100%; }
+.petalo { transition: opacity 0.5s ease; }
+.petalo.tolto { opacity: 0; }
+#immagine-fiore svg { width: 300px; height: 300px; max-width: 100%; overflow: visible; }
+.petalo { transition: transform 0.6s ease, opacity 0.6s ease; }
+.petalo.tolto { transform: translateY(-30px); opacity: 0; }
+.griglia { grid-template-columns: repeat(2, 1fr); }
+.carta svg { width: 140px; height: 140px; display: block; margin: 0 auto; }
+#immagine-fiore svg { width: 300px; height: 300px; max-width: 100%; }
+.petalo { transform-box: view-box; transform-origin: 100px 100px; transition: transform 0.6s ease, opacity 0.6s ease; }
+.petalo.tolto { transform: translateY(-40px) rotate(25deg); opacity: 0; }
+[hidden] { display: none !important; }
+.scelta-inizio { text-align: center; }
+.scelta-inizio p { margin: 8px 0; }
+#immagine-fiore canvas { width: 300px; height: 300px; max-width: 100%; display: block; margin: 0 auto; }
+.carta .foto-carta { width: 140px; height: 140px; display: block; margin: 0 auto; }
+.fiore { position: relative; width: 300px; height: 300px; margin: 0 auto; }
+.carta .fiore { width: 140px; height: 140px; }
+.petalo-img { position: absolute; left: 50%; bottom: 50%; height: 40%; aspect-ratio: 901 / 991; transform-origin: 50% 100%; transform: translateX(-50%) rotate(var(--a)) scale(var(--sx), 1); transition: transform 0.9s ease, opacity 0.9s ease; }
+.petalo-img img { width: 100%; height: 100%; object-fit: contain; display: block; }
+.petalo-img.riserva img { display: none; }
+.petalo-img.riserva { background: var(--colore); border-radius: 50% 50% 50% 50% / 75% 75% 25% 25%; }
+.petalo-img.tolto { transform: translateX(-50%) rotate(var(--a)) translateY(-120px) rotate(18deg) scale(var(--sx), 1); opacity: 0; }
+.centro { position: absolute; left: 50%; top: 50%; width: 22%; height: 22%; border-radius: 50%; transform: translate(-50%, -50%); box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.6); }
+#immagine-fiore svg, #immagine-fiore canvas { display: none; }
+/* Correzione: i petali tolti non ricevono piu' tocchi e spariscono del tutto. */
+.petalo-img { pointer-events: none; }
+.petalo-img.tolto { visibility: hidden; transition: transform 0.9s ease, opacity 0.9s ease, visibility 0s linear 0.9s; }
+button { position: relative; z-index: 2; }
+/* M'ama: il petalo vola a destra e diventa rosato. Non m'ama: vola a sinistra e diventa grigio. */
+.petalo-img { transition: transform 0.9s ease, opacity 0.9s ease, filter 0.9s ease; }
+.petalo-img.tolto.mama { transform: translateX(calc(-50% + 150px)) rotate(var(--a)) scale(var(--sx), 1); filter: saturate(1.4) brightness(1.1); }
+.petalo-img.tolto.nonmama { transform: translateX(calc(-50% - 150px)) rotate(var(--a)) scale(var(--sx), 1); filter: grayscale(1) brightness(0.9); }
+.esito-cuore { font-size: 48px; margin: 0 0 4px; color: #7a2e5c; }
+/* Il fiore si inclina e torna dritto a ogni petalo tolto. */
+@keyframes inclina-destra { 0% { transform: rotate(0deg); } 40% { transform: rotate(7deg); } 100% { transform: rotate(0deg); } }
+@keyframes inclina-sinistra { 0% { transform: rotate(0deg); } 40% { transform: rotate(-7deg); } 100% { transform: rotate(0deg); } }
+.fiore.inclina-destra { animation: inclina-destra 0.7s ease; }
+.fiore.inclina-sinistra { animation: inclina-sinistra 0.7s ease; }
+#btn-suono { display: block; margin: 0 auto 12px; font-size: 13px; padding: 6px 14px; }
+/* Sfondo colorato, lingue, cuori a destra e a sinistra */
+body { background: linear-gradient(180deg, #f9d4e6 0%, #e4d0f2 100%); }
+header p { color: #5c3b56; }
+.intro { text-align: center; color: #5c3b56; margin: 4px 0 10px; font-size: 15px; }
+.carta { background: rgba(255, 255, 255, 0.93); }
+.lingue { display: flex; justify-content: center; gap: 8px; margin-top: 8px; }
+.lingue .lingua { display: inline-block; margin: 0; background: transparent; color: #fff; border: 1px solid #fff; border-radius: 999px; padding: 4px 12px; font-size: 13px; }
+.lingue .lingua.attiva { background: #fff; color: #7a2e5c; }
+.simboli { display: grid; grid-template-columns: 1fr 1fr; justify-items: center; align-items: start; max-width: 320px; margin: 10px auto 4px; }
+.simbolo { text-align: center; opacity: 0.35; transition: opacity 0.3s ease, transform 0.3s ease; }
+.simbolo.attivo { opacity: 1; transform: scale(1.25); }
+.simbolo .cuore { font-size: 40px; display: flex; align-items: center; justify-content: center; height: 52px; line-height: 1; }
+.simbolo small { font-size: 14px; color: #7a2e5c; }
+.esito-cuore { display: none; }
+
+.simbolo { width: 100%; }
+.simbolo small { display: block; height: 20px; line-height: 20px; }
+/* Intestazione con menu lingue (tre righe) */
+header { position: relative; }
+.intestazione { display: flex; justify-content: space-between; align-items: flex-start; }
+.menu-btn { background: transparent; border: 1px solid #fff; color: #fff; border-radius: 10px; padding: 2px 12px; font-size: 22px; margin: 0; }
+.menu-lingue { position: absolute; right: 16px; top: 64px; display: flex; flex-direction: column; gap: 6px; background: #fff; border-radius: 12px; padding: 8px; box-shadow: 0 4px 14px rgba(122, 46, 92, 0.25); z-index: 10; }
+.menu-lingue .lingua { display: block; margin: 0; background: #fff; color: #7a2e5c; border: 1px solid #ead9e6; border-radius: 10px; padding: 8px 16px; font-size: 15px; white-space: nowrap; }
+.menu-lingue .lingua.attiva { background: #7a2e5c; color: #fff; }
+/* Cuori in una sola riga, in basso: a sinistra "Non m'ama", a destra "M'ama" */
+.simboli { display: flex; justify-content: space-between; align-items: center; max-width: 320px; margin: 16px auto 8px; font-size: 18px; }
+.simbolo { width: auto; opacity: 0.35; white-space: nowrap; color: #7a2e5c; }
+.simbolo.attivo { opacity: 1; font-weight: bold; transform: scale(1.15); }
+/* Menu lingue nel flusso della pagina: aperto/chiuso con lo stile inline */
+.menu-lingue { position: static; display: none; flex-direction: column; gap: 6px; margin: 10px auto 0; max-width: 220px; background: #fff; border-radius: 12px; padding: 8px; box-shadow: 0 4px 14px rgba(122, 46, 92, 0.25); }
+/* Scelta iniziale: due pulsanti affiancati */
+.coppia { display: flex; justify-content: center; gap: 12px; }
+.coppia .scelta { display: inline-block; margin: 0; padding: 12px 16px; font-size: 16px; }
+.simbolo { opacity: 0.5; }
+/* Menu lingue: un elemento che si apre da solo al tocco, nessun codice necessario */
+details.menu-lingue { display: block; position: static; max-width: 220px; margin: 0; }
+details.menu-lingue summary { list-style: none; cursor: pointer; display: inline-block; color: #fff; border: 1px solid #fff; border-radius: 10px; padding: 2px 12px; font-size: 22px; }
+details.menu-lingue summary::-webkit-details-marker { display: none; }
+details.menu-lingue .menu-voci { display: flex; flex-direction: column; gap: 6px; margin-top: 8px; background: #fff; border-radius: 12px; padding: 8px; box-shadow: 0 4px 14px rgba(122, 46, 92, 0.25); }
+details.menu-lingue .menu-voci .lingua { display: block; margin: 0; background: #fff; color: #7a2e5c; border: 1px solid #ead9e6; border-radius: 10px; padding: 8px 16px; font-size: 15px; white-space: nowrap; }
+details.menu-lingue .menu-voci .lingua.attiva { background: #7a2e5c; color: #fff; }
+/* Titolo centrato, menu in alto a destra con tre linee disegnate */
+header { position: relative; text-align: center; padding-top: 16px; }
+header h1 { text-align: center; }
+header p { text-align: center; }
+details.menu-lingue { position: absolute; top: 12px; right: 12px; display: block; margin: 0; max-width: none; z-index: 20; }
+details.menu-lingue summary { list-style: none; cursor: pointer; display: inline-block; border: 1px solid #fff; border-radius: 10px; padding: 8px 10px; background: rgba(255, 255, 255, 0.2); }
+details.menu-lingue summary::-webkit-details-marker { display: none; }
+.barre { display: block; width: 22px; }
+.barre i { display: block; height: 3px; background: #7a2e5c; border-radius: 2px; margin: 4px 0; }
+details.menu-lingue .menu-voci { position: absolute; top: 56px; right: 0; min-width: 160px; display: flex; flex-direction: column; gap: 6px; background: #fff; border-radius: 12px; padding: 8px; box-shadow: 0 4px 14px rgba(122, 46, 92, 0.25); }
+details.menu-lingue .menu-voci .lingua { display: block; margin: 0; background: #fff; color: #7a2e5c; border: 1px solid #ead9e6; border-radius: 10px; padding: 8px 16px; font-size: 15px; white-space: nowrap; text-align: left; }
+details.menu-lingue .menu-voci .lingua.attiva { background: #7a2e5c; color: #fff; }
+/* Descrizione del fiore: aspetto e storia */
+.descrizione { max-width: 420px; margin: 8px auto 12px; font-size: 14px; line-height: 1.45; color: #5c3b56; text-align: left; }
+.descrizione p { margin: 4px 0; }
+.descrizione strong { color: #7a2e5c; }
+/* Benvenuto, registrazione, scelta del sesso e pagine legali */
+.schermata { text-align: center; }
+.intro { font-size: 17px; margin: 8px 0 20px; }
+.nota { font-size: 14px; color: #5c3b56; margin: 6px 0 14px; }
+#form-registrazione { display: flex; flex-direction: column; gap: 8px; align-items: center; }
+#form-registrazione input[type="email"] { font: inherit; padding: 12px; border-radius: 10px; border: 1px solid #b8c4d6; width: 100%; max-width: 320px; }
+.check { display: flex; gap: 8px; align-items: flex-start; justify-content: center; font-size: 14px; text-align: left; margin: 10px auto; max-width: 320px; }
+.check input { margin-top: 3px; }
+.legale-link { font-size: 14px; margin: 8px 0; }
+button.link { display: inline; width: auto; max-width: none; background: none; color: #7a2e5c; padding: 0; margin: 0; text-decoration: underline; border-radius: 0; }
+.coppia-figure { display: flex; justify-content: center; gap: 16px; flex-wrap: wrap; }
+.figura { background: #fff; color: #7a2e5c; border: 1px solid #ead9e6; border-radius: 16px; width: auto; max-width: none; padding: 12px; margin: 0; display: flex; flex-direction: column; align-items: center; gap: 6px; }
+.figura img { width: 120px; height: auto; mix-blend-mode: multiply; }
+#pagina-legale { width: 100%; height: 75vh; border: 0; background: #fff; border-radius: 12px; margin-top: 8px; }
+.piepagina { margin-top: 28px; text-align: center; }
+/* Fiori bloccati con il lucchetto */
+.carta { position: relative; }
+.carta.bloccato { opacity: 0.6; }
+.lucchetto { position: absolute; top: 6px; right: 8px; font-size: 18px; }
+[hidden] { display: none !important; }

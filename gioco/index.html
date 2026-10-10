@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Petali</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header>
+    <h1 data-i18n="titolo">Petali</h1>
+    <p data-i18n="subtitle"></p>
+    <details class="menu-lingue">
+      <summary><span class="barre"><i></i><i></i><i></i></span></summary>
+      <div class="menu-voci">
+        <button class="lingua" type="button" data-lingua="it">Italiano</button>
+        <button class="lingua" type="button" data-lingua="en">English</button>
+        <button class="lingua" type="button" data-lingua="es">Español</button>
+      </div>
+    </details>
+  </header>
+
+  <main>
+    <section id="benvenuto" class="schermata">
+      <h2 data-i18n="benvenuto"></h2>
+      <p class="intro" data-i18n="vuoiRegistrarti"></p>
+      <button id="btn-registrati" type="button" data-i18n="siRegistrati"></button>
+      <button id="btn-salta" type="button" class="secondario" data-i18n="salta"></button>
+    </section>
+
+    <section id="registrazione" class="schermata">
+      <h2 data-i18n="registrazione"></h2>
+      <p class="nota" data-i18n="notaProva"></p>
+      <form id="form-registrazione">
+        <input id="email" type="email" required data-i18n-placeholder="emailPlaceholder">
+        <label class="check">
+          <input id="accetto" type="checkbox" required>
+          <span data-i18n="accettoTesto"></span>
+        </label>
+        <div class="legale-link">
+          <button type="button" class="link" data-legale="termini" data-i18n="leggiTermini"></button>
+          &middot;
+          <button type="button" class="link" data-legale="privacy" data-i18n="leggiPrivacy"></button>
+        </div>
+        <button type="submit" data-i18n="creaAccount"></button>
+        <button id="btn-indietro-reg" type="button" class="secondario" data-i18n="indietro"></button>
+      </form>
+    </section>
+
+    <section id="sesso" class="schermata">
+      <h2 data-i18n="sessoDomanda"></h2>
+      <div class="coppia-figure">
+        <button type="button" class="figura" data-sesso="femmina">
+          <img src="img/donna.jpg" alt="">
+          <span data-i18n="femmina"></span>
+        </button>
+        <button type="button" class="figura" data-sesso="maschio">
+          <img src="img/uomo.jpg" alt="">
+          <span data-i18n="maschio"></span>
+        </button>
+      </div>
+    </section>
+
+    <section id="legale" class="schermata">
+      <button id="btn-chiudi-legale" type="button" class="secondario" data-i18n="indietro"></button>
+      <iframe id="pagina-legale" title="Documento" src="about:blank"></iframe>
+    </section>
+
+    <section id="scelta" class="schermata">
+      <p class="intro" data-i18n="intro"></p>
+      <h2 data-i18n="sceltaTitolo"></h2>
+      <button id="btn-suono" class="secondario" type="button"></button>
+      <button id="btn-sblocca" type="button" class="secondario" hidden></button>
+      <div id="griglia-fiori" class="griglia"></div>
+      <div class="piepagina">
+        <div class="legale-link">
+          <button type="button" class="link" data-legale="termini" data-i18n="termini"></button> ·
+          <button type="button" class="link" data-legale="privacy" data-i18n="privacy"></button> ·
+          <button type="button" class="link" data-legale="cancellazione" data-i18n="cancellazione"></button>
+        </div>
+        <button id="btn-cancella" type="button" class="pericolo" data-i18n="cancellaAccount"></button>
+      </div>
+    </section>
+
+    <section id="gioco" class="schermata">
+      <button id="btn-indietro" class="secondario" type="button" data-i18n="indietro"></button>
+      <h2 id="nome-fiore"></h2>
+      <p id="significato-fiore" class="significato"></p>
+      <div id="descrizione-fiore" class="descrizione">
+        <p><strong data-i18n="aspetto"></strong> <span id="desc-testo"></span></p>
+        <p><strong data-i18n="storia"></strong> <span id="storia-testo"></span></p>
+      </div>
+      <div id="immagine-fiore"></div>
+
+      <div id="scelta-inizio" class="scelta-inizio" hidden>
+        <p data-i18n="inizioDomanda"></p>
+        <div class="coppia">
+          <button id="btn-inizia-non-mama" type="button" class="secondario scelta">💔 <span data-i18n="nonMama"></span></button>
+          <button id="btn-inizia-mama" type="button" class="scelta"><span data-i18n="mama"></span> ❤</button>
+        </div>
+      </div>
+
+      <button id="btn-petalo" type="button" data-i18n="togli" hidden></button>
+
+      <div id="esito" class="esito" hidden>
+        <p id="esito-testo"></p>
+        <p id="esito-messaggio"></p>
+        <button id="btn-ricomincia" type="button" data-i18n="ricomincia"></button>
+      </div>
+
+      <div id="simboli" class="simboli">
+        <span id="simbolo-nonmama" class="simbolo">💔 <span data-i18n="nonMama"></span></span>
+        <span id="simbolo-mama" class="simbolo"><span data-i18n="mama"></span> ❤</span>
+      </div>
+    </section>
+  </main>
+
+  <script src="fiori.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
