@@ -42,6 +42,8 @@ function buildPetals(){
  });
  if(meshes.length!==24)throw Error("Il modello deve contenere 24 petali esterni interi: trovati "+meshes.length);
  const places=meshes.map(m=>getBoxCenter(m));
+ console.log("SUN_Diagnostic original ray distances",places.slice(0,9).map(c=>+c.distanceTo(center).toFixed(4)),"disc center",center.toArray().map(x=>+x.toFixed(4)));
+ window.__rayOriginalDistances=places.map(c=>c.distanceTo(center));
  let left=places[0].clone().sub(center),middle=places[6].clone().sub(center),right=places[12].clone().sub(center);
  normal=middle.clone().sub(left).cross(right.clone().sub(left)).normalize();
  if(normal.lengthSq()<.8)normal.set(0,0,1);
@@ -76,10 +78,11 @@ function configure(n){
   q.setFromAxisAngle(normal,angle);
   p.pivot.quaternion.copy(q);
   // Subtle enlargement to keep a visually full sunflower at low ray counts.
-  const size=1+Math.max(0,24-n)*.016;
+  const size=1;
   p.mesh.scale.copy(p.baseScale).multiplyScalar(size);
   p.mesh.userData.active=true;p.active=true;p.mesh.visible=true;
  });
+ console.log("SUN_Diagnostic after configure",n,petals.filter(p=>p.active).slice(0,7).map(p=>+getBoxCenter(p.mesh).distanceTo(center).toFixed(4)));
  display();
 }
 function newRound(){configure(selectCount())}
