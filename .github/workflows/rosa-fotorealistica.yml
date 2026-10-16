@@ -1,0 +1,41 @@
+name: Petali - Analisi rosa 3D realistica
+on:
+  push:
+    paths:
+      - '.github/workflows/rosa-fotorealistica.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  analyze-rose:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Download openly licensed GLB
+        run: |
+          mkdir -p asset-scan
+          curl --fail --location --retry 3 --max-time 90 --user-agent "Mozilla/5.0"             'https://www.innerscene.com/api/library/rose-flower-with-stem-b2a45a50/download'             -o asset-scan/rosa-originale.glb
+          file asset-scan/rosa-originale.glb
+          ls -lh asset-scan/rosa-originale.glb
+      - name: Inspect geometry and materials
+        run: |
+          python -m pip install --quiet trimesh numpy pillow
+          python - <<'PY'
+          import json, trimesh, pathlib, numpy as np
+          path=pathlib.Path("asset-scan/rosa-originale.glb")
+          scene=trimesh.load(path,force="scene")
+          items=[]
+          for name,mesh in scene.geometry.items():
+              if not isinstance(mesh,trimesh.Trimesh):continue
+              items.append({"name":name,"triangles":len(mesh.faces),"vertices":len(mesh.vertices),"material":str(getattr(getattr(mesh.visual,"material",None),"name","")),"color":str(getattr(mesh.visual,"kind","")),"bounds":np.round(mesh.bounds,4).tolist()})
+          info={"file_bytes":path.stat().st_size,"geometry_count":len(items),"meshes":items,"scene_bounds":np.round(scene.bounds,4).tolist()}
+          pathlib.Path("asset-scan/rosa-info.json").write_text(json.dumps(info,ensure_ascii=False,indent=2))
+          print(json.dumps({"file_bytes":info["file_bytes"],"geometry_count":info["geometry_count"],"mesh_sample":items[:30]},ensure_ascii=False)[:10000])
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: rosa-3d-originale-cc0
+          path: asset-scan/
