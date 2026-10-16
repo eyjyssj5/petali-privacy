@@ -1,0 +1,25 @@
+name: Package Petali 3D web preview
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - ".github/workflows/petali-3d-package.yml"
+permissions:
+  contents: read
+jobs:
+  package:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Create portable source ZIP
+        run: |
+          mkdir -p petali_3d_web/gioco
+          cp -R gioco/3d petali_3d_web/gioco/
+          cp gioco/fiori.js gioco/lingue-extra.js gioco/fiori-pt.js gioco/fiori-fr.js gioco/fiori-de.js petali_3d_web/gioco/
+          cd petali_3d_web
+          zip -q -r ../Petali_3D_BROWSER_SORGENTE.zip gioco
+      - uses: actions/upload-artifact@v4
+        with:
+          name: petali-3d-web-source
+          path: Petali_3D_BROWSER_SORGENTE.zip
+          if-no-files-found: error
