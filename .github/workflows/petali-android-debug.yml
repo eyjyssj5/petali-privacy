@@ -25,7 +25,6 @@ jobs:
         with:
           distribution: temurin
           java-version: "21"
-      - uses: android-actions/setup-android@v3
       - name: Dipendenze e test
         run: |
           npm install --no-audit --no-fund
