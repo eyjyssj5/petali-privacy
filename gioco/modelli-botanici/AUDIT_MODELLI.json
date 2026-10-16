@@ -1,0 +1,1182 @@
+[
+  {
+    "fiore": "tulipano-rosso",
+    "source": "https://www.innerscene.com/tools/library/3d-parts/tulip-flower-with-stem-a7a081fa",
+    "licenza": "CC0",
+    "status": "candidate",
+    "file": "gioco/modelli-botanici/tulipano-rosso.glb",
+    "bytes": 8210260,
+    "geometry_count": 23,
+    "triangles": 3760,
+    "mesh_sample": [
+      {
+        "name": "Cut stem",
+        "triangles": 432,
+        "width": 0.01611,
+        "height": 0.41536,
+        "material": "Original stem green"
+      },
+      {
+        "name": "Tulip clasping leaf 1",
+        "triangles": 196,
+        "width": 0.0743,
+        "height": 0.21822,
+        "material": "Original leaf green"
+      },
+      {
+        "name": "Tulip clasping leaf 2",
+        "triangles": 196,
+        "width": 0.05641,
+        "height": 0.20531,
+        "material": "Original leaf green"
+      },
+      {
+        "name": "Tulip Fleshy attached receptacle",
+        "triangles": 128,
+        "width": 0.01374,
+        "height": 0.01191,
+        "material": "Original stem green"
+      },
+      {
+        "name": "Tulip Tulip attached anther 1",
+        "triangles": 72,
+        "width": 0.00294,
+        "height": 0.00941,
+        "material": "Original seed brown"
+      },
+      {
+        "name": "Tulip Tulip attached anther 2",
+        "triangles": 72,
+        "width": 0.00294,
+        "height": 0.00941,
+        "material": "Original seed brown"
+      },
+      {
+        "name": "Tulip Tulip attached anther 3",
+        "triangles": 72,
+        "width": 0.00294,
+        "height": 0.00941,
+        "material": "Original seed brown"
+      },
+      {
+        "name": "Tulip Tulip attached anther 4",
+        "triangles": 72,
+        "width": 0.00294,
+        "height": 0.00941,
+        "material": "Original seed brown"
+      },
+      {
+        "name": "Tulip Tulip attached anther 5",
+        "triangles": 72,
+        "width": 0.00294,
+        "height": 0.00941,
+        "material": "Original seed brown"
+      },
+      {
+        "name": "Tulip Tulip attached anther 6",
+        "triangles": 72,
+        "width": 0.00294,
+        "height": 0.00941,
+        "material": "Original seed brown"
+      },
+      {
+        "name": "Tulip Tulip central pistil",
+        "triangles": 72,
+        "width": 0.00627,
+        "height": 0.02743,
+        "material": "Original pollen gold"
+      },
+      {
+        "name": "Tulip Tulip inner tepal 2",
+        "triangles": 360,
+        "width": 0.03395,
+        "height": 0.06367,
+        "material": "Original tulip red"
+      },
+      {
+        "name": "Tulip Tulip inner tepal 4",
+        "triangles": 360,
+        "width": 0.03218,
+        "height": 0.0606,
+        "material": "Original tulip red"
+      },
+      {
+        "name": "Tulip Tulip inner tepal 6",
+        "triangles": 360,
+        "width": 0.0388,
+        "height": 0.05361,
+        "material": "Original tulip red"
+      },
+      {
+        "name": "Tulip Tulip outer tepal 1",
+        "triangles": 360,
+        "width": 0.03335,
+        "height": 0.05837,
+        "material": "Original tulip red"
+      },
+      {
+        "name": "Tulip Tulip outer tepal 3",
+        "triangles": 360,
+        "width": 0.03985,
+        "height": 0.06506,
+        "material": "Original tulip red"
+      },
+      {
+        "name": "Tulip Tulip outer tepal 5",
+        "triangles": 360,
+        "width": 0.03499,
+        "height": 0.0549,
+        "material": "Original tulip red"
+      },
+      {
+        "name": "Tulip Tulip stamen filament 1",
+        "triangles": 24,
+        "width": 0.00556,
+        "height": 0.02175,
+        "material": "Original pollen gold"
+      },
+      {
+        "name": "Tulip Tulip stamen filament 2",
+        "triangles": 24,
+        "width": 0.00421,
+        "height": 0.02239,
+        "material": "Original pollen gold"
+      },
+      {
+        "name": "Tulip Tulip stamen filament 3",
+        "triangles": 24,
+        "width": 0.0026,
+        "height": 0.02246,
+        "material": "Original pollen gold"
+      },
+      {
+        "name": "Tulip Tulip stamen filament 4",
+        "triangles": 24,
+        "width": 0.00556,
+        "height": 0.02205,
+        "material": "Original pollen gold"
+      },
+      {
+        "name": "Tulip Tulip stamen filament 5",
+        "triangles": 24,
+        "width": 0.00421,
+        "height": 0.02136,
+        "material": "Original pollen gold"
+      },
+      {
+        "name": "Tulip Tulip stamen filament 6",
+        "triangles": 24,
+        "width": 0.0026,
+        "height": 0.02122,
+        "material": "Original pollen gold"
+      }
+    ],
+    "bounds": [
+      [
+        -0.0637,
+        0.0,
+        -0.0416
+      ],
+      [
+        0.0637,
+        0.4806,
+        0.0416
+      ]
+    ]
+  },
+  {
+    "fiore": "girasole",
+    "source": "https://www.innerscene.com/tools/library/3d-parts/sunflower-with-stem-46c9787a",
+    "licenza": "CC0",
+    "status": "candidate",
+    "file": "gioco/modelli-botanici/girasole.glb",
+    "bytes": 8480148,
+    "geometry_count": 113,
+    "triangles": 8984,
+    "mesh_sample": [
+      {
+        "name": "Cut stem",
+        "triangles": 432,
+        "width": 0.02484,
+        "height": 0.56066,
+        "material": "Original stem green"
+      },
+      {
+        "name": "Sunflower broad leaf 1",
+        "triangles": 336,
+        "width": 0.10537,
+        "height": 0.04264,
+        "material": "Original leaf green"
+      },
+      {
+        "name": "Sunflower broad leaf 2",
+        "triangles": 336,
+        "width": 0.10537,
+        "height": 0.04264,
+        "material": "Original leaf green"
+      },
+      {
+        "name": "Sunflower broad leaf 3",
+        "triangles": 336,
+        "width": 0.10537,
+        "height": 0.04264,
+        "material": "Original leaf green"
+      },
+      {
+        "name": "Sunflower Composite convex disc receptacle",
+        "triangles": 200,
+        "width": 0.07983,
+        "height": 0.06139,
+        "material": "Original seed brown"
+      },
+      {
+        "name": "Sunflower Fleshy attached receptacle",
+        "triangles": 128,
+        "width": 0.06612,
+        "height": 0.05085,
+        "material": "Original stem green"
+      },
+      {
+        "name": "Sunflower leaf petiole 1",
+        "triangles": 432,
+        "width": 0.03637,
+        "height": 0.01697,
+        "material": "Original stem green"
+      },
+      {
+        "name": "Sunflower leaf petiole 2",
+        "triangles": 432,
+        "width": 0.03637,
+        "height": 0.01697,
+        "material": "Original stem green"
+      },
+      {
+        "name": "Sunflower leaf petiole 3",
+        "triangles": 432,
+        "width": 0.03637,
+        "height": 0.01697,
+        "material": "Original stem green"
+      },
+      {
+        "name": "Sunflower Spiral disc floret 1",
+        "triangles": 32,
+        "width": 0.00358,
+        "height": 0.0034,
+        "material": "Original pollen gold"
+      },
+      {
+        "name": "Sunflower Spiral disc floret 2",
+        "triangles": 32,
+        "width": 0.00358,
+        "height": 0.0034,
+        "material": "Original seed brown"
+      },
+      {
+        "name": "Sunflower Spiral disc floret 3",
+        "triangles": 32,
+        "width": 0.00358,
+        "height": 0.0034,
+        "material": "Original seed brown"
+      },
+      {
+        "name": "Sunflower Spiral disc floret 4",
+        "triangles": 32,
+        "width": 0.00358,
+        "height": 0.0034,
+        "material": "Original seed brown"
+      },
+      {
+        "name": "Sunflower Spiral disc floret 5",
+        "triangles": 32,
+        "width": 0.00358,
+        "height": 0.0034,
+        "material": "Original seed brown"
+      },
+      {
+        "name": "Sunflower Spiral disc floret 6",
+        "triangles": 32,
+        "width": 0.00358,
+        "height": 0.0034,
+        "material": "Original seed brown"
+      },
+      {
+        "name": "Sunflower Spiral disc floret 7",
+        "triangles": 32,
+        "width": 0.00358,
+        "height": 0.0034,
+        "material": "Original seed brown"
+      },
+      {
+        "name": "Sunflower Spiral disc floret 8",
+        "triangles": 32,
+        "width": 0.00358,
+        "height": 0.0034,
+        "material": "Original pollen gold"
+      },
+      {
+        "name": "Sunflower Spiral disc floret 9",
+        "triangles": 32,
+        "width": 0.00358,
+        "height": 0.0034,
+        "material": "Original seed brown"
+      },
+      {
+        "name": "Sunflower Spiral disc floret 10",
+        "triangles": 32,
+        "width": 0.00358,
+        "height": 0.0034,
+        "material": "Original seed brown"
+      },
+      {
+        "name": "Sunflower Spiral disc floret 11",
+        "triangles": 32,
+        "width": 0.00358,
+        "height": 0.0034,
+        "material": "Original seed brown"
+      },
+      {
+        "name": "Sunflower Spiral disc floret 12",
+        "triangles": 32,
+        "width": 0.00358,
+        "height": 0.0034,
+        "material": "Original seed brown"
+      },
+      {
+        "name": "Sunflower Spiral disc floret 13",
+        "triangles": 32,
+        "width": 0.00358,
+        "height": 0.0034,
+        "material": "Original seed brown"
+      },
+      {
+        "name": "Sunflower Spiral disc floret 14",
+        "triangles": 32,
+        "width": 0.00358,
+        "height": 0.0034,
+        "material": "Original seed brown"
+      },
+      {
+        "name": "Sunflower Spiral disc floret 15",
+        "triangles": 32,
+        "width": 0.00358,
+        "height": 0.0034,
+        "material": "Original pollen gold"
+      },
+      {
+        "name": "Sunflower Spiral disc floret 16",
+        "triangles": 32,
+        "width": 0.00358,
+        "height": 0.0034,
+        "material": "Original seed brown"
+      }
+    ],
+    "bounds": [
+      [
+        -0.1427,
+        0.0,
+        -0.0675
+      ],
+      [
+        0.1427,
+        0.63,
+        0.0675
+      ]
+    ]
+  },
+  {
+    "fiore": "orchidea",
+    "source": "https://www.innerscene.com/tools/library/3d-parts/orchid-in-pot-231b8e5f",
+    "licenza": "CC0",
+    "status": "candidate",
+    "file": "gioco/modelli-botanici/orchidea.glb",
+    "bytes": 9242680,
+    "geometry_count": 66,
+    "triangles": 11792,
+    "mesh_sample": [
+      {
+        "name": "Arching orchid flower spike",
+        "triangles": 800,
+        "width": 0.16808,
+        "height": 0.467,
+        "material": "Original stem green"
+      },
+      {
+        "name": "Basal leaf crown",
+        "triangles": 200,
+        "width": 0.026,
+        "height": 0.038,
+        "material": "Original stem green"
+      },
+      {
+        "name": "Bud stalk 0",
+        "triangles": 32,
+        "width": 0.00979,
+        "height": 0.00438,
+        "material": "Original stem green"
+      },
+      {
+        "name": "Bud stalk 1",
+        "triangles": 32,
+        "width": 0.02826,
+        "height": 0.00539,
+        "material": "Original stem green"
+      },
+      {
+        "name": "Closed terminal bud 0",
+        "triangles": 128,
+        "width": 0.013,
+        "height": 0.016,
+        "material": "Original orchid pink"
+      },
+      {
+        "name": "Closed terminal bud 1",
+        "triangles": 128,
+        "width": 0.011,
+        "height": 0.014,
+        "material": "Original orchid pink"
+      },
+      {
+        "name": "Dark slender support stake",
+        "triangles": 48,
+        "width": 0.004,
+        "height": 0.329,
+        "material": "Original dark florist support wire"
+      },
+      {
+        "name": "Fleshy orchid leaf 1",
+        "triangles": 236,
+        "width": 0.1557,
+        "height": 0.03571,
+        "material": "Original leaf darkgreen"
+      },
+      {
+        "name": "Fleshy orchid leaf 2",
+        "triangles": 236,
+        "width": 0.17753,
+        "height": 0.02891,
+        "material": "Original leaf darkgreen"
+      },
+      {
+        "name": "Fleshy orchid leaf 3",
+        "triangles": 236,
+        "width": 0.11484,
+        "height": 0.04569,
+        "material": "Original leaf darkgreen"
+      },
+      {
+        "name": "Fleshy orchid leaf 4",
+        "triangles": 236,
+        "width": 0.13065,
+        "height": 0.0418,
+        "material": "Original leaf darkgreen"
+      },
+      {
+        "name": "Fleshy orchid leaf 5",
+        "triangles": 236,
+        "width": 0.03914,
+        "height": 0.05139,
+        "material": "Original leaf darkgreen"
+      },
+      {
+        "name": "Fleshy orchid leaf 6",
+        "triangles": 236,
+        "width": 0.03596,
+        "height": 0.04146,
+        "material": "Original leaf darkgreen"
+      },
+      {
+        "name": "Flower pedicel 1",
+        "triangles": 112,
+        "width": 0.02639,
+        "height": 0.0052,
+        "material": "Original stem green"
+      },
+      {
+        "name": "Flower pedicel 2",
+        "triangles": 112,
+        "width": 0.00678,
+        "height": 0.0052,
+        "material": "Original stem green"
+      },
+      {
+        "name": "Flower pedicel 3",
+        "triangles": 112,
+        "width": 0.02639,
+        "height": 0.01459,
+        "material": "Original stem green"
+      },
+      {
+        "name": "Flower pedicel 4",
+        "triangles": 112,
+        "width": 0.0125,
+        "height": 0.01246,
+        "material": "Original stem green"
+      },
+      {
+        "name": "Hollow tapered orchid ceramic pot",
+        "triangles": 896,
+        "width": 0.13,
+        "height": 0.12,
+        "material": "Original warm cream glazed ceramic"
+      },
+      {
+        "name": "Orchid flower 1 Broad petal 4",
+        "triangles": 176,
+        "width": 0.04103,
+        "height": 0.04152,
+        "material": "Original orchid white"
+      },
+      {
+        "name": "Orchid flower 1 Broad petal 5",
+        "triangles": 176,
+        "width": 0.04103,
+        "height": 0.04152,
+        "material": "Original orchid white"
+      },
+      {
+        "name": "Orchid flower 1 Central pale column",
+        "triangles": 128,
+        "width": 0.0116,
+        "height": 0.013,
+        "material": "Original orchid pink"
+      },
+      {
+        "name": "Orchid flower 1 Curled purple lip",
+        "triangles": 156,
+        "width": 0.02375,
+        "height": 0.01948,
+        "material": "Original orchid purple"
+      },
+      {
+        "name": "Orchid flower 1 Flared lip lobe 1",
+        "triangles": 116,
+        "width": 0.01292,
+        "height": 0.00836,
+        "material": "Original orchid purple"
+      },
+      {
+        "name": "Orchid flower 1 Flared lip lobe -1",
+        "triangles": 116,
+        "width": 0.01292,
+        "height": 0.00836,
+        "material": "Original orchid purple"
+      },
+      {
+        "name": "Orchid flower 1 Green receptacle",
+        "triangles": 128,
+        "width": 0.014,
+        "height": 0.014,
+        "material": "Original stem green"
+      }
+    ],
+    "bounds": [
+      [
+        -0.1818,
+        0.0,
+        -0.0738
+      ],
+      [
+        0.1818,
+        0.6032,
+        0.0738
+      ]
+    ]
+  },
+  {
+    "fiore": "ortensia",
+    "source": "https://www.innerscene.com/tools/library/3d-parts/hydrangea-flower-with-stem-77d795e6",
+    "licenza": "CC0",
+    "status": "candidate",
+    "file": "gioco/modelli-botanici/ortensia.glb",
+    "bytes": 1335376,
+    "geometry_count": 256,
+    "triangles": 14620,
+    "mesh_sample": [
+      {
+        "name": "Cut stem",
+        "triangles": 432,
+        "width": 0.01731,
+        "height": 0.45546,
+        "material": "Original stem green"
+      },
+      {
+        "name": "Hydrangea Fleshy attached receptacle",
+        "triangles": 128,
+        "width": 0.01084,
+        "height": 0.01183,
+        "material": "Original stem green"
+      },
+      {
+        "name": "Hydrangea Floret 1 centre",
+        "triangles": 32,
+        "width": 0.00373,
+        "height": 0.00531,
+        "material": "Original hydrangea blue"
+      },
+      {
+        "name": "Hydrangea Floret 1 enlarged sepal 1",
+        "triangles": 44,
+        "width": 0.00636,
+        "height": 0.01796,
+        "material": "Original hydrangea blue"
+      },
+      {
+        "name": "Hydrangea Floret 1 enlarged sepal 2",
+        "triangles": 44,
+        "width": 0.007,
+        "height": 0.01738,
+        "material": "Original hydrangea blue"
+      },
+      {
+        "name": "Hydrangea Floret 1 enlarged sepal 3",
+        "triangles": 44,
+        "width": 0.00564,
+        "height": 0.01804,
+        "material": "Original hydrangea blue"
+      },
+      {
+        "name": "Hydrangea Floret 1 enlarged sepal 4",
+        "triangles": 44,
+        "width": 0.00551,
+        "height": 0.01733,
+        "material": "Original hydrangea blue"
+      },
+      {
+        "name": "Hydrangea Floret 2 centre",
+        "triangles": 32,
+        "width": 0.00429,
+        "height": 0.00511,
+        "material": "Original hydrangea blue"
+      },
+      {
+        "name": "Hydrangea Floret 2 enlarged sepal 1",
+        "triangles": 44,
+        "width": 0.01321,
+        "height": 0.01543,
+        "material": "Original hydrangea blue"
+      },
+      {
+        "name": "Hydrangea Floret 2 enlarged sepal 2",
+        "triangles": 44,
+        "width": 0.01354,
+        "height": 0.01654,
+        "material": "Original hydrangea blue"
+      },
+      {
+        "name": "Hydrangea Floret 2 enlarged sepal 3",
+        "triangles": 44,
+        "width": 0.01395,
+        "height": 0.01515,
+        "material": "Original hydrangea blue"
+      },
+      {
+        "name": "Hydrangea Floret 2 enlarged sepal 4",
+        "triangles": 44,
+        "width": 0.0138,
+        "height": 0.01672,
+        "material": "Original hydrangea blue"
+      },
+      {
+        "name": "Hydrangea Floret 3 centre",
+        "triangles": 32,
+        "width": 0.00528,
+        "height": 0.00529,
+        "material": "Original hydrangea blue"
+      },
+      {
+        "name": "Hydrangea Floret 3 enlarged sepal 1",
+        "triangles": 44,
+        "width": 0.01784,
+        "height": 0.01745,
+        "material": "Original hydrangea blue"
+      },
+      {
+        "name": "Hydrangea Floret 3 enlarged sepal 2",
+        "triangles": 44,
+        "width": 0.01731,
+        "height": 0.01796,
+        "material": "Original hydrangea blue"
+      },
+      {
+        "name": "Hydrangea Floret 3 enlarged sepal 3",
+        "triangles": 44,
+        "width": 0.01795,
+        "height": 0.01742,
+        "material": "Original hydrangea blue"
+      },
+      {
+        "name": "Hydrangea Floret 3 enlarged sepal 4",
+        "triangles": 44,
+        "width": 0.01738,
+        "height": 0.01798,
+        "material": "Original hydrangea blue"
+      },
+      {
+        "name": "Hydrangea Floret 4 centre",
+        "triangles": 32,
+        "width": 0.00457,
+        "height": 0.00485,
+        "material": "Original hydrangea blue"
+      },
+      {
+        "name": "Hydrangea Floret 4 enlarged sepal 1",
+        "triangles": 44,
+        "width": 0.01213,
+        "height": 0.0171,
+        "material": "Original hydrangea blue"
+      },
+      {
+        "name": "Hydrangea Floret 4 enlarged sepal 2",
+        "triangles": 44,
+        "width": 0.01253,
+        "height": 0.01663,
+        "material": "Original hydrangea blue"
+      },
+      {
+        "name": "Hydrangea Floret 4 enlarged sepal 3",
+        "triangles": 44,
+        "width": 0.01296,
+        "height": 0.0169,
+        "material": "Original hydrangea blue"
+      },
+      {
+        "name": "Hydrangea Floret 4 enlarged sepal 4",
+        "triangles": 44,
+        "width": 0.01195,
+        "height": 0.01629,
+        "material": "Original hydrangea blue"
+      },
+      {
+        "name": "Hydrangea Floret 5 centre",
+        "triangles": 32,
+        "width": 0.00374,
+        "height": 0.00531,
+        "material": "Original hydrangea blue"
+      },
+      {
+        "name": "Hydrangea Floret 5 enlarged sepal 1",
+        "triangles": 44,
+        "width": 0.0065,
+        "height": 0.01588,
+        "material": "Original hydrangea blue"
+      },
+      {
+        "name": "Hydrangea Floret 5 enlarged sepal 2",
+        "triangles": 44,
+        "width": 0.00672,
+        "height": 0.01542,
+        "material": "Original hydrangea blue"
+      }
+    ],
+    "bounds": [
+      [
+        -0.1283,
+        0.0,
+        -0.0628
+      ],
+      [
+        0.1283,
+        0.5292,
+        0.0628
+      ]
+    ]
+  },
+  {
+    "fiore": "lavanda",
+    "source": "https://www.innerscene.com/tools/library/3d-parts/lavender-bush-6d454088",
+    "licenza": "CC0",
+    "status": "candidate",
+    "file": "gioco/modelli-botanici/lavanda.glb",
+    "bytes": 2180688,
+    "geometry_count": 78,
+    "triangles": 40736,
+    "mesh_sample": [
+      {
+        "name": "Dense authored shrub foliage",
+        "triangles": 17024,
+        "width": 0.78076,
+        "height": 0.40901,
+        "material": "Shrub leaf green"
+      },
+      {
+        "name": "Lavender flower stalk",
+        "triangles": 20,
+        "width": 0.005,
+        "height": 0.135,
+        "material": "Shrub leaf green"
+      },
+      {
+        "name": "Lavender flower stalk.001",
+        "triangles": 20,
+        "width": 0.005,
+        "height": 0.135,
+        "material": "Shrub leaf green"
+      },
+      {
+        "name": "Lavender flower stalk.002",
+        "triangles": 20,
+        "width": 0.005,
+        "height": 0.135,
+        "material": "Shrub leaf green"
+      },
+      {
+        "name": "Lavender flower stalk.003",
+        "triangles": 20,
+        "width": 0.005,
+        "height": 0.135,
+        "material": "Shrub leaf green"
+      },
+      {
+        "name": "Lavender flower stalk.004",
+        "triangles": 20,
+        "width": 0.005,
+        "height": 0.135,
+        "material": "Shrub leaf green"
+      },
+      {
+        "name": "Lavender flower stalk.005",
+        "triangles": 20,
+        "width": 0.005,
+        "height": 0.135,
+        "material": "Shrub leaf green"
+      },
+      {
+        "name": "Lavender flower stalk.006",
+        "triangles": 20,
+        "width": 0.005,
+        "height": 0.135,
+        "material": "Shrub leaf green"
+      },
+      {
+        "name": "Lavender flower stalk.007",
+        "triangles": 20,
+        "width": 0.005,
+        "height": 0.135,
+        "material": "Shrub leaf green"
+      },
+      {
+        "name": "Lavender flower stalk.008",
+        "triangles": 20,
+        "width": 0.005,
+        "height": 0.135,
+        "material": "Shrub leaf green"
+      },
+      {
+        "name": "Lavender flower stalk.009",
+        "triangles": 20,
+        "width": 0.005,
+        "height": 0.135,
+        "material": "Shrub leaf green"
+      },
+      {
+        "name": "Lavender flower stalk.010",
+        "triangles": 20,
+        "width": 0.005,
+        "height": 0.135,
+        "material": "Shrub leaf green"
+      },
+      {
+        "name": "Lavender flower stalk.011",
+        "triangles": 20,
+        "width": 0.005,
+        "height": 0.135,
+        "material": "Shrub leaf green"
+      },
+      {
+        "name": "Lavender flower stalk.012",
+        "triangles": 20,
+        "width": 0.005,
+        "height": 0.135,
+        "material": "Shrub leaf green"
+      },
+      {
+        "name": "Lavender flower stalk.013",
+        "triangles": 20,
+        "width": 0.005,
+        "height": 0.135,
+        "material": "Shrub leaf green"
+      },
+      {
+        "name": "Lavender flower stalk.014",
+        "triangles": 20,
+        "width": 0.005,
+        "height": 0.135,
+        "material": "Shrub leaf green"
+      },
+      {
+        "name": "Lavender flower stalk.015",
+        "triangles": 20,
+        "width": 0.005,
+        "height": 0.135,
+        "material": "Shrub leaf green"
+      },
+      {
+        "name": "Lavender flower stalk.016",
+        "triangles": 20,
+        "width": 0.005,
+        "height": 0.135,
+        "material": "Shrub leaf green"
+      },
+      {
+        "name": "Lavender flower stalk.017",
+        "triangles": 20,
+        "width": 0.005,
+        "height": 0.135,
+        "material": "Shrub leaf green"
+      },
+      {
+        "name": "Lavender flower stalk.018",
+        "triangles": 20,
+        "width": 0.005,
+        "height": 0.135,
+        "material": "Shrub leaf green"
+      },
+      {
+        "name": "Lavender flower stalk.019",
+        "triangles": 20,
+        "width": 0.005,
+        "height": 0.135,
+        "material": "Shrub leaf green"
+      },
+      {
+        "name": "Lavender flower stalk.020",
+        "triangles": 20,
+        "width": 0.005,
+        "height": 0.135,
+        "material": "Shrub leaf green"
+      },
+      {
+        "name": "Lavender flower stalk.021",
+        "triangles": 20,
+        "width": 0.005,
+        "height": 0.135,
+        "material": "Shrub leaf green"
+      },
+      {
+        "name": "Lavender flower stalk.022",
+        "triangles": 20,
+        "width": 0.005,
+        "height": 0.135,
+        "material": "Shrub leaf green"
+      },
+      {
+        "name": "Lavender flower stalk.023",
+        "triangles": 20,
+        "width": 0.005,
+        "height": 0.135,
+        "material": "Shrub leaf green"
+      }
+    ],
+    "bounds": [
+      [
+        -0.3873,
+        0.0,
+        -0.4794
+      ],
+      [
+        0.4277,
+        0.6135,
+        0.4606
+      ]
+    ]
+  },
+  {
+    "fiore": "ciliegio",
+    "source": "https://www.innerscene.com/tools/library/3d-parts/flowering-cherry-tree-6d80049e",
+    "licenza": "CC0",
+    "status": "candidate",
+    "file": "gioco/modelli-botanici/ciliegio.glb",
+    "bytes": 5390940,
+    "geometry_count": 95,
+    "triangles": 56580,
+    "mesh_sample": [
+      {
+        "name": "cherry_blossom attached fine twigs",
+        "triangles": 5760,
+        "width": 7.45553,
+        "height": 2.79849,
+        "material": "cherry_blossom fine twig bark"
+      },
+      {
+        "name": "cherry_blossom basal root flare 0",
+        "triangles": 32,
+        "width": 0.54549,
+        "height": 0.36992,
+        "material": "cherry_blossom rough living bark"
+      },
+      {
+        "name": "cherry_blossom basal root flare 1",
+        "triangles": 32,
+        "width": 0.23672,
+        "height": 0.3629,
+        "material": "cherry_blossom rough living bark"
+      },
+      {
+        "name": "cherry_blossom basal root flare 2",
+        "triangles": 32,
+        "width": 0.52179,
+        "height": 0.36717,
+        "material": "cherry_blossom rough living bark"
+      },
+      {
+        "name": "cherry_blossom basal root flare 3",
+        "triangles": 32,
+        "width": 0.43454,
+        "height": 0.35517,
+        "material": "cherry_blossom rough living bark"
+      },
+      {
+        "name": "cherry_blossom basal root flare 4",
+        "triangles": 32,
+        "width": 0.36077,
+        "height": 0.35906,
+        "material": "cherry_blossom rough living bark"
+      },
+      {
+        "name": "cherry_blossom connected crown 1",
+        "triangles": 14400,
+        "width": 7.37078,
+        "height": 2.92643,
+        "material": "cherry_blossom foliage 1"
+      },
+      {
+        "name": "cherry_blossom connected crown 2",
+        "triangles": 14400,
+        "width": 7.34124,
+        "height": 2.88101,
+        "material": "cherry_blossom foliage 2"
+      },
+      {
+        "name": "cherry_blossom connected crown 3",
+        "triangles": 14400,
+        "width": 7.50394,
+        "height": 2.92795,
+        "material": "cherry_blossom foliage 3"
+      },
+      {
+        "name": "cherry_blossom irregular trunk",
+        "triangles": 308,
+        "width": 0.63991,
+        "height": 3.46767,
+        "material": "cherry_blossom rough living bark"
+      },
+      {
+        "name": "cherry_blossom secondary 0 0",
+        "triangles": 36,
+        "width": 0.59169,
+        "height": 0.13776,
+        "material": "cherry_blossom fine twig bark"
+      },
+      {
+        "name": "cherry_blossom secondary 0 1",
+        "triangles": 36,
+        "width": 0.84354,
+        "height": 0.57909,
+        "material": "cherry_blossom fine twig bark"
+      },
+      {
+        "name": "cherry_blossom secondary 0 2",
+        "triangles": 36,
+        "width": 0.55645,
+        "height": 0.12832,
+        "material": "cherry_blossom fine twig bark"
+      },
+      {
+        "name": "cherry_blossom secondary 0 3",
+        "triangles": 36,
+        "width": 0.17205,
+        "height": 0.37218,
+        "material": "cherry_blossom fine twig bark"
+      },
+      {
+        "name": "cherry_blossom secondary 0 4",
+        "triangles": 36,
+        "width": 0.5366,
+        "height": 0.47891,
+        "material": "cherry_blossom fine twig bark"
+      },
+      {
+        "name": "cherry_blossom secondary 0 5",
+        "triangles": 36,
+        "width": 0.34989,
+        "height": 0.51273,
+        "material": "cherry_blossom fine twig bark"
+      },
+      {
+        "name": "cherry_blossom secondary 1 0",
+        "triangles": 36,
+        "width": 0.70147,
+        "height": 0.50471,
+        "material": "cherry_blossom fine twig bark"
+      },
+      {
+        "name": "cherry_blossom secondary 1 1",
+        "triangles": 36,
+        "width": 0.41857,
+        "height": 0.12525,
+        "material": "cherry_blossom fine twig bark"
+      },
+      {
+        "name": "cherry_blossom secondary 1 2",
+        "triangles": 36,
+        "width": 0.62092,
+        "height": 0.44185,
+        "material": "cherry_blossom fine twig bark"
+      },
+      {
+        "name": "cherry_blossom secondary 1 3",
+        "triangles": 36,
+        "width": 0.42328,
+        "height": 0.53365,
+        "material": "cherry_blossom fine twig bark"
+      },
+      {
+        "name": "cherry_blossom secondary 1 4",
+        "triangles": 36,
+        "width": 0.5876,
+        "height": 0.1671,
+        "material": "cherry_blossom fine twig bark"
+      },
+      {
+        "name": "cherry_blossom secondary 1 5",
+        "triangles": 36,
+        "width": 0.26144,
+        "height": 0.6257,
+        "material": "cherry_blossom fine twig bark"
+      },
+      {
+        "name": "cherry_blossom secondary 2 0",
+        "triangles": 36,
+        "width": 0.81554,
+        "height": 0.45382,
+        "material": "cherry_blossom fine twig bark"
+      },
+      {
+        "name": "cherry_blossom secondary 2 1",
+        "triangles": 36,
+        "width": 0.28409,
+        "height": 0.61707,
+        "material": "cherry_blossom fine twig bark"
+      },
+      {
+        "name": "cherry_blossom secondary 2 2",
+        "triangles": 36,
+        "width": 0.57346,
+        "height": 0.50366,
+        "material": "cherry_blossom fine twig bark"
+      }
+    ],
+    "bounds": [
+      [
+        -3.6972,
+        0.0,
+        -3.7594
+      ],
+      [
+        3.6617,
+        6.0,
+        3.2763
+      ]
+    ]
+  }
+]
