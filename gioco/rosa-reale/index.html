@@ -22,7 +22,7 @@ canvas{display:block;width:100%;height:100%;touch-action:none;cursor:grab}
 .overlay[hidden]{display:none}
 #loaderror{color:#92325f;background:#fffbeed9;padding:28px;text-align:center;inset:12%;border-radius:18px}
 .hints{position:absolute;left:14px;bottom:14px;background:#fffce8;padding:9px 12px;border:1px solid #e9d6e5;border-radius:30px;font-size:12px;color:#775069;pointer-events:none}
-.icon-btn{position:absolute;right:14px;bottom:14px;background:#fffdf2;border:1px solid #e9d6e5;border-radius:50%;width:42px;height:42px;display:grid;place-items:center;font-size:23px;color:#985078;cursor:pointer}
+.full-btn{position:absolute;top:12px;right:12px;border:1px solid #e9d6e5;border-radius:12px;background:#fffdf2;color:#874d71;padding:8px 11px;font-size:12px;font-weight:700;cursor:pointer;z-index:2}.icon-btn{position:absolute;right:14px;bottom:14px;background:#fffdf2;border:1px solid #e9d6e5;border-radius:50%;width:42px;height:42px;display:grid;place-items:center;font-size:23px;color:#985078;cursor:pointer}
 .panel{background:#fff;border:1px solid #ebdbe6;border-radius:20px;box-shadow:0 8px 24px #5e385510;padding:18px;margin:13px 0 0}
 h2{font-size:20px;margin:0 0 4px}.desc{color:#91768a;font-size:13px;margin:0 0 12px}
 .status{font-size:14px;font-weight:700;display:flex;align-items:center;justify-content:space-between;padding:9px 11px;border-radius:9px;background:#fdf4f9;margin-bottom:12px}
@@ -47,6 +47,7 @@ a{color:#86365d}
 <div class="overlay" id="loading">Caricamento modello botanico…</div>
 <div class="overlay" id="loaderror" role="alert" hidden></div>
 <div class="hints" id="hint">↻ Ruota • ⤢ Zoom • ✿ Tocca un petalo</div>
+<button type="button" class="full-btn" id="fullPlant">🌿 Fiore completo</button>
 <button type="button" class="icon-btn" id="reset" title="Reimposta la visuale" aria-label="Reimposta visuale">⌖</button>
 </div>
 <section class="panel">
