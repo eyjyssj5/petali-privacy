@@ -137,6 +137,7 @@
     },
   };
 
+  if (window.PetaliLingueExtra) Object.assign(T, window.PetaliLingueExtra.UI);
   const COLORI = {
     "rosa-rossa": { petalo: "#d62839", centro: "#8f0a22" },
     "rosa-gialla": { petalo: "#f4c430", centro: "#d19a00" },
@@ -528,7 +529,8 @@
 
   function apriLegale(nome) {
     schermaPrecedente = schermaAttiva();
-    $("pagina-legale").src = "../legal/" + lingua + "/" + nome + ".html";
+    const linguaLegale = ["it","en","es"].includes(lingua) ? lingua : "en";
+    $("pagina-legale").src = "../legal/" + linguaLegale + "/" + nome + ".html";
     mostra("legale");
   }
 
