@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#f8f2f6">
+  <meta name="description" content="Petali 3D: quindici fiori tridimensionali ruotabili, con petali staccabili. Anteprima AIVEVIA.">
+  <title>Petali 3D | AIVEVIA</title>
+  <link rel="stylesheet" href="./style.css?v=2">
+</head>
+<body>
+  <header class="topbar">
+    <div class="branding"><span class="logo" aria-hidden="true">✿</span><div><h1>Petali <span class="three">3D</span></h1><span class="byline">un progetto AIVEVIA</span></div></div>
+    <select id="lang" aria-label="Lingua / Language">
+      <option value="it">🇮🇹 Italiano</option><option value="en">🇬🇧 English</option>
+      <option value="es">🇪🇸 Español</option><option value="pt">🇵🇹 Português</option>
+      <option value="fr">🇫🇷 Français</option><option value="de">🇩🇪 Deutsch</option>
+    </select>
+  </header>
+  <main class="main">
+    <p class="eyebrow" id="previewLabel">ANTEPRIMA INTERATTIVA</p>
+    <h2 id="headline">Un fiore vero, da ogni lato.</h2>
+    <p class="intro" id="intro">Trascina per ruotare, usa due dita per ingrandire. Tocca un petalo per staccarlo.</p>
+    <section class="viewer" aria-label="Fiore tridimensionale interattivo">
+      <div id="stage" class="stage" role="img" aria-label="Modello tridimensionale di un fiore ruotabile col dito">
+        <div id="loader"><div class="spinner"></div><span id="loadingText">Preparazione del fiore 3D…</span></div>
+        <div id="error" role="alert" hidden></div>
+      </div>
+      <div class="viewer-bottom">
+        <div class="glass pill" id="indicator"><span aria-hidden="true">↻</span> <span id="indicatorText">Ruota con il dito</span></div>
+        <button id="reset" class="glass reset" type="button" title="Reimposta la vista" aria-label="Reimposta vista">⌖</button>
+      </div>
+    </section>
+    <section class="controls" aria-live="polite">
+      <div class="flower-heading"><div><h3 id="flowerName">Rosa rossa</h3><p id="meaning">Passione</p></div>
+        <span class="count" id="count">0 / 0</span></div>
+      <div id="startControls">
+        <p id="startQuestion" class="question">Da quale frase vuoi iniziare?</p>
+        <div class="actions">
+          <button type="button" id="startNo" class="outline">💔 <span id="startNoText">Non m'ama</span></button>
+          <button type="button" id="startYes" class="primary">❤️ <span id="startYesText">M'ama</span></button>
+        </div>
+      </div>
+      <div id="playing" hidden>
+        <div class="actions"><button id="pluck" type="button" class="primary full">✿ <span id="pluckText">Stacca un petalo</span></button></div>
+        <p class="subtitle" id="progress" aria-live="polite"></p>
+      </div>
+      <div id="result" hidden><p class="result-phrase" id="resultPhrase"></p><p class="result-message" id="resultMessage"></p><button id="again" type="button" class="primary full">Rigioca</button></div>
+    </section>
+    <section class="catalog">
+      <div class="catalog-heading"><h3 id="chooseTitle">Scegli uno dei 15 fiori</h3><span class="fifteen">15</span></div>
+      <div class="flower-grid" id="flowerGrid"></div>
+    </section>
+    <p class="note" id="note">Modelli 3D procedurali con geometrie indipendenti. Anteprima del gioco, non ancora versione per gli store.</p>
+  </main>
+  <script src="../fiori.js"></script>
+  <script src="../lingue-extra.js"></script>
+  <script src="../fiori-pt.js"></script>
+  <script src="../fiori-fr.js"></script>
+  <script src="../fiori-de.js"></script>
+  <script type="module" src="./scene.js?v=2"></script>
+</body>
+</html>
