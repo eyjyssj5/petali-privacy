@@ -1,0 +1,34 @@
+name: Petali - Sei modelli botanici 3D nel browser
+on:
+  push:
+    paths:
+      - "gioco/altri-fiori-3d/**"
+      - ".github/workflows/petali-altri-fiori-3d.yml"
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  test-browser:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install browser
+        run: |
+          npm install --no-save playwright@1.56.1
+          npx playwright install --with-deps chromium
+      - name: Start local site
+        run: |
+          python3 -m http.server 8000 --bind 127.0.0.1 > /tmp/petali-3d-server.log 2>&1 &
+          sleep 2
+      - name: Check every flower in WebGL browser
+        run: node gioco/altri-fiori-3d/browser-test.mjs
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: petali-sei-fiori-botanici-screenshots
+          path: botanical-*.png
+          if-no-files-found: ignore
