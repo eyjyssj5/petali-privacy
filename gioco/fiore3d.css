@@ -93,3 +93,5 @@
   .fiore .petalo-img {transition:opacity .15s ease,visibility 0s .15s;}
   .fiore.inclina-destra,.fiore.inclina-sinistra {animation:none;}
 }
+
+.carta .foto-fiore-3d { width:140px; height:140px; max-width:100%; object-fit:contain; margin:0 auto; filter:drop-shadow(0 8px 5px rgba(40,24,35,.2)); }
