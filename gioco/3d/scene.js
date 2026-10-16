@@ -164,9 +164,9 @@ function center(group,spec){
       group.add(sphere(.029,yellow,[x*1.3,yy+.02,z+.34],7));
     }
     if(spec.type==="ibisco"){
-     const pin=new THREE.MeshStandardMaterial({color:0xc92f4f,roughness:.7});
-     group.add(curvedTube([[0,y,z+.08],[0,y+.05,z+.34],[0,y+.18,z+.74],[0,y+.20,z+.86]],.027,pin,24));
-     for(let i=0;i<5;i++)group.add(sphere(.044,yellow,[.085*Math.cos(i*1.256),y+.20+.085*Math.sin(i*1.256),z+.83],8));
+     const pin=new THREE.MeshStandardMaterial({color:0xd63f50,roughness:.58});
+     group.add(curvedTube([[0,y,z+.08],[0,y+.05,z+.42],[0,y+.18,z+1.03],[0,y+.20,z+1.22]],.027,pin,24));
+     for(let i=0;i<5;i++)group.add(sphere(.044,yellow,[.085*Math.cos(i*1.256),y+.20+.085*Math.sin(i*1.256),z+1.20],8));
     }
  }else{
    group.add(sphere(r,dark,[0,y,z],17));
