@@ -207,15 +207,28 @@
     return Math.abs(Math.sin((i + 1) * 12.9898));
   }
 
-  // Un petalo: un contenitore ruotato intorno al centro, con dentro l'immagine.
+  // Petali tridimensionali: superficie fotografica, anelli sfalsati e inclinazione.
+  // Il numero e' sempre deciso dalla logica originale al momento di iniziare.
   function creaPetalo(fiore, i, n) {
     const r = variazione(i);
+    const esterni = Math.ceil(n * 0.62);
+    const esterno = i < esterni;
+    const posizione = esterno ? i : i - esterni;
+    const quanti = esterno ? esterni : n - esterni;
     const contenitore = document.createElement("div");
     contenitore.className = "petalo-img";
-    contenitore.style.setProperty("--a", ((360 / n) * i + (r - 0.5) * 12).toFixed(1) + "deg");
-    contenitore.style.setProperty("--sx", ((i % 2 ? -1 : 1) * (0.9 + 0.2 * r)).toFixed(3));
+    const angolo = (360 / quanti) * posizione + (esterno ? 0 : 15) + (r - 0.5) * 8;
+    contenitore.style.setProperty("--a", angolo.toFixed(1) + "deg");
+    contenitore.style.setProperty("--sx", ((i % 2 ? -1 : 1) * (0.88 + 0.18 * r)).toFixed(3));
+    contenitore.style.setProperty("--sy", esterno ? "1" : ".74");
+    contenitore.style.setProperty("--pw", esterno ? "34%" : "29%");
+    contenitore.style.setProperty("--ph", esterno ? "45%" : "38%");
+    contenitore.style.setProperty("--radial", esterno ? "-8px" : "16px");
+    contenitore.style.setProperty("--twist", ((r - 0.5) * 26).toFixed(1) + "deg");
+    contenitore.style.setProperty("--tilt", (esterno ? 24 + r * 13 : 38 + r * 14).toFixed(1) + "deg");
+    contenitore.style.setProperty("--z", (esterno ? 15 + r * 8 : 28 + r * 6).toFixed(1) + "px");
+    contenitore.style.setProperty("--zindex", esterno ? "3" : "4");
     contenitore.style.setProperty("--colore", COLORI[fiore.id] ? COLORI[fiore.id].petalo : "#d62839");
-
     const img = document.createElement("img");
     img.alt = "";
     img.src = fiore.immagine;
@@ -224,16 +237,28 @@
     return contenitore;
   }
 
-  // Il fiore completo: solo i petali, senza centro.
   function costruisciFiore(fiore, n) {
     const cont = document.createElement("div");
     cont.className = "fiore";
+    cont.dataset.specie = fiore.id;
+    const stelo = document.createElement("div");
+    stelo.className = "stelo-3d";
+    cont.appendChild(stelo);
+    ["sinistra", "destra"].forEach((lato) => {
+      const foglia = document.createElement("div");
+      foglia.className = "foglia-3d " + lato;
+      cont.appendChild(foglia);
+    });
     const petali = [];
     for (let i = 0; i < n; i++) {
       const p = creaPetalo(fiore, i, n);
       cont.appendChild(p);
       petali.push(p);
     }
+    const centro = document.createElement("div");
+    centro.className = "corolla-3d";
+    centro.style.setProperty("--cuore", COLORI[fiore.id] ? COLORI[fiore.id].centro : "#5a2d24");
+    cont.appendChild(centro);
     return { cont, petali };
   }
 
