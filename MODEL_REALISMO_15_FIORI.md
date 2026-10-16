@@ -10,7 +10,7 @@ Ogni fiore deve essere una specie botanica fedele e non una corolla generica o u
 | Rosa rossa | highpoly fornito dall'utente, `gioco/rosa-variabile/rose_highpoly_realistic.glb` | **Approvata visivamente dall'utente** | Conservare; regression tests su touch e variabilità |
 | Rosa gialla | colorway della stessa rosa alta definizione | **Anteprima non approvata** | Confermare colore, texture e fluidità |
 | Tulipano rosso | CC0 3D candidato in `gioco/modelli-botanici/` | **Prototipo, 6 petali separabili** | Sostituire con qualità HD o affinare texture |
-| Girasole | CC0 3D candidato | **Prototipo, 24 ligule separabili** | Qualità/texture, numero variabile verosimile |
+| Girasole | CC0 3D in `gioco/girasole-variabile/` | **9–21 ligule grandi variabili, rotazione e distacco verificati in Chromium; qualità visiva non approvata** | Migliorare texture/mesh per livello HD pari alla rosa |
 | Orchidea | CC0 3D candidato | **Prototipo, 32 pezzi separabili su più fiori** | Isolare un singolo fiore, resa realistica |
 | Ortensia | CC0 3D candidato | **Prototipo, 164 sepali separabili in grappolo** | Interazione su singoli fiorellini, texture |
 | Lavanda | CC0 3D cespuglio | **Solo rotazione, non giocabile** | Fiore/spiga 3D con elementi staccabili |
@@ -49,3 +49,10 @@ Rosa originale HD: https://eyjyssj5.github.io/petali-privacy/gioco/rosa-variabil
 - **Garofano, viola, peonia:** mantenere candidati Sketchfab già elencati e valutare singolarmente qualità, licenza CC BY e petali separati prima di approvare.
 
 **Decisione:** l'assistente tenta prima download senza account e conversione usando infrastruttura GitHub. L'utente non deve scaricare niente sul cellulare. Un eventuale download con login va chiesto solo per un candidato specifico, preferibilmente da PC. No promesse di 15 modelli approvati finché non lo sono.
+
+## Progressi reali della sessione 16 ottobre — girasole e selezione HD
+- **Anteprima del girasole a petali variabili pubblicata:** https://eyjyssj5.github.io/petali-privacy/gioco/girasole-variabile/
+- **Test automatico WebGL riuscito:** https://github.com/eyjyssj5/petali-privacy/actions/workflows/petali-girasole-variabile.yml. Caricamento modello, 9–21 petali a ogni nuova partita, distacco di tutti i petali esterni, centro intatto e ripristino della corolla. È stato corretto un difetto iniziale che allontanava troppo i petali, poi controllate schermate della partita successiva.
+- **Comparatore esterno quattro candidati HD:** https://eyjyssj5.github.io/petali-privacy/gioco/modelli-hd-candidati/ (ibisco VeeRuby, garofano sv.stats, viola mrak, peonia AaronABCpro). Solo visualizzazione dei modelli dei rispettivi autori via Sketchfab; non sono stati importati i loro file nel repository e non è ancora possibile staccarne i petali.
+- **Qualità:** il girasole è un modello botanico CC0 coerente, ma il suo aspetto è ancora più semplice della rosa HD; necessita di un modello migliore prima di considerarlo approvato. Non usare il nome «fotorealistico» per il prototipo.
+- **Prossime priorità:** trovare alternative realistiche con download/licenza commerciale per ibisco, peonia, viola e garofano, scaricare direttamente quelli aperti; chiedere un singolo file dall'utente solo quando un sito impone login. Papavero, iris, dalia ancora senza mesh definitiva.
