@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="it"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#fbf6f9"><title>Petali AIVEVIA · Modelli 3D realistici da selezionare</title>
+<style>
+:root{font-family:system-ui,-apple-system,"Segoe UI",sans-serif;color:#402d40;background:#faf5f9}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at 70% 0%,#f4dce9,transparent 55%),#faf5f9}
+header{background:#fffdfd;border-bottom:1px solid #e8d5e1;display:flex;align-items:center;justify-content:space-between;padding:13px 18px}
+.brand{font-size:20px;font-weight:850}.brand strong{color:#a6437b}.brand small{display:block;font-size:10px;letter-spacing:1.1px;font-weight:500;color:#91768b}
+header a{color:#86456d;font-size:13px;text-decoration:none;font-weight:650}
+main{max-width:880px;padding:20px 12px 48px;margin:auto}
+.eyebrow{text-align:center;margin:0;font-size:11px;font-weight:800;letter-spacing:1.7px;color:#a44178}
+h1{text-align:center;font-size:clamp(27px,5vw,37px);margin:6px auto 7px;letter-spacing:-.9px}
+.intro{text-align:center;max-width:600px;margin:0 auto 16px;font-size:14px;color:#836b7d;line-height:1.5}
+.tabs{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin-bottom:12px}
+.tab{border:1px solid #e6d4e0;border-radius:14px;padding:11px 5px;min-height:78px;background:#fff;color:#453445;font-size:13px;font-weight:700;cursor:pointer;display:flex;flex-direction:column;gap:5px;align-items:center;justify-content:center}
+.tab span{font-size:25px;line-height:1.1}
+.tab[aria-pressed="true"]{border:2px solid #a94c83;background:#fdf1f8}
+.viewer{border:1px solid #e9d8e3;border-radius:20px;overflow:hidden;position:relative;height:clamp(360px,68vw,570px);background:radial-gradient(ellipse at 50% 30%,white,#efe6ed);box-shadow:0 12px 38px #64325316}
+iframe{width:100%;height:100%;border:0;display:block}
+.panel{background:white;border:1px solid #eddae5;border-radius:18px;margin-top:12px;padding:19px}
+.panel h2{font-size:20px;margin:0 0 5px}
+.info{font-size:13px;color:#846f7c;margin:0 0 12px;line-height:1.5}
+.row{display:flex;gap:9px;flex-wrap:wrap;align-items:center}
+.link{border-radius:11px;padding:11px 15px;background:#8f3d71;color:white;font-weight:750;text-decoration:none;font-size:13px;display:inline-block}
+.note{font-size:12px;color:#8a7180;line-height:1.55;max-width:650px;margin:18px auto;text-align:center}
+@media(max-width:550px){.tabs{grid-template-columns:repeat(2,minmax(0,1fr))}.viewer{height:min(118vw,500px)}.intro{font-size:13px}}
+</style></head><body>
+<header><div class="brand">✿ Petali <strong>3D HD</strong><small>AIVEVIA · SELEZIONE MODELLI</small></div><a href="../rosa-variabile/">🌹 Rosa approvata ↗</a></header>
+<main><p class="eyebrow">RICERCA PER ALTRI FIORI</p><h1>Confrontiamo il realismo 3D.</h1>
+<p class="intro">Questi quattro modelli sono ancora sui siti dei loro autori: puoi ruotarli con il dito e valutarne la qualità. Non sono ancora integrati nel gioco e non hanno petali rimovibili qui.</p>
+<div id="tabs" class="tabs"></div>
+<div class="viewer"><iframe id="model" title="Modello tridimensionale di un fiore da Sketchfab" allowfullscreen allow="autoplay; fullscreen; xr-spatial-tracking"></iframe></div>
+<section class="panel"><h2 id="name">Ibisco</h2><p id="details" class="info"></p>
+<div class="row"><a class="link" id="original" href="https://sketchfab.com" target="_blank" rel="noopener noreferrer">Apri la pagina originale ↗</a></div></section>
+<p class="note">Modelli di terzi pubblicati con licenza dichiarata CC BY: in caso di impiego nell'app occorreranno attribuzione e verifica della struttura 3D. L'anteprima usa soltanto il visualizzatore ufficiale Sketchfab; non sono stati scaricati né copiati file protetti. Nessuno di questi modelli è ancora approvato.</p>
+</main>
+<script>
+const models=[
+ {id:"ibisco",name:"Ibisco",emoji:"🌺",uid:"af897de85581408784668b7fc2ac63fb",author:"VeeRuby Technologies",triangles:"180.500",description:"Cinque grandi petali, colonna degli stami; modello dettagliato. Licenza dichiarata: CC BY.",url:"https://sketchfab.com/3d-models/hibiscus-flower-af897de85581408784668b7fc2ac63fb"},
+ {id:"garofano",name:"Garofano",emoji:"🌷",uid:"5940c0dabc0448d8bc003280c62ebaa0",author:"sv.stats",triangles:"26.000",description:"Modello realizzato a partire da scansione/fotogrammetria. Licenza dichiarata: CC BY.",url:"https://sketchfab.com/3d-models/carnation-5940c0dabc0448d8bc003280c62ebaa0"},
+ {id:"viola",name:"Viola del pensiero",emoji:"🌸",uid:"398322b2289040ba8ed978c6cde27b15",author:"mrak",triangles:"1.100.000",description:"Scansione 3D RealityScan: realistica ma pesante per telefono. Licenza dichiarata: CC BY.",url:"https://sketchfab.com/3d-models/pansy-398322b2289040ba8ed978c6cde27b15"},
+ {id:"peonia",name:"Peonia",emoji:"🌺",uid:"0086ca4bb65b40c290c319b6543916ec",author:"AaronABCpro",triangles:"1.000.000",description:"Scansione 3D da iPhone RealityScan, non ripulita. Licenza dichiarata: CC BY.",url:"https://sketchfab.com/3d-models/single-peony-flower-0086ca4bb65b40c290c319b6543916ec"}
+];
+let current=0;
+function select(i){
+ current=i;const m=models[i],frame=document.getElementById("model");
+ frame.title="Modello 3D "+m.name+" di "+m.author;
+ frame.src="https://sketchfab.com/models/"+m.uid+"/embed?autostart=1&ui_infos=1&ui_controls=1";
+ document.getElementById("name").textContent=m.name+" · "+m.author;
+ document.getElementById("details").textContent=m.description+" Geometria dichiarata: "+m.triangles+" triangoli.";
+ document.getElementById("original").href=m.url;
+ for(const btn of document.querySelectorAll(".tab"))btn.setAttribute("aria-pressed",String(Number(btn.dataset.i)===i));
+}
+const box=document.getElementById("tabs");
+models.forEach((m,i)=>{
+ const btn=document.createElement("button");btn.className="tab";btn.type="button";btn.dataset.i=String(i);
+ btn.setAttribute("aria-pressed","false");
+ const s=document.createElement("span");s.textContent=m.emoji;const n=document.createElement("b");n.textContent=m.name;btn.append(s,n);btn.addEventListener("click",()=>select(i));box.appendChild(btn);
+});
+select(0);
+</script></body></html>
