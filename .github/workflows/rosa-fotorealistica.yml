@@ -5,7 +5,7 @@ on:
       - '.github/workflows/rosa-fotorealistica.yml'
   workflow_dispatch:
 permissions:
-  contents: read
+  contents: write
 jobs:
   analyze-rose:
     runs-on: ubuntu-latest
@@ -35,6 +35,15 @@ jobs:
           pathlib.Path("asset-scan/rosa-info.json").write_text(json.dumps(info,ensure_ascii=False,indent=2))
           print(json.dumps({"file_bytes":info["file_bytes"],"geometry_count":info["geometry_count"],"mesh_sample":items[:30]},ensure_ascii=False)[:10000])
           PY
+      - name: Add CC0 GLB to GitHub preview
+        run: |
+          mkdir -p gioco/rosa-reale
+          cp asset-scan/rosa-originale.glb gioco/rosa-reale/rosa.glb
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add gioco/rosa-reale/rosa.glb
+          git commit -m "Add real licensed botanical rose GLB with 18 detachable petals"
+          git push origin HEAD:main
       - uses: actions/upload-artifact@v4
         with:
           name: rosa-3d-originale-cc0
