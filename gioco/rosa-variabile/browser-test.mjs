@@ -37,6 +37,16 @@ try{
   }
  }
  for(const l of ["it","en","es","pt","fr","de"])await page.locator("#lang").selectOption(l);
- assert.deepEqual(errors,[]);
+ // Verify the high-resolution yellow rose uses the same removable HD geometry.
+ await page.goto("http://127.0.0.1:8000/gioco/rosa-variabile/?fiore=rosa-gialla",{waitUntil:"domcontentloaded",timeout:45000});
+ await page.waitForFunction(()=>document.querySelector("#notice").hidden,{timeout:60000});
+ await page.waitForTimeout(650);
+ assert.equal((await page.locator("#flower").textContent()).trim(),"Rosa gialla");
+ await page.screenshot({path:"rosa-gialla-3d-hd.png",fullPage:true});
+ const yellowN=Number((await page.locator("#count").textContent()).split("/")[1].trim());
+ assert.ok(yellowN>=9&&yellowN<=21,"Yellow rose petal count");
+ await page.locator("#yes").click();await page.locator("#pluck").click();
+ assert.equal(Number((await page.locator("#count").textContent()).split("/")[0].trim()),yellowN-1);
+  assert.deepEqual(errors,[]);
  console.log("PASS: five different round counts 9-21, visual 3D, removal, full round, six languages. Counts: "+counts.join(","));
 }finally{await browser.close()}
