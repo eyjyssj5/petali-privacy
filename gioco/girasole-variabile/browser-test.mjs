@@ -3,6 +3,7 @@ import assert from "node:assert/strict";
 const browser=await chromium.launch({headless:true,args:["--enable-webgl","--use-gl=angle","--use-angle=swiftshader","--enable-unsafe-swiftshader"]});
 const page=await browser.newPage({viewport:{width:430,height:860},deviceScaleFactor:1});
 const errors=[];page.on("pageerror",e=>errors.push(e.message));
+page.on("console",msg=>{if(msg.text().includes("SUN_Diagnostic"))console.log(msg.text())});
 try{
  const r=await page.goto("http://127.0.0.1:8000/gioco/girasole-variabile/",{waitUntil:"domcontentloaded",timeout:45000});
  assert.equal(r.status(),200);
