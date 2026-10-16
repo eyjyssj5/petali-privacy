@@ -32,6 +32,21 @@ try {
   const after=await page.locator("#count").textContent();
   assert.notEqual(before,after,"One independent 3D petal removed");
   await page.screenshot({path:"petali-ibisco-3d.png",fullPage:true});
+  // Drag in both axes. The rendered flower must remain visible at an oblique angle.
+  const stageBox = await page.locator("#stage").boundingBox();
+  const mx=stageBox.x+stageBox.width*.48, my=stageBox.y+stageBox.height*.48;
+  await page.mouse.move(mx,my);
+  await page.mouse.down();
+  await page.mouse.move(mx+148,my+72,{steps:15});
+  await page.mouse.up();
+  await page.screenshot({path:"petali-ibisco-ruotato.png",fullPage:true});
+  // Render all fifteen species to catch clipping or empty geometry.
+  for(const button of await page.locator("#flowerGrid .flower-choice").all()){
+    const id=await button.getAttribute("data-id");
+    await button.click();
+    await page.waitForTimeout(170);
+    await page.locator("#stage").screenshot({path:"render-"+id+".png"});
+  }
   if(errors.length)throw Error(errors.join("\n"));
   console.log("PASS: WebGL canvas loaded, 15 flowers, six locales, hibiscus, one removable petal.");
 }finally{
