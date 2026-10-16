@@ -1,0 +1,36 @@
+<!doctype html><html lang="it"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#f9f1f7"><title>Petali 3D | Altri fiori botanici | AIVEVIA</title>
+<style>
+:root{font-family:system-ui,-apple-system,'Segoe UI',sans-serif;color:#3c2738;background:#f9f3f7}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at 70% 0,#f3dae8,transparent 50%),#faf5f8}
+header{display:flex;align-items:center;justify-content:space-between;padding:14px clamp(14px,4vw,30px);background:#fff9;border-bottom:1px solid #ebd4e1}
+.brand{font-size:21px;font-weight:850}.brand b{color:#a33b78}.brand small{display:block;font-size:10px;letter-spacing:1.2px;font-weight:500;color:#947689}
+main{max-width:890px;margin:auto;padding:22px 12px 40px}.overline{font-size:10px;letter-spacing:2px;font-weight:800;color:#a63f76;text-align:center;margin:0}
+h1{text-align:center;font-size:clamp(26px,5.5vw,38px);letter-spacing:-.9px;line-height:1.15;margin:7px auto}
+.lead{max-width:570px;text-align:center;font-size:14px;color:#896d80;line-height:1.5;margin:6px auto 18px}
+.view{height:clamp(365px,68vw,560px);width:100%;overflow:hidden;position:relative;border-radius:24px;background:radial-gradient(ellipse at 52% 33%,#fff 10%,#f5e9f1 64%,#eddfeb 100%);box-shadow:0 12px 35px #72254d18;border:1px solid #e7d0de}
+canvas{display:block;width:100%;height:100%;touch-action:none;cursor:grab}.view:active canvas{cursor:grabbing}
+#notice{position:absolute;inset:0;display:grid;place-items:center;text-align:center;background:#fff4;color:#7f416a;font-size:15px;z-index:3;padding:15px;pointer-events:none}
+#notice[hidden]{display:none}#tip{position:absolute;left:15px;bottom:14px;font-size:12px;color:#733753;background:#fffdece8;border-radius:19px;padding:10px 12px;pointer-events:none}
+#reset{position:absolute;right:15px;bottom:14px;background:#fffdece8;border:1px solid #eddae5;border-radius:50%;height:42px;width:42px;font-size:25px;color:#793e63;cursor:pointer}
+.panel{border:1px solid #e9d9e4;background:#fff;border-radius:18px;margin:13px 0 0;padding:17px}
+.head{display:flex;align-items:center;justify-content:space-between;gap:10px}.head h2{margin:0;font-size:22px}.count{color:#8a456a;background:#faeff6;padding:7px 11px;border-radius:23px;font-size:13px;font-weight:700}
+#status{font-size:13px;color:#94798b;margin:10px 0}.btn{background:linear-gradient(130deg,#ad4680,#783260);color:#fff;border:0;border-radius:11px;min-height:47px;padding:10px 17px;font-size:14px;font-weight:700;cursor:pointer;width:100%}
+.btn:disabled{opacity:.5;cursor:not-allowed}
+h3{font-size:18px;margin:0 0 13px}.gallery{margin-top:27px}.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:9px}
+.choice{display:flex;align-items:center;gap:11px;background:#fff;border:1px solid #e8d6e1;border-radius:13px;min-height:66px;text-align:left;padding:10px;color:#4f3550;font:inherit;cursor:pointer}.choice.selected{border:2px solid #b4538d;background:#fff8fd}
+.choice .emoji{font-size:27px}.choice span:last-child{font-size:13px;font-weight:700}
+#mode{margin-top:10px;text-align:center;font-size:11px;color:#957b8a}.muted{font-size:11px;color:#937a8a;text-align:center;line-height:1.6;max-width:650px;margin:18px auto 0}
+a{color:#954274}
+@media(max-width:570px){.grid{grid-template-columns:repeat(2,1fr)}.view{height:min(113vw,495px)}.lead{font-size:13px}}
+</style>
+<script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.180.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.180.0/examples/jsm/"}}</script>
+</head><body>
+<header><div class="brand">✿ Petali <b>3D HD</b><small>AIVEVIA · NUOVI FIORI</small></div><a href="../rosa-variabile/" style="font-size:12px;font-weight:650">🌹 Rosa approvata ↗</a></header>
+<main><p class="overline">ANTEPRIMA NUOVI MODELLI 3D</p><h1>Gli altri fiori, uno alla volta.</h1><p class="lead">Modelli botanici reali, diversi per ogni specie. Ruotali con il dito per controllare forma e qualità. I petali separabili si possono staccare.</p>
+<div class="view" id="stage"><div id="notice">Caricamento modello botanico…</div><div id="tip">↻ Ruota · usa due dita per zoomare</div><button type="button" id="reset" title="Reimposta vista">⌖</button></div>
+<section class="panel"><div class="head"><h2 id="name">Tulipano rosso</h2><span class="count" id="counter">…</span></div><p id="status">Preparazione del fiore 3D…</p><button id="pluck" class="btn" type="button" disabled>✿ Stacca un petalo</button><p id="mode">Modelli in verifica estetica, non ancora la versione definitiva dell'app.</p></section>
+<section class="gallery"><h3>Scegli un modello 3D da controllare</h3><div class="grid" id="flowers"></div></section>
+<p class="muted">Questi sono modelli separati e realmente tridimensionali, non una rosa ricolorata. Fonti: <a href="https://www.innerscene.com/tools/library" target="_blank" rel="noopener">Innerscene, modelli originali CC0</a>. La rosa approvata non viene modificata.</p>
+</main><script type="module" src="./app.js?v=1"></script></body></html>
