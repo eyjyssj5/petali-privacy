@@ -35,4 +35,5 @@ jobs:
           path: |
             girasole-variabile-3d.png
             girasole-centro-intatto.png
+            girasole-second-round.png
           if-no-files-found: ignore
