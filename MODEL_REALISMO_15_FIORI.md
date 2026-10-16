@@ -39,3 +39,13 @@ Ogni fiore deve essere una specie botanica fedele e non una corolla generica o u
 
 Browser dei sei prototipi: https://eyjyssj5.github.io/petali-privacy/gioco/altri-fiori-3d/
 Rosa originale HD: https://eyjyssj5.github.io/petali-privacy/gioco/rosa-variabile/
+
+## Ricerca operativa dei sette fiori ancora senza modello (16/10/2026)
+
+- **Ibisco:** [Hibiscus Flower - VeeRuby](https://sketchfab.com/3d-models/hibiscus-flower-af897de85581408784668b7fc2ac63fb), CC BY, FBX, circa 180.5k triangoli, dichiarato scaricabile. Richiede accesso account per lo ZIP originale; conversione GLB e verifica petali separati non ancora effettuate.
+- **Papavero:** ricerca prioritaria di fiore botanico; non usare i modelli della bambola "Poppy Playtime". [Meshy galleria poppy](https://www.meshy.ai/tags/poppy) permette consultazione, ma download con account gratuito; licenza da verificare per il singolo asset. Non scaricato.
+- **Iris:** [Bicolor Iris Flower Detailed Model Pack](https://free3d.online/model/5966948-bicolor-iris-flower-detailed-model-pack) dichiara PBR 4K e download GLB, verificare permessi commerciali espliciti e struttura mesh prima dell'importazione. Non scaricato.
+- **Dalia:** [Red Dahlia Flowering Plant](https://www.fab.com/listings/d2f50db9-c82c-44e3-84b6-8080738106bf), disponibile in GLB/OBJ/FBX secondo scheda, ma prezzo e licenza vanno verificati prima di qualsiasi uso; non importato.
+- **Garofano, viola, peonia:** mantenere candidati Sketchfab già elencati e valutare singolarmente qualità, licenza CC BY e petali separati prima di approvare.
+
+**Decisione:** l'assistente tenta prima download senza account e conversione usando infrastruttura GitHub. L'utente non deve scaricare niente sul cellulare. Un eventuale download con login va chiesto solo per un candidato specifico, preferibilmente da PC. No promesse di 15 modelli approvati finché non lo sono.
