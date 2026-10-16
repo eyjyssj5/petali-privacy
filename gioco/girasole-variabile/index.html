@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="it"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#f8f1f5"><title>Petali AIVEVIA | Girasole 3D a petali variabili</title>
+<style>
+:root{font-family:system-ui,-apple-system,"Segoe UI",sans-serif;background:#faf5f8;color:#422b3d}*{box-sizing:border-box}
+body{margin:0;background:radial-gradient(circle at 40% 5%,#f5dcee,transparent 48%),#faf5f8}
+header{background:#fff;border-bottom:1px solid #ead5e1;padding:14px 18px;display:flex;justify-content:space-between;align-items:center}
+.logo{font-size:22px;font-weight:800}.logo em{color:#a33b79;font-style:normal}.subtitle{display:block;font-size:10px;letter-spacing:1.3px;font-weight:500;color:#98778c}
+header a{color:#82395f;text-decoration:none;font-size:12px}
+main{max-width:840px;padding:18px 12px 40px;margin:auto}
+.kicker{text-align:center;font-size:11px;color:#a13b76;letter-spacing:2px;font-weight:750;margin:0}
+h1{text-align:center;font-size:clamp(26px,5vw,37px);margin:7px 0;letter-spacing:-1px}
+.lead{text-align:center;margin:0 auto 15px;color:#856e7e;font-size:14px;line-height:1.45;max-width:590px}
+.stage{position:relative;height:clamp(385px,68vw,540px);overflow:hidden;border-radius:24px;background:radial-gradient(ellipse at 50% 38%,#fff,#f5edf2 70%,#eadddf);border:1px solid #e8d3df;box-shadow:0 17px 38px #6b3b5415;touch-action:none}
+canvas{display:block;width:100%;height:100%;touch-action:none}
+#loading{position:absolute;inset:0;display:grid;place-items:center;text-align:center;background:#fff9;color:#a23a73;padding:20px}
+#loading[hidden]{display:none!important}
+.hint{position:absolute;bottom:15px;left:15px;padding:9px 13px;border-radius:40px;background:#fffcf0;color:#865275;font-size:12px;pointer-events:none}
+#reset{position:absolute;bottom:13px;right:13px;border-radius:50%;width:44px;height:44px;border:1px solid #efdaea;background:#fffdf5;font-size:25px;color:#9a5481;cursor:pointer}
+.card{margin:14px auto 0;background:#fff;border:1px solid #e9d7e1;border-radius:19px;padding:18px}
+.statusrow{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.statusrow h2{font-size:21px;margin:0}.counter{border-radius:20px;background:#fcf0f8;color:#935078;padding:7px 12px;font-size:13px;font-weight:750}
+#message{color:#826b7f;font-size:13px;margin:10px 0 14px;min-height:20px}
+.buttons{display:flex;gap:10px}.buttons button,.wide{flex:1;padding:12px 15px;min-height:46px;border-radius:13px;cursor:pointer;font-weight:750;font-size:14px}
+.primary{border:0;color:#fff;background:linear-gradient(120deg,#ad4680,#76305d)}
+.secondary{color:#874968;border:1px solid #c994b2;background:#fff}.wide{width:100%}
+#outcome{font-size:23px;font-weight:800;color:#9a406d;text-align:center;margin:12px 0}
+.disclaimer{max-width:660px;font-size:11px;color:#8c7888;text-align:center;line-height:1.5;margin:16px auto}
+a{color:#923b6d}[hidden]{display:none!important}
+@media(max-width:540px){.stage{height:min(120vw,510px)}.card{padding:15px}}
+</style>
+<script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.180.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.180.0/examples/jsm/"}}</script>
+</head>
+<body><header><div class="logo">✿ Petali <em>3D HD</em><span class="subtitle">AIVEVIA · GIRASOLE REALE</span></div><a href="../rosa-variabile/">🌹 Rosa originale</a></header>
+<main><p class="kicker">NUOVA ANTEPRIMA INTERATTIVA</p><h1>Girasole con petali variabili</h1>
+<p class="lead">A ogni partita il numero di petali cambia. Nessun petalo diventa un puntino: i petali esterni restano a grandezza naturale e il centro non si stacca.</p>
+<div id="stage" class="stage"><div id="loading">Caricamento del girasole 3D…</div><div class="hint">↻ Ruota con il dito • zoom con due dita</div><button id="reset" type="button" aria-label="Reimposta vista" title="Reimposta vista">⌖</button></div>
+<section class="card"><div class="statusrow"><h2>Girasole</h2><span class="counter" id="counter">…</span></div>
+<p id="message">Preparazione dei petali…</p>
+<div id="choice" class="buttons"><button id="startNo" class="secondary" type="button">💔 Non m'ama</button><button id="startYes" class="primary" type="button">❤️ M'ama</button></div>
+<div id="playing" hidden><button id="pluck" class="primary wide" type="button">✿ Stacca un petalo</button></div>
+<div id="finished" hidden><p id="outcome"></p><button id="again" class="primary wide" type="button">Nuova partita</button></div>
+</section>
+<p class="disclaimer">Modello sorgente separato CC0 <a href="https://www.innerscene.com/tools/library/3d-parts/sunflower-with-stem-46c9787a" target="_blank" rel="noopener">Innerscene</a>. Anteprima funzionale, qualità estetica ancora da approvare, distinta dalla rosa HD.</p>
+</main><script type="module" src="./app.js?v=1"></script></body></html>
