@@ -1,0 +1,35 @@
+name: Rosa botanica realistic 3D browser
+on:
+  push:
+    paths:
+      - 'gioco/rosa-reale/**'
+      - '.github/workflows/rosa-real-browser.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install Chromium test engine
+        run: |
+          npm install --no-save playwright@1.56.1
+          npx playwright install --with-deps chromium
+      - name: Run local web server
+        run: |
+          python3 -m http.server 8000 --bind 127.0.0.1 > /tmp/petali-web.log 2>&1 &
+          sleep 2
+      - name: Verify real petal meshes and rotation
+        run: node gioco/rosa-reale/browser-test.mjs
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: petali-rosa-botanica-browser
+          path: |
+            rosa-botanica-frontale.png
+            rosa-botanica-ruotata.png
+          if-no-files-found: ignore
