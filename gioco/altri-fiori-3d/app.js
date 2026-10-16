@@ -15,7 +15,7 @@ let renderer,camera,scene,controls,model,selected=assets[0],removeable=[],remove
 let loader=new GLTFLoader(),raycaster=new THREE.Raycaster(),loadToken=0,dragStart=null;
 function classify(mesh,kind){
  if(!mesh.isMesh)return false;
- const n=mesh.name.toLowerCase();
+ const n=mesh.name.toLowerCase().replaceAll("_"," ");
  if(kind==="tepal")return /tepal/.test(n);
  if(kind==="ray")return /ray floret/.test(n);
  if(kind==="orchid")return /(broad petal|sepal|lip lobe|curled purple lip)/.test(n)&&/flower/.test(n);
