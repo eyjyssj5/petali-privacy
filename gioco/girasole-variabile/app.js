@@ -24,7 +24,7 @@ function getBoxCenter(obj){
 function centerDisc(){
  let disc=null;
  model.traverse(o=>{
-  if(o.isMesh&&/Composite convex disc receptacle/i.test(o.name))disc=o;
+  if(o.isMesh&&/Composite[_ ]convex[_ ]disc[_ ]receptacle/i.test(o.name))disc=o;
  });
  if(!disc)throw Error("Disco centrale non trovato nel girasole.");
  center=getBoxCenter(disc);
