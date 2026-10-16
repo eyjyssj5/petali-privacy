@@ -53,7 +53,7 @@ function randomUnit(seed){let x=Math.sin(seed*78.233+8.123)*43758.5453;return x-
 function range(min,max,t){return min+(max-min)*t;}
 function color(hex){return new THREE.Color(hex);}
 function createGeometry(length,width,opts,seed){
- const m=11, n=16, vertices=[], col=[], uv=[], indices=[];
+ const m=18, n=24, vertices=[], col=[], uv=[], indices=[];
  const base=color(opts.base), rim=color(opts.rim), bottom=color(opts.bottom||opts.base);
  const thickness=.018;
  for(let face=0;face<2;face++){
@@ -63,10 +63,10 @@ function createGeometry(length,width,opts,seed){
    if(opts.heart && t>.75)taper*=1-.17*Math.sin((t-.75)*Math.PI*4);
    for(let i=0;i<=m;i++){
     const u=(2*i/m)-1;
-    let w=width*taper*(1+.065*Math.sin(t*40+seed*1.3+u*9));
+    let w=width*taper*(1+.025*Math.sin(t*30+seed*1.3+u*7));
     if(opts.ruffle)w*=1+.11*Math.sin(u*24+t*12+seed);
     let x=u*w+Math.sin(t*2.5+seed*.5)*.022*t;
-    let y=length*t +.055*Math.sin(t*11+seed)*t;
+    let y=length*t +.018*Math.sin(t*11+seed)*t;
     let z=.18*Math.sin(t*Math.PI)+opts.curl*t*t+opts.cupDepth*u*u*Math.sin(t*Math.PI)+Math.sin(u*5+t*17+seed)*opts.wrinkle*t;
     if(face===1)z-=thickness*(1-.3*t);
     vertices.push(x,y,z);
@@ -131,7 +131,7 @@ function makeAnatomy(group,id,spec){
    let a=i*2*Math.PI/5;
    const g=createGeometry(.48,.19,{base:"#265a34",rim:"#548646",cupDepth:.10,curl:.12,wrinkle:0,point:true},i*3);
    const leaf=new THREE.Mesh(g,leafMaterial());
-   leaf.position.set(.04*Math.sin(a),top,.00);leaf.rotation.z=-a;leaf.rotation.x=-.55;
+   leaf.position.set(.04*Math.sin(a),top,-.48);leaf.rotation.z=-a;leaf.rotation.x=-.55;
    group.add(leaf);
   }
  }else{leafAt(group,-1.2,59,.48);leafAt(group,-.65,-65,.37);leafAt(group,.0,51,.28)}
@@ -189,7 +189,26 @@ function makePetal(spec,i,n){
  const rand=randomUnit(i*9.3+n);
  let len=spec.length*(1-.18*l)*(0.91+.16*rand), width=spec.width*(1-.13*l);
  let x=0,y=.82,z=.02,angle=2*Math.PI*i/n;
- if(spec.type==="lavender"){
+ // Distinct, recognisable botanical outer whorl for these six species.
+ // Remaining petals become a smaller removable core for random game counts.
+ const whorl={tulip:6,orchid:5,poppy:4,iris:6,pansy:5,hibiscus:5}[spec.type];
+ if(whorl){
+    if(i<whorl){
+      angle=2*Math.PI*i/whorl+(spec.type==="orchid"?.26:0);
+      const radius=spec.type==="tulip"?.23:.14;
+      x=radius*Math.sin(angle);y=.82+radius*Math.cos(angle);
+      z=spec.type==="tulip"?.05:.08;
+      len=spec.length*(.93+.12*rand);
+      width=spec.width*(spec.type==="hibiscus"?1.08:1.0);
+    }else{
+      const j=i-whorl;
+      angle=j*2.399963;
+      const radius=.04+.08*Math.sqrt((j+1)/(n-whorl));
+      x=radius*Math.sin(angle);y=.82+radius*Math.cos(angle);
+      z=-.35+.012*(j%4);
+      len=.26+.10*rand;width=.13+.05*rand;
+    }
+ }else if(spec.type==="lavender"){
     const height=range(.30,1.70,(i+.6)/n);
     angle=2*Math.PI*(i%5)/5;
     const rr=.065+.08*Math.sin(Math.PI*(height-.3)/1.4);
@@ -256,17 +275,17 @@ function initRenderer(){
   renderer.setPixelRatio(Math.min(window.devicePixelRatio||1,1.8));
   renderer.outputColorSpace=THREE.SRGBColorSpace;
   renderer.toneMapping=THREE.ACESFilmicToneMapping;
-  renderer.toneMappingExposure=1.65;
+  renderer.toneMappingExposure=1.02;
   renderer.setClearColor(0xffffff,0);
   stage.appendChild(renderer.domElement);
   scene=new THREE.Scene();
   camera=new THREE.PerspectiveCamera(39,1,.1,100);
   camera.position.set(0,.05,6.2);camera.lookAt(0,0,0);
   root=new THREE.Group();scene.add(root);
-  scene.add(new THREE.HemisphereLight(0xfff1fa,0x578d6e,2.0));
-  const key=new THREE.DirectionalLight(0xffffff,3.25);key.position.set(-3,5,7);scene.add(key);
-  const fill=new THREE.DirectionalLight(0xe2d8ff,1.45);fill.position.set(4,0,-2);scene.add(fill);
-  const edge=new THREE.DirectionalLight(0xffd6d8,1.25);edge.position.set(-2,-3,0);scene.add(edge);
+  scene.add(new THREE.HemisphereLight(0xfff1fa,0x578d6e,1.6));
+  const key=new THREE.DirectionalLight(0xffffff,2.3);key.position.set(-3,5,7);scene.add(key);
+  const fill=new THREE.DirectionalLight(0xe2d8ff,1.1);fill.position.set(4,0,-2);scene.add(fill);
+  const edge=new THREE.DirectionalLight(0xffd6d8,.7);edge.position.set(-2,-3,0);scene.add(edge);
   raycaster=new THREE.Raycaster();
   root.rotation.set(-.16,-.28,.02);
   let obs=new ResizeObserver(resize);obs.observe(stage);resize();
