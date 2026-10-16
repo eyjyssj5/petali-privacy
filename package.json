@@ -1,0 +1,26 @@
+{
+  "name": "petali-aivevia",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Petali - gioco mobile Android e iOS con Capacitor",
+  "scripts": {
+    "build:bridge": "esbuild native/bridge.js --bundle --minify --platform=browser --format=iife --outfile=gioco/native-bridge.js",
+    "android:init": "npm run build:bridge && npx cap add android && npx cap sync android",
+    "ios:init": "npm run build:bridge && npx cap add ios && npx cap sync ios",
+    "sync:android": "npm run build:bridge && npx cap sync android",
+    "sync:ios": "npm run build:bridge && npx cap sync ios",
+    "test": "node --test tests/*.test.cjs"
+  },
+  "dependencies": {
+    "@capacitor/android": "^8.0.0",
+    "@capacitor/core": "^8.0.0",
+    "@capacitor/haptics": "^8.0.0",
+    "@capacitor/ios": "^8.0.0",
+    "@revenuecat/purchases-capacitor": "^13.7.4"
+  },
+  "devDependencies": {
+    "@capacitor/cli": "^8.0.0",
+    "esbuild": "^0.25.0"
+  }
+}
