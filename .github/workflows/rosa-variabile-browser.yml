@@ -1,0 +1,41 @@
+name: Petali Rosa HD a Petali Variabili
+on:
+  push:
+    paths:
+      - 'gioco/rosa-variabile/**'
+      - '.github/workflows/rosa-variabile-browser.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Check JavaScript syntax
+        run: node --check gioco/rosa-variabile/app.js
+      - name: Check whether user's GLB was uploaded
+        run: |
+          if [ -f gioco/rosa-variabile/rose_highpoly_realistic.glb ]; then echo "MODEL_PRESENT=true" >> "$GITHUB_ENV"; else echo "MODEL_PRESENT=false" >> "$GITHUB_ENV"; echo "Awaiting upload of original HD GLB"; fi
+      - name: Install Chromium
+        if: env.MODEL_PRESENT == 'true'
+        run: |
+          npm install --no-save playwright@1.56.1
+          npx playwright install --with-deps chromium
+      - name: Serve repo
+        if: env.MODEL_PRESENT == 'true'
+        run: |
+          python3 -m http.server 8000 --bind 127.0.0.1 > /tmp/rose-http.log 2>&1 &
+          sleep 2
+      - name: Verify dynamic petal reconstruction
+        if: env.MODEL_PRESENT == 'true'
+        run: node gioco/rosa-variabile/browser-test.mjs
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: rosa-variabile-visual-check
+          path: rosa-hd-variabile-*.png
+          if-no-files-found: ignore
