@@ -129,7 +129,7 @@ for(const a of assets){
 $("pluck").addEventListener("click",pluckNext);
 $("reset").addEventListener("click",cameraReset);
 $("stage").addEventListener("pointerdown",e=>{if(e.target.tagName==="BUTTON")return;dragStart={x:e.clientX,y:e.clientY,moved:false}},true);
-$("stage").addEventListener("pointermove",e=>{if(dragStart&&(Math.abs(dragStart.x-e.clientX)+Math.abs(dragStart.y-e.clientY)>9)dragStart.moved=true},true);
+$("stage").addEventListener("pointermove",e=>{if(dragStart&&(Math.abs(dragStart.x-e.clientX)+Math.abs(dragStart.y-e.clientY)>9))dragStart.moved=true},true);
 $("stage").addEventListener("pointerup",e=>{if(dragStart&&!dragStart.moved&&e.target.tagName==="CANVAS")clickPetal(e.clientX,e.clientY);dragStart=null},true);
 $("stage").addEventListener("pointercancel",()=>dragStart=null,true);
 init();
