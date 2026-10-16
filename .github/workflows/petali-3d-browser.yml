@@ -32,4 +32,6 @@ jobs:
           path: |
             petali-3d-browser.png
             petali-ibisco-3d.png
+            petali-ibisco-ruotato.png
+            render-*.png
           if-no-files-found: ignore
