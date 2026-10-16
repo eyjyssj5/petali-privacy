@@ -330,7 +330,19 @@
     fioreCorrente = fiore;
     petaliTolti = 0;
     fioreAttuale = null;
-    $("immagine-fiore").replaceChildren();
+    const areaFiore = $("immagine-fiore");
+    areaFiore.replaceChildren(costruisciFiore(fiore, 12).cont);
+    // Vista fotorealistica prima di iniziare. Durante la partita i petali
+    // sono invece separati, tridimensionali e staccabili.
+    const foto = new Image();
+    foto.className = "foto-fiore-3d grande";
+    foto.alt = fiore.nome[lingua];
+    foto.onload = () => {
+      if (fioreCorrente === fiore && !$("scelta-inizio").hidden) {
+        areaFiore.replaceChildren(foto);
+      }
+    };
+    foto.src = "img3d/" + fiore.id + ".webp";
 
     $("nome-fiore").textContent = fiore.nome[lingua];
     $("significato-fiore").textContent = t("significato") + " " + fiore.significato[lingua];
