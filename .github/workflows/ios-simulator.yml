@@ -1,6 +1,14 @@
 name: Petali iOS Simulator (unsigned)
 on:
   workflow_dispatch:
+  pull_request:
+    paths:
+      - 'gioco/**'
+      - 'native/**'
+      - 'package.json'
+      - 'capacitor.config.json'
+      - 'tests/**'
+      - '.github/workflows/ios-simulator.yml'
 permissions:
   contents: read
 jobs:
