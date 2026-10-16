@@ -36,7 +36,7 @@ for flower,source in models:
            if not isinstance(mesh,trimesh.Trimesh):continue
            material=getattr(mesh.visual,"material",None)
            meshlist.append({"name":name,"triangles":len(mesh.faces),"width":round(float((mesh.bounds[1]-mesh.bounds[0])[0]),5),"height":round(float((mesh.bounds[1]-mesh.bounds[0])[1]),5),"material":getattr(material,"name",None)})
-       entry.update({"status":"candidate","bytes":size,"geometry_count":count,"triangles":sum(x["triangles"] for x in meshlist),"mesh_sample":meshlist[:25],"bounds":np.round(scene.bounds,4).tolist()})
+       entry.update({"status":"candidate","bytes":size,"geometry_count":count,"triangles":sum(x["triangles"] for x in meshlist),"mesh_sample":meshlist,"bounds":np.round(scene.bounds,4).tolist()})
        print(f"{flower}: {size/1024/1024:.2f} MB {count} geometries / {entry['triangles']} triangles",flush=True)
    except Exception as e:
        entry.update({"status":"error","error":str(e)})
