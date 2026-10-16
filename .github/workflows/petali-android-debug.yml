@@ -1,6 +1,7 @@
 name: Petali Android Debug
 on:
   workflow_dispatch:
+  pull_request:
   push:
     branches: [feature/petali-3d-mobile-20261016]
     paths:
