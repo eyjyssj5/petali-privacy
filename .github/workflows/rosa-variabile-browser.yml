@@ -38,4 +38,5 @@ jobs:
         with:
           name: rosa-variabile-visual-check
           path: rosa-hd-variabile-*.png
+            rosa-gialla-3d-hd.png
           if-no-files-found: ignore
