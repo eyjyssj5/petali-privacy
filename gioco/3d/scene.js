@@ -35,7 +35,7 @@ const SPECS = {
  "rosa-gialla":{type:"rose",petal:"#f9be18",edge:"#ffe077",heart:"#e7a313",shape:"round",width:.58,length:1.05,layers:3,heartRadius:.15,petalCurl:.32},
  "girasole":{type:"sunflower",petal:"#f3a91b",edge:"#ffdf43",heart:"#513018",shape:"point",width:.21,length:1.12,layers:2,heartRadius:.42,petalCurl:.10},
  "tulipano-rosso":{type:"tulip",petal:"#d60a34",edge:"#f85255",heart:"#dfb637",shape:"cup",width:.47,length:1.18,layers:2,heartRadius:.11,petalCurl:.53},
- "orchidea":{type:"orchid",petal:"#d6a3dd",edge:"#ffe2f5",heart:"#9d2c9b",shape:"butterfly",width:.60,length:1.05,layers:2,heartRadius:.12,petalCurl:.40},
+ "orchidea":{type:"orchid",petal:"#b66ac5",edge:"#e6b9ee",heart:"#9d2c9b",shape:"butterfly",width:.60,length:1.05,layers:2,heartRadius:.12,petalCurl:.40},
  "lavanda":{type:"lavender",petal:"#7861bc",edge:"#cdb5ed",heart:"#6d56ad",shape:"spike",width:.15,length:.33,layers:1,heartRadius:.05,petalCurl:.18},
  "papavero":{type:"poppy",petal:"#d6222e",edge:"#f9634e",heart:"#232020",shape:"silk",width:.77,length:1.12,layers:2,heartRadius:.19,petalCurl:.33},
  "iris":{type:"iris",petal:"#3f48b7",edge:"#999be5",heart:"#e2ac27",shape:"iris",width:.51,length:1.00,layers:2,heartRadius:.12,petalCurl:.42},
@@ -43,8 +43,8 @@ const SPECS = {
  "viola":{type:"pansy",petal:"#613fa8",edge:"#a66bcd",heart:"#e7b631",shape:"round",width:.70,length:.96,layers:2,heartRadius:.14,petalCurl:.18},
  "ortensia":{type:"hydrangea",petal:"#7193d5",edge:"#b5d7f6",heart:"#89c0c9",shape:"cluster",width:.26,length:.39,layers:2,heartRadius:.06,petalCurl:.13},
  "peonia":{type:"peony",petal:"#da447f",edge:"#ffc3d8",heart:"#b53d72",shape:"ruffle",width:.53,length:.99,layers:3,heartRadius:.16,petalCurl:.39},
- "dalia":{type:"dahlia",petal:"#f06d21",edge:"#ffc153",heart:"#c85424",shape:"point",width:.28,length:1.04,layers:3,heartRadius:.12,petalCurl:.18},
- "ciliegio":{type:"cherry",petal:"#f3b2cf",edge:"#ffe7f0",heart:"#e4af36",shape:"round",width:.42,length:.70,layers:2,heartRadius:.11,petalCurl:.15},
+ "dalia":{type:"dahlia",petal:"#f06d21",edge:"#ffc153",heart:"#c85424",shape:"point",width:.51,length:1.04,layers:3,heartRadius:.12,petalCurl:.18},
+ "ciliegio":{type:"cherry",petal:"#eb98b9",edge:"#ffdae8",heart:"#e4af36",shape:"round",width:.42,length:.70,layers:2,heartRadius:.11,petalCurl:.15},
  "ibisco":{type:"hibiscus",petal:"#d5275a",edge:"#fb6591",heart:"#8f1437",shape:"silk",width:.75,length:1.19,layers:2,heartRadius:.16,petalCurl:.28}
 };
 const EMOJI={"rosa-rossa":"🌹","rosa-gialla":"🌹","girasole":"🌻","tulipano-rosso":"🌷","orchidea":"🌸","lavanda":"🪻","papavero":"🌺","iris":"🌸","garofano-rosso":"🌹","viola":"🌺","ortensia":"💠","peonia":"🌺","dalia":"🌼","ciliegio":"🌸","ibisco":"🌺"};
@@ -152,7 +152,7 @@ function center(group,spec){
     const seed=sphere(spec.type==="sunflower"?.026:.024,new THREE.MeshStandardMaterial({color:c,roughness:1}),[rr*Math.cos(a),y+rr*Math.sin(a),z+.51*r],7);
     group.add(seed);
    }
- }else if(["ibisco","cherry","orchid","iris","pansy"].includes(spec.type)){
+ }else if(["hibiscus","cherry","orchid","iris","pansy"].includes(spec.type)){
     group.add(sphere(r,dark,[0,y,z],18));
     const yellow=new THREE.MeshStandardMaterial({color:0xe7b44d,roughness:.6});
     const stamenCount=spec.type==="ibisco"?10:spec.type==="cherry"?13:5;
@@ -163,7 +163,7 @@ function center(group,spec){
       group.add(stalk);
       group.add(sphere(.029,yellow,[x*1.3,yy+.02,z+.34],7));
     }
-    if(spec.type==="ibisco"){
+    if(spec.type==="hibiscus"){
      const pin=new THREE.MeshStandardMaterial({color:0xd63f50,roughness:.58});
      group.add(curvedTube([[0,y,z+.08],[0,y+.05,z+.42],[0,y+.18,z+1.03],[0,y+.20,z+1.22]],.027,pin,24));
      for(let i=0;i<5;i++)group.add(sphere(.044,yellow,[.085*Math.cos(i*1.256),y+.20+.085*Math.sin(i*1.256),z+1.20],8));
@@ -218,10 +218,10 @@ function makePetal(spec,i,n){
  }else if(spec.type==="hydrangea"){
     angle=i*2.399963;
     let f=Math.sqrt((i+.5)/n);
-    x=1.02*f*Math.sin(angle);
-    y=.82+1.02*f*Math.cos(angle);
-    z=.06+.65*Math.sqrt(Math.max(0,1-f*f));
-    len=.31*(.85+.3*rand);width=.24;angle+=.5;
+    x=.55*f*Math.sin(angle);
+    y=.82+.55*f*Math.cos(angle);
+    z=.06+.29*Math.sqrt(Math.max(0,1-f*f));
+    len=.43*(.85+.3*rand);width=.30;angle+=.5;
  }else if(spec.type==="cherry"){
     const cluster=i%3, a=cluster*2*Math.PI/3;
     const cx=Math.sin(a)*.38, cy=.82+Math.cos(a)*.38;
