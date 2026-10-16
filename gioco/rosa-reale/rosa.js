@@ -41,12 +41,26 @@ function resize(){
 }
 function resetCamera(){
  if(!model)return;
- const bb=new THREE.Box3().setFromObject(model);
- const center=bb.getCenter(new THREE.Vector3());
- const dist=Math.max(.80,bb.getSize(new THREE.Vector3()).y*2.5);
+ // Focus on the real flower head, not the entire half-metre stem.
+ // Zoom out with two fingers to see the whole plant, including leaves.
+ const box=new THREE.Box3();
+ for(const p of petals)box.expandByObject(p);
+ const center=box.getCenter(new THREE.Vector3());
+ const diameter=box.getSize(new THREE.Vector3()).length();
+ const distance=Math.max(.18,diameter*2.05);
  controls.target.copy(center);
- camera.position.copy(center).add(new THREE.Vector3(dist*.35,dist*.20,dist*.90));
- camera.lookAt(center);controls.update();
+ camera.position.copy(center).add(new THREE.Vector3(.30,.15,.94).normalize().multiplyScalar(distance));
+ camera.lookAt(center);
+ controls.update();
+}
+function showFullPlant(){
+ if(!model)return;
+ const b=new THREE.Box3().setFromObject(model);
+ const center=b.getCenter(new THREE.Vector3());
+ const distance=Math.max(.8,b.getSize(new THREE.Vector3()).y*2.7);
+ controls.target.copy(center);
+ camera.position.copy(center).add(new THREE.Vector3(.33,.18,.94).normalize().multiplyScalar(distance));
+ controls.update();
 }
 function start(yes){
  if(petals.length<1)return;
@@ -102,7 +116,7 @@ function init(){
   el("viewer").prepend(renderer.domElement);
   controls=new OrbitControls(camera,renderer.domElement);
   controls.enableDamping=true;controls.dampingFactor=.085;controls.enablePan=false;
-  controls.minDistance=.22;controls.maxDistance=2.5;
+  controls.minDistance=.085;controls.maxDistance=2.5;
   scene.add(new THREE.HemisphereLight(0xfff9fa,0x496343,1.95));
   const key=new THREE.DirectionalLight(0xfff3eb,2.3);key.position.set(-1.5,2.1,2.5);scene.add(key);
   const fill=new THREE.DirectionalLight(0xf4e4f6,1.2);fill.position.set(1.5,.9,-2);scene.add(fill);
@@ -140,6 +154,7 @@ el("startNo").addEventListener("click",()=>start(false));
 el("pluck").addEventListener("click",()=>removePetal(active.find(p=>p.userData.active)));
 el("again").addEventListener("click",()=>start(startWithLove));
 el("reset").addEventListener("click",resetCamera);
+el("fullPlant").addEventListener("click",showFullPlant);
 el("lang").addEventListener("change",e=>{
  lang=e.target.value;
  try{localStorage.setItem("petali.lingua",lang)}catch(e){}
