@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#faf4f8"><title>Petali AIVEVIA | Rosa HD reale</title>
+<style>
+:root{font-family:system-ui,-apple-system,'Segoe UI',sans-serif;background:#faf4f8;color:#3c283b}
+*{box-sizing:border-box}body{margin:0}header{height:70px;padding:13px clamp(14px,4vw,35px);background:#fff;border-bottom:1px solid #eee0e9;display:flex;align-items:center;justify-content:space-between}
+.brand{font-size:21px;font-weight:800}.brand span{color:#a03975}.brand small{display:block;font-size:10px;color:#927587;font-weight:500;letter-spacing:1px}
+select{border:1px solid #e5cddd;border-radius:12px;padding:9px;background:white;font-size:13px;max-width:160px}
+main{max-width:950px;margin:auto;padding:22px 12px 36px}.eyebrow{text-align:center;color:#a14879;font-weight:800;letter-spacing:2px;font-size:11px;margin:0}
+h1{text-align:center;margin:7px auto 9px;font-size:clamp(26px,5vw,38px);letter-spacing:-1px;line-height:1.12}
+.lead{text-align:center;color:#866d80;max-width:550px;margin:0 auto 18px;line-height:1.45;font-size:14px}
+.viewer{height:clamp(390px,66vw,610px);width:100%;background:#f8eef5;border:1px solid #e9d8e3;box-shadow:0 12px 45px #792e631c;border-radius:23px;overflow:hidden;position:relative}
+iframe{height:100%;width:100%;border:0;display:block}
+#loading{position:absolute;inset:0;display:grid;place-items:center;background:#fffaf1d9;z-index:2;text-align:center;color:#8b3d6a;padding:20px;font-size:14px;pointer-events:none}
+#loading[hidden]{display:none}.hint{position:absolute;bottom:18px;left:14px;color:#813958;border-radius:25px;border:1px solid #f2e5ee;background:#fffdf2d9;padding:10px 14px;font-size:12px;pointer-events:none}
+.panel{margin-top:14px;border:1px solid #e8d7e1;border-radius:19px;padding:18px;background:white;box-shadow:0 5px 16px #622e5120}
+.status{display:flex;align-items:center;gap:10px;justify-content:space-between}.status h2{font-size:21px;margin:0}.counter{font-size:13px;color:#7e4262;background:#fbeff6;border-radius:20px;padding:6px 10px;font-weight:700}
+.help{color:#8b7585;font-size:13px;margin:7px 0 15px}
+.actions{display:flex;gap:10px}.actions button,.full{min-height:46px;border-radius:13px;flex:1;font-size:14px;font-weight:800;cursor:pointer;padding:10px 12px}
+.primary{background:linear-gradient(115deg,#ad497f,#7a3263);color:white;border:0}.secondary{color:#863f64;background:#fff;border:1px solid #be83a4}.full{width:100%}
+button:disabled{opacity:.5;cursor:not-allowed}
+#outcome{text-align:center;font-size:24px;color:#993668;font-weight:800;margin:8px 0}
+.license{text-align:center;color:#967e8d;font-size:11px;line-height:1.5;margin:20px auto 0;max-width:690px}
+.license a{color:#96396e}#error{color:#96345f;font-size:12px;text-align:center;margin:5px 0}[hidden]{display:none!important}
+@media(max-width:550px){main{padding:17px 11px 30px}.viewer{height:min(120vw,495px)}.hint{font-size:11px}.panel{padding:14px}}
+</style>
+</head>
+<body>
+<header><div class="brand">✿ Petali <span>3D HD</span><small>AIVEVIA · ROSA REALISTICA</small></div><select id="lang" aria-label="Lingua">
+<option value="it">Italiano</option><option value="en">English</option><option value="es">Español</option><option value="pt">Português</option><option value="fr">Français</option><option value="de">Deutsch</option></select></header>
+<main><p class="eyebrow" id="eyebrow">PROVA MODELLO BOTANICO</p><h1 id="headline">Rosa realistica in 3D</h1><p class="lead" id="instructions">Ruota il fiore con il dito, guarda sopra, sotto e di lato. Prova a staccare un petalo.</p>
+<div class="viewer"><iframe id="viewer" title="Rosa fotorealistica 3D da Sketchfab" allow="autoplay; fullscreen; xr-spatial-tracking" allowfullscreen></iframe><div id="loading">Caricamento rosa 3D…</div><div class="hint" id="hint">↻ Trascina per ruotare · pizzica per ingrandire</div></div>
+<section class="panel"><div class="status"><h2 id="name">Rosa rossa</h2><span class="counter" id="count">14 / 14</span></div>
+<p class="help" id="status">Caricamento del modello e dei petali…</p>
+<div id="choices" class="actions"><button type="button" class="secondary" id="startNo" disabled>💔 Non m'ama</button><button type="button" class="primary" id="startYes" disabled>❤️ M'ama</button></div>
+<div id="playing" hidden><button type="button" class="primary full" id="pluck" disabled>✿ Stacca un petalo</button></div>
+<div id="finished" hidden><p id="outcome"></p><button type="button" class="primary full" id="restart">Ricomincia</button></div>
+<p id="error" hidden></p></section>
+<p class="license">Modello originale <a href="https://sketchfab.com/3d-models/rose-flower-realistic-high-poly-98edd35f37fc4010a469425699110ceb" target="_blank" rel="noopener noreferrer">«Rose flower, realistic (high-poly!)» di LOLIPOP</a>, licenza Creative Commons Attribution (CC BY). Questo è il prototipo HD di una rosa, non ancora l'app completa di 15 fiori. Il file FBX fornito è stato convertito in GLB per il successivo uso nell'app.</p>
+</main>
+<script src="https://static.sketchfab.com/api/sketchfab-viewer-1.12.1.js"></script>
+<script>
+const UID='98edd35f37fc4010a469425699110ceb';
+const $=id=>document.getElementById(id);
+const translations={
+it:['PROVA MODELLO BOTANICO','Rosa realistica in 3D','Ruota il fiore con il dito, guarda sopra, sotto e di lato. Prova a staccare un petalo.','Rosa rossa','Non m’ama','M’ama','Stacca un petalo','Ricomincia','Pronto: premi M’ama o Non m’ama','Impossibile controllare singolarmente i petali in questo visualizzatore. Puoi comunque ruotare il modello reale.','Caricamento rosa 3D…'],
+en:['BOTANICAL 3D PREVIEW','Realistic 3D rose','Drag to rotate from every angle, pinch to zoom. Try removing a petal.','Red rose','Loves me not','Loves me','Pluck a petal','Play again','Ready: choose the first phrase','This viewer does not expose the petals separately. You can still rotate the real model.','Loading 3D rose…'],
+es:['PRUEBA BOTÁNICA 3D','Rosa realista en 3D','Gira la rosa con el dedo, mírala desde cualquier ángulo. Prueba a quitar un pétalo.','Rosa roja','No me quiere','Me quiere','Quitar un pétalo','Jugar de nuevo','Lista: elige la frase inicial','Este visor no permite controlar cada pétalo. Puedes seguir girando el modelo real.','Cargando rosa 3D…'],
+pt:['PRÉ-VISUALIZAÇÃO BOTÂNICA','Rosa realista em 3D','Roda a rosa com o dedo e vê todos os ângulos. Experimenta retirar uma pétala.','Rosa vermelha','Não me ama','Ama-me','Retirar uma pétala','Jogar novamente','Pronta: escolhe a primeira frase','Este visualizador não permite controlar cada pétala. Ainda podes rodar o modelo real.','A carregar rosa 3D…'],
+fr:['APERÇU BOTANIQUE 3D','Rose réaliste en 3D','Tournez la rose du doigt sous tous les angles. Essayez de détacher un pétale.','Rose rouge','Il ne m’aime pas','Il m’aime','Détacher un pétale','Rejouer','Prête : choisissez la première formule','Cette visionneuse ne permet pas de retirer les pétales séparément. Vous pouvez tourner la rose.','Chargement de la rose 3D…'],
+de:['BOTANISCHE 3D-VORSCHAU','Realistische 3D-Rose','Drehe die Rose mit dem Finger, betrachte sie von allen Seiten. Zupfe ein Blütenblatt ab.','Rote Rose','Er liebt mich nicht','Er liebt mich','Blütenblatt abzupfen','Noch einmal','Bereit: Wähle den ersten Spruch','Dieser Viewer erlaubt kein einzelnes Entfernen der Blütenblätter. Du kannst die echte Rose weiter drehen.','3D-Rose wird geladen…']};
+let lang=(navigator.language||'it').slice(0,2);try{lang=localStorage.getItem('petali.lingua')||lang;}catch{}
+if(!translations[lang])lang='it';
+$('lang').value=lang;
+let api=null,petals=[],removed=[],phase='choose',firstLove=true;
+function update(){
+ const t=translations[lang];
+ document.documentElement.lang=lang;
+ $('eyebrow').textContent=t[0];$('headline').textContent=t[1];$('instructions').textContent=t[2];$('name').textContent=t[3];$('startNo').textContent='💔 '+t[4];$('startYes').textContent='❤️ '+t[5];$('pluck').textContent='✿ '+t[6];$('restart').textContent=t[7];
+ $('loading').textContent=t[10];
+ $('count').textContent=(petals.length-removed.length)+' / '+(petals.length||14);
+ $('choices').hidden=phase!=='choose';$('playing').hidden=phase!=='playing';$('finished').hidden=phase!=='finished';
+ $('status').textContent=petals.length?(phase==='choose'?t[8]:(petals.length-removed.length)+' / '+petals.length):t[9];
+ if(phase==='finished')$('outcome').textContent=((removed.length%2===1)===firstLove?'❤️ '+t[5]:'💔 '+t[4]);
+}
+function findPetals(map){
+ const nodes=Object.values(map||{});
+ const byNumber=new Map();
+ for(const node of nodes){
+  const match=String(node.name||'').match(/petal[_ .-]?0*(1[0-4]|[1-9])(?:[_ .-]|$)/i);
+  if(!match)continue;
+  const number=Number(match[1]);
+  const score=/(matrixtransform|transform)/i.test(node.type||'')?2:1;
+  const entry=byNumber.get(number);
+  if(!entry || score>entry.score)byNumber.set(number,{id:node.instanceID,score,name:node.name});
+ }
+ return [...byNumber.entries()].sort((a,b)=>a[0]-b[0]).map(x=>x[1].id);
+}
+function initialize(){
+ if(!window.Sketchfab){fallback('Sketchfab Viewer API non disponibile');return}
+ const client=new Sketchfab('1.12.1',$('viewer'));
+ client.init(UID,{
+  autostart:1,preload:0,ui_infos:1,ui_controls:1,
+  success:function(instance){
+   api=instance;api.start();
+   api.addEventListener('viewerready',()=>{
+    $('loading').hidden=true;
+    api.getNodeMap((error,map)=>{
+     if(error){$('error').hidden=false;$('error').textContent='Il modello è visibile, ma non è possibile gestire i petali singolarmente.';update();return}
+     petals=findPetals(map);
+     if(petals.length===14){
+      $('startYes').disabled=false;$('startNo').disabled=false;$('pluck').disabled=false;
+     }else{
+      $('error').hidden=false;$('error').textContent='Il visualizzatore mostra la rosa realistica ma non espone tutti i 14 petali separati.';
+     }
+     update();
+     console.log('Petali accessibili nel viewer:',petals.length);
+    });
+   });
+  },
+  error:function(err){console.error(err);fallback('Impossibile inizializzare Sketchfab.');}
+ });
+}
+function fallback(message){
+ $('loading').hidden=true;
+ $('error').hidden=false;$('error').textContent=message;
+ $('viewer').src='https://sketchfab.com/models/'+UID+'/embed?autostart=1';
+}
+function reset(){
+ for(const node of removed)api.show(node);
+ removed=[];phase='choose';update();
+}
+function pluckNode(id){
+ if(!api||phase!=='playing'||id===undefined)return;
+ api.hide(id,e=>{
+  if(e){console.error(e);return}
+  removed.push(id);update();
+  if(removed.length===petals.length){phase='finished';update()}
+ });
+}
+$('startYes').addEventListener('click',()=>{firstLove=true;phase='playing';update()});
+$('startNo').addEventListener('click',()=>{firstLove=false;phase='playing';update()});
+$('pluck').addEventListener('click',()=>pluckNode(petals[removed.length]));
+$('restart').addEventListener('click',reset);
+$('lang').addEventListener('change',e=>{lang=e.target.value;try{localStorage.setItem('petali.lingua',lang)}catch{}update()});
+update();initialize();
+setTimeout(()=>{if(!$('loading').hidden){fallback('Visualizzatore lento o bloccato: caricamento diretto del modello.')}},35000);
+</script>
+</body></html>
