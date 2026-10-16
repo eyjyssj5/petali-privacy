@@ -284,7 +284,23 @@
       const sbloccato = fioreSbloccato(fiore);
       const carta = document.createElement("div");
       carta.className = sbloccato ? "carta" : "carta bloccato";
-      carta.appendChild(costruisciFiore(fiore, 12).cont);
+      const modello = costruisciFiore(fiore, 12).cont;
+      carta.appendChild(modello);
+      // Anteprima fotografica: usata solo se la nuova immagine e' stata caricata.
+      // Il modello resta sempre disponibile come alternativa; nel gioco i petali
+      // restano indipendenti e quindi realmente rimovibili uno per uno.
+      const anteprima = document.createElement("img");
+      anteprima.className = "foto-fiore-3d";
+      anteprima.alt = fiore.nome[lingua];
+      anteprima.hidden = true;
+      anteprima.loading = "lazy";
+      anteprima.addEventListener("load", () => {
+        modello.hidden = true;
+        anteprima.hidden = false;
+      });
+      anteprima.addEventListener("error", () => anteprima.remove());
+      carta.appendChild(anteprima);
+      anteprima.src = "img3d/" + fiore.id + ".webp";
       const nome = document.createElement("strong");
       nome.textContent = fiore.nome[lingua];
       const significato = document.createElement("small");
