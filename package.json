@@ -2,7 +2,6 @@
   "name": "petali-aivevia",
   "version": "0.1.0",
   "private": true,
-  "type": "module",
   "description": "Petali - gioco mobile Android e iOS con Capacitor",
   "scripts": {
     "build:bridge": "esbuild native/bridge.js --bundle --minify --platform=browser --format=iife --outfile=gioco/native-bridge.js",
