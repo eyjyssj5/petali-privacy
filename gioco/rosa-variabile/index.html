@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="it"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><title>Petali AIVEVIA · Rosa HD variabile</title>
+<style>
+:root{font-family:system-ui,-apple-system,sans-serif;color:#3c293a;background:#fbf5f9}*{box-sizing:border-box}body{margin:0}
+header{height:70px;display:flex;align-items:center;justify-content:space-between;padding:12px 20px;border-bottom:1px solid #ebd7e4;background:#fffc}
+header b{font-size:22px}header b em{color:#a34379;font-style:normal}header small{display:block;color:#876d80;font-size:10px;letter-spacing:1px}
+select{background:white;border:1px solid #e5cde0;border-radius:10px;padding:9px;font:inherit;font-size:13px}
+main{max-width:850px;margin:auto;padding:18px 12px 38px}h1{text-align:center;font-size:clamp(26px,5vw,38px);margin:8px 0}
+.intro{max-width:590px;text-align:center;margin:0 auto 15px;font-size:14px;color:#866d80;line-height:1.5}
+#stage{position:relative;border-radius:23px;overflow:hidden;border:1px solid #ecd9e4;background:radial-gradient(ellipse at 50% 30%,#fff,#f3e6f0);height:clamp(390px,66vw,560px);touch-action:none;box-shadow:0 15px 45px #57295216}
+canvas{width:100%;height:100%;display:block;touch-action:none}
+#notice{position:absolute;inset:0;background:#fff9;display:grid;place-items:center;text-align:center;color:#9c4875;padding:20px;z-index:3}
+#notice[hidden]{display:none}#tip{position:absolute;bottom:15px;left:14px;background:#fffceb;border:1px solid #eee1e8;color:#814564;font-size:12px;border-radius:25px;padding:9px 12px;pointer-events:none}
+#reset{position:absolute;right:14px;bottom:14px;border-radius:50%;width:43px;height:43px;border:1px solid #eee1e8;background:#fffceb;color:#894d6d;font-size:26px;cursor:pointer}
+.panel{background:white;padding:19px;margin-top:15px;border:1px solid #ebdce5;border-radius:19px}
+.heading{display:flex;justify-content:space-between;align-items:center}.heading h2{font-size:21px;margin:0}.counter{color:#854c70;background:#faf0f6;border-radius:20px;padding:6px 12px;font-size:13px;font-weight:800}
+.status{font-size:13px;color:#8a6e82;margin:9px 0 14px}
+.actions{display:flex;gap:10px}.actions button,.wide{flex:1;min-height:48px;border-radius:12px;padding:11px 14px;font:inherit;font-size:14px;font-weight:800;cursor:pointer}
+.primary{color:white;border:0;background:linear-gradient(120deg,#ad4980,#75305b)}.outline{color:#85486b;border:1px solid #c392ae;background:white}.wide{width:100%}
+#result{font-size:24px;text-align:center;color:#963b6c;font-weight:800}
+[hidden]{display:none!important}.credit{font-size:11px;line-height:1.5;text-align:center;color:#917e8a;max-width:650px;margin:17px auto 0}.credit a{color:#9b467b}
+@media(max-width:530px){#stage{height:min(120vw,500px)}.panel{padding:15px}.intro{font-size:13px}}
+</style>
+<script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.180.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.180.0/examples/jsm/"}}</script>
+</head><body><header><div><b>✿ Petali <em>3D HD</em></b><small>AIVEVIA · ROSA A PETALI VARIABILI</small></div>
+<select id="lang"><option value="it">Italiano</option><option value="en">English</option><option value="es">Español</option><option value="pt">Português</option><option value="fr">Français</option><option value="de">Deutsch</option></select></header>
+<main><h1 id="title">Rosa 3D, petali variabili</h1><p class="intro" id="intro">Ogni partita cambia il numero di petali grandi. Ruota il fiore e stacca i petali: il centro resta intatto.</p>
+<div id="stage"><div id="notice">Caricamento del modello botanico…</div><div id="tip">↻ Ruota • zoom con due dita • tocca un petalo</div><button id="reset" title="Reimposta visuale" type="button">⌖</button></div>
+<section class="panel"><div class="heading"><h2 id="flower">Rosa rossa</h2><span class="counter" id="count">–</span></div><p class="status" id="status">Caricamento…</p>
+<div id="choices" class="actions"><button id="no" type="button" class="outline">💔 Non m'ama</button><button id="yes" type="button" class="primary">❤️ M'ama</button></div>
+<div id="game" hidden><button type="button" id="pluck" class="primary wide">✿ Stacca un petalo</button></div>
+<div id="done" hidden><p id="result"></p><button type="button" id="again" class="primary wide">Nuova partita</button></div>
+</section><p class="credit">Modello originale: <a href="https://sketchfab.com/3d-models/rose-flower-realistic-high-poly-98edd35f37fc4010a469425699110ceb" target="_blank" rel="noopener noreferrer">Rose flower, realistic (high-poly!) di LOLIPOP</a>, licenza CC BY. Le geometrie esterne vengono riposizionate e clonate. Prototipo da approvare visivamente.</p></main>
+<script type="module" src="./app.js?v=1"></script></body></html>
