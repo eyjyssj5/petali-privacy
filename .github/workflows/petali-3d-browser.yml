@@ -1,0 +1,35 @@
+name: Petali 3D browser test
+on:
+  push:
+    paths:
+      - "gioco/3d/**"
+      - ".github/workflows/petali-3d-browser.yml"
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  test-webgl:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install headless Chromium
+        run: |
+          npm install --no-save playwright@1.56.1
+          npx playwright install --with-deps chromium
+      - name: Run local web server
+        run: |
+          python3 -m http.server 8000 --bind 127.0.0.1 > /tmp/petali-http.log 2>&1 &
+          sleep 2
+      - name: Browser WebGL + six languages + petal removal
+        run: node gioco/3d/browser-test.mjs
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: petali-webgl-browser-preview
+          path: |
+            petali-3d-browser.png
+            petali-ibisco-3d.png
+          if-no-files-found: ignore
