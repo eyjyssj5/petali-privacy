@@ -6,6 +6,45 @@ import {OrbitControls} from "three/addons/controls/OrbitControls.js";
 // The central small Petal_6..14 stay attached to the flower at all times.
 // 9-21 removable petals are reconstructed as individual, rotatable clones.
 const $=id=>document.getElementById(id);
+const yellowRose = new URLSearchParams(location.search).get("fiore")==="rosa-gialla";
+const yellowNames={it:["Rosa gialla 3D a petali variabili","Rosa gialla"],en:["Yellow rose 3D, variable petals","Yellow rose"],es:["Rosa amarilla 3D, pétalos variables","Rosa amarilla"],pt:["Rosa amarela 3D, pétalas variáveis","Rosa amarela"],fr:["Rose jaune 3D à pétales variables","Rose jaune"],de:["Gelbe 3D-Rose mit wechselnden Blütenblättern","Gelbe Rose"]};
+function recolorYellowPetalTextures(flowerModel){
+ // Shift only genuinely red pixels to golden-yellow while retaining the
+ // original 2048px photographic texture, pores, veins, roughness and normals.
+ const textures=new WeakMap();
+ flowerModel.traverse(o=>{
+  if(!o.isMesh||!/petal[_ ]?[0-9]+[_ .-]*hp/i.test(o.name))return;
+  const mat=o.material,old=mat?.map;
+  if(!old?.image)return;
+  if(!textures.has(old)){
+   const src=old.image,w=src.width,h=src.height;
+   if(!w||!h)return;
+   const canvas=document.createElement("canvas");canvas.width=w;canvas.height=h;
+   const ctx=canvas.getContext("2d",{willReadFrequently:true});
+   ctx.drawImage(src,0,0,w,h);
+   const img=ctx.getImageData(0,0,w,h),a=img.data;
+   for(let i=0;i<a.length;i+=4){
+    const R=a[i],G=a[i+1],B=a[i+2];
+    // Preserve white highlights, green sepals, transparency and dark shadows
+    if(R>G*1.15&&R>B*1.17&&R-G>18){
+     const v=Math.max(R,70),shade=Math.min(1,(R-G)/100);
+     a[i]=Math.min(255,Math.round(v*1.07+13*shade));
+     a[i+1]=Math.min(255,Math.round(v*.89+30*shade));
+     a[i+2]=Math.min(255,Math.round(B*.45+G*.15));
+    }
+   }
+   ctx.putImageData(img,0,0);
+   const t=new THREE.CanvasTexture(canvas);
+   t.colorSpace=old.colorSpace;t.flipY=old.flipY;
+   t.wrapS=old.wrapS;t.wrapT=old.wrapT;
+   t.anisotropy=old.anisotropy||1;
+   textures.set(old,t);
+  }
+  const replacement=textures.get(old);if(!replacement)return;
+  const next=mat.clone();next.map=replacement;next.needsUpdate=true;o.material=next;
+ });
+}
+
 const L={
 it:["Rosa 3D, petali variabili","Ogni partita cambia il numero di petali grandi. Ruota il fiore e stacca i petali: il centro resta intatto.","Rosa rossa","Pronto. Scegli come iniziare.", "Non m'ama","M'ama","Stacca un petalo","Nuova partita","Petali staccati: "],
 en:["3D rose, variable petals","Each round has a new number of full-sized petals. Rotate and pluck them, leaving the center intact.","Red rose","Ready. Pick the first phrase.","Loves me not","Loves me","Pluck a petal","New round","Petals plucked: "],
@@ -21,7 +60,7 @@ let scene,renderer,camera,controls,head,baseModel,axesCenter;
 let originals=new Map(), petals=[], animations=[], number=0,removed=0,lastNumber=0;
 let mode="choose", startLove=true, clock=0;
 const ray=new THREE.Raycaster(),axis=new THREE.Vector3(0,1,0);
-function labels(){const t=L[lang];$("title").textContent=t[0];$("intro").textContent=t[1];$("flower").textContent=t[2];$("yes").textContent="❤️ "+t[5];$("no").textContent="💔 "+t[4];$("pluck").textContent="✿ "+t[6];$("again").textContent=t[7];document.documentElement.lang=lang;sync();}
+function labels(){const t=L[lang];$("title").textContent=yellowRose?yellowNames[lang][0]:t[0];$("intro").textContent=t[1];$("flower").textContent=yellowRose?yellowNames[lang][1]:t[2];$("yes").textContent="❤️ "+t[5];$("no").textContent="💔 "+t[4];$("pluck").textContent="✿ "+t[6];$("again").textContent=t[7];document.documentElement.lang=lang;sync();}
 function sync(){const t=L[lang];$("count").textContent=number?(number-removed)+" / "+number:"–";$("choices").hidden=mode!=="choose";$("game").hidden=mode!=="playing";$("done").hidden=mode!=="done";$("status").textContent=mode==="choose"?t[3]:t[8]+removed+" / "+number;if(mode==="done")$("result").textContent=((removed%2===1)===startLove?"❤️ "+t[5]:"💔 "+t[4]);}
 function error(txt){$("notice").hidden=false;$("notice").textContent=txt;}
 function resize(){if(!renderer)return;const w=$("stage").clientWidth,h=$("stage").clientHeight;renderer.setSize(w,h,false);camera.aspect=w/h;camera.updateProjectionMatrix();}
@@ -103,7 +142,7 @@ function init(){
   const fill=new THREE.DirectionalLight(0xffdbe8,1.05);fill.position.set(2,1,-2);scene.add(fill);
   new ResizeObserver(resize).observe($("stage"));resize();renderer.setAnimationLoop(frame);
   new GLTFLoader().load("./rose_highpoly_realistic.glb",gltf=>{
-   baseModel=gltf.scene;scene.add(baseModel);baseModel.updateMatrixWorld(true);
+   baseModel=gltf.scene;scene.add(baseModel);baseModel.updateMatrixWorld(true);if(yellowRose)recolorYellowPetalTextures(baseModel);
    const centers=[];
    baseModel.traverse(o=>{
     if(!o.isMesh)return;
