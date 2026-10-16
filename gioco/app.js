@@ -403,7 +403,8 @@
 
   // Vibrazione leggera per "M'ama", piu' forte per "Non m'ama".
   function vibra(mAma) {
-    const plugin = window.Capacitor && window.Capacitor.Plugins && window.Capacitor.Plugins.Haptics;
+    const plugin = (window.PetaliNative && window.PetaliNative.Haptics)
+      || (window.Capacitor && window.Capacitor.Plugins && window.Capacitor.Plugins.Haptics);
     if (plugin) {
       plugin.impact({ style: mAma ? "LIGHT" : "HEAVY" }).catch(() => {});
     } else if (navigator.vibrate) {
@@ -552,13 +553,21 @@
 
   // ---------- Pagamento: sblocco di tutti i fiori con Google Play, tramite RevenueCat ----------
 
-  // Da sostituire con la chiave pubblica Android di RevenueCat (Project settings > API keys).
-  const CHIAVE_REVENUECAT = "INSERISCI_LA_CHIAVE_REVENUECAT_ANDROID";
-  // Nome del diritto (entitlement) creato in RevenueCat per lo sblocco.
-  const DIRITTO_SBLOCCO = "sblocco";
-
+  // RevenueCat: chiavi SDK pubbliche distinte per Android e iOS.
+  // I pagamenti web restano disattivati: App Store e Google Play si configurano separatamente.
+  const DIRITTO_SBLOCCO = (window.PetaliPayments && window.PetaliPayments.entitlement) || "sblocco";
+  function piattaforma() {
+    return (window.PetaliNative && window.PetaliNative.platform)
+      || (window.Capacitor && window.Capacitor.getPlatform && window.Capacitor.getPlatform())
+      || "web";
+  }
+  function chiaveRevenueCat() {
+    const opzioni = window.PetaliPayments || {};
+    return piattaforma() === "ios" ? opzioni.ios : opzioni.android;
+  }
   function plugin() {
-    return window.Capacitor && window.Capacitor.Plugins && window.Capacitor.Plugins.Purchases;
+    return (window.PetaliNative && window.PetaliNative.Purchases)
+      || (window.Capacitor && window.Capacitor.Plugins && window.Capacitor.Plugins.Purchases);
   }
 
   function haDirittoSblocco(infoCliente) {
@@ -581,9 +590,10 @@
 
   async function configuraPagamenti() {
     const p = plugin();
-    if (!p) return;
+    const apiKey = chiaveRevenueCat();
+    if (!p || piattaforma() === "web" || !apiKey || apiKey.startsWith("INSERISCI_")) return;
     try {
-      await p.configure({ apiKey: CHIAVE_REVENUECAT });
+      await p.configure({ apiKey });
     } catch (errore) {
       return;
     }
