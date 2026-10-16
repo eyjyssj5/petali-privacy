@@ -20,6 +20,7 @@ try{
  await page.waitForSelector("#finished:not([hidden])",{timeout:10000});
  await page.locator("#stage canvas").screenshot({path:"girasole-centro-intatto.png",timeout:45000});
  await page.locator("#again").click();
+ await page.locator("#stage canvas").screenshot({path:"girasole-second-round.png",timeout:45000});
  const second=parseInt((await page.locator("#counter").textContent()).split("/")[1]);
  assert.ok(second>=9&&second<=21&&second!==n,"Count must change at start of new round");
  await page.locator("#startNo").click();
