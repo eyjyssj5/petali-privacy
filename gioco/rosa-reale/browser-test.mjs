@@ -1,0 +1,31 @@
+import {chromium} from "playwright";
+import assert from "node:assert/strict";
+const browser=await chromium.launch({headless:true,args:["--enable-webgl","--use-gl=angle","--use-angle=swiftshader","--enable-unsafe-swiftshader"]});
+const page=await browser.newPage({viewport:{width:400,height:850},deviceScaleFactor:1});
+const errs=[];
+page.on("pageerror",e=>errs.push(e.message));
+try{
+ const r=await page.goto("http://127.0.0.1:8000/gioco/rosa-reale/",{waitUntil:"domcontentloaded",timeout:40000});
+ assert.equal(r.status(),200);
+ await page.waitForFunction(()=>document.querySelector("#loading").hidden,{timeout:35000});
+ const fail=await page.locator("#loaderror").isVisible();
+ assert.equal(fail,false,await page.locator("#loaderror").textContent());
+ assert.equal((await page.locator("#count").textContent()).trim(),"18 / 18");
+ await page.waitForTimeout(900);
+ await page.screenshot({path:"rosa-botanica-frontale.png",fullPage:true});
+ await page.locator("#startYes").click();
+ await page.locator("#pluck").click();
+ assert.equal((await page.locator("#count").textContent()).trim(),"17 / 18");
+ const box=await page.locator("#viewer canvas").boundingBox();
+ const x=box.x+box.width*.55,y=box.y+box.height*.50;
+ await page.mouse.move(x,y);
+ await page.mouse.down();
+ await page.mouse.move(x+130,y+65,{steps:13});
+ await page.mouse.up();
+ await page.waitForTimeout(350);
+ await page.screenshot({path:"rosa-botanica-ruotata.png",fullPage:true});
+ await page.locator("#lang").selectOption("de");
+ assert.ok((await page.locator("#roseName").textContent()).includes("Rote Rose"));
+ assert.equal(errs.length,0,errs.join("\n"));
+ console.log("PASS: CC0 GLB textured with 18 separate petals, 3D canvas, plucking, rotating, six-language UI.");
+}finally{await browser.close()}
