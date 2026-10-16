@@ -1,0 +1,8 @@
+{
+  "appId": "com.aivevia.petali",
+  "appName": "Petali",
+  "webDir": "gioco",
+  "server": {
+    "androidScheme": "https"
+  }
+}

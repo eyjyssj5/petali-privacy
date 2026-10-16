@@ -137,6 +137,9 @@
     },
   };
 
+  // Additional fully translated UI locales loaded after fiori.js.
+  if (window.PetaliLingueExtra) Object.assign(T, window.PetaliLingueExtra.UI);
+
   const COLORI = {
     "rosa-rossa": { petalo: "#d62839", centro: "#8f0a22" },
     "rosa-gialla": { petalo: "#f4c430", centro: "#d19a00" },
@@ -207,15 +210,28 @@
     return Math.abs(Math.sin((i + 1) * 12.9898));
   }
 
-  // Un petalo: un contenitore ruotato intorno al centro, con dentro l'immagine.
+  // Petali tridimensionali: superficie fotografica, anelli sfalsati e inclinazione.
+  // Il numero e' sempre deciso dalla logica originale al momento di iniziare.
   function creaPetalo(fiore, i, n) {
     const r = variazione(i);
+    const esterni = Math.ceil(n * 0.62);
+    const esterno = i < esterni;
+    const posizione = esterno ? i : i - esterni;
+    const quanti = esterno ? esterni : n - esterni;
     const contenitore = document.createElement("div");
     contenitore.className = "petalo-img";
-    contenitore.style.setProperty("--a", ((360 / n) * i + (r - 0.5) * 12).toFixed(1) + "deg");
-    contenitore.style.setProperty("--sx", ((i % 2 ? -1 : 1) * (0.9 + 0.2 * r)).toFixed(3));
+    const angolo = (360 / quanti) * posizione + (esterno ? 0 : 15) + (r - 0.5) * 8;
+    contenitore.style.setProperty("--a", angolo.toFixed(1) + "deg");
+    contenitore.style.setProperty("--sx", ((i % 2 ? -1 : 1) * (0.88 + 0.18 * r)).toFixed(3));
+    contenitore.style.setProperty("--sy", esterno ? "1" : ".74");
+    contenitore.style.setProperty("--pw", esterno ? "34%" : "29%");
+    contenitore.style.setProperty("--ph", esterno ? "45%" : "38%");
+    contenitore.style.setProperty("--radial", esterno ? "-8px" : "16px");
+    contenitore.style.setProperty("--twist", ((r - 0.5) * 26).toFixed(1) + "deg");
+    contenitore.style.setProperty("--tilt", (esterno ? 24 + r * 13 : 38 + r * 14).toFixed(1) + "deg");
+    contenitore.style.setProperty("--z", (esterno ? 15 + r * 8 : 28 + r * 6).toFixed(1) + "px");
+    contenitore.style.setProperty("--zindex", esterno ? "3" : "4");
     contenitore.style.setProperty("--colore", COLORI[fiore.id] ? COLORI[fiore.id].petalo : "#d62839");
-
     const img = document.createElement("img");
     img.alt = "";
     img.src = fiore.immagine;
@@ -224,16 +240,28 @@
     return contenitore;
   }
 
-  // Il fiore completo: solo i petali, senza centro.
   function costruisciFiore(fiore, n) {
     const cont = document.createElement("div");
     cont.className = "fiore";
+    cont.dataset.specie = fiore.id;
+    const stelo = document.createElement("div");
+    stelo.className = "stelo-3d";
+    cont.appendChild(stelo);
+    ["sinistra", "destra"].forEach((lato) => {
+      const foglia = document.createElement("div");
+      foglia.className = "foglia-3d " + lato;
+      cont.appendChild(foglia);
+    });
     const petali = [];
     for (let i = 0; i < n; i++) {
       const p = creaPetalo(fiore, i, n);
       cont.appendChild(p);
       petali.push(p);
     }
+    const centro = document.createElement("div");
+    centro.className = "corolla-3d";
+    centro.style.setProperty("--cuore", COLORI[fiore.id] ? COLORI[fiore.id].centro : "#5a2d24");
+    cont.appendChild(centro);
     return { cont, petali };
   }
 
@@ -259,7 +287,23 @@
       const sbloccato = fioreSbloccato(fiore);
       const carta = document.createElement("div");
       carta.className = sbloccato ? "carta" : "carta bloccato";
-      carta.appendChild(costruisciFiore(fiore, 12).cont);
+      const modello = costruisciFiore(fiore, 12).cont;
+      carta.appendChild(modello);
+      // Anteprima fotografica: usata solo se la nuova immagine e' stata caricata.
+      // Il modello resta sempre disponibile come alternativa; nel gioco i petali
+      // restano indipendenti e quindi realmente rimovibili uno per uno.
+      const anteprima = document.createElement("img");
+      anteprima.className = "foto-fiore-3d";
+      anteprima.alt = fiore.nome[lingua];
+      anteprima.hidden = true;
+      anteprima.loading = "lazy";
+      anteprima.addEventListener("load", () => {
+        modello.hidden = true;
+        anteprima.hidden = false;
+      });
+      anteprima.addEventListener("error", () => anteprima.remove());
+      carta.appendChild(anteprima);
+      anteprima.src = "img3d/" + fiore.id + ".webp";
       const nome = document.createElement("strong");
       nome.textContent = fiore.nome[lingua];
       const significato = document.createElement("small");
@@ -289,7 +333,19 @@
     fioreCorrente = fiore;
     petaliTolti = 0;
     fioreAttuale = null;
-    $("immagine-fiore").replaceChildren();
+    const areaFiore = $("immagine-fiore");
+    areaFiore.replaceChildren(costruisciFiore(fiore, 12).cont);
+    // Vista fotorealistica prima di iniziare. Durante la partita i petali
+    // sono invece separati, tridimensionali e staccabili.
+    const foto = new Image();
+    foto.className = "foto-fiore-3d grande";
+    foto.alt = fiore.nome[lingua];
+    foto.onload = () => {
+      if (fioreCorrente === fiore && !$("scelta-inizio").hidden) {
+        areaFiore.replaceChildren(foto);
+      }
+    };
+    foto.src = "img3d/" + fiore.id + ".webp";
 
     $("nome-fiore").textContent = fiore.nome[lingua];
     $("significato-fiore").textContent = t("significato") + " " + fiore.significato[lingua];
@@ -378,7 +434,8 @@
 
   // Vibrazione leggera per "M'ama", piu' forte per "Non m'ama".
   function vibra(mAma) {
-    const plugin = window.Capacitor && window.Capacitor.Plugins && window.Capacitor.Plugins.Haptics;
+    const plugin = (window.PetaliNative && window.PetaliNative.Haptics)
+      || (window.Capacitor && window.Capacitor.Plugins && window.Capacitor.Plugins.Haptics);
     if (plugin) {
       plugin.impact({ style: mAma ? "LIGHT" : "HEAVY" }).catch(() => {});
     } else if (navigator.vibrate) {
@@ -474,7 +531,10 @@
 
   function apriLegale(nome) {
     schermaPrecedente = schermaAttiva();
-    $("pagina-legale").src = "legal/" + lingua + "/" + nome + ".html";
+    // Legal documents need separate legal review before launching a new locale.
+    // Use the existing English pages for new locales until approved translations exist.
+    const linguaLegale = ["it", "en", "es"].includes(lingua) ? lingua : "en";
+    $("pagina-legale").src = "legal/" + linguaLegale + "/" + nome + ".html";
     mostra("legale");
   }
 
@@ -527,13 +587,21 @@
 
   // ---------- Pagamento: sblocco di tutti i fiori con Google Play, tramite RevenueCat ----------
 
-  // Da sostituire con la chiave pubblica Android di RevenueCat (Project settings > API keys).
-  const CHIAVE_REVENUECAT = "INSERISCI_LA_CHIAVE_REVENUECAT_ANDROID";
-  // Nome del diritto (entitlement) creato in RevenueCat per lo sblocco.
-  const DIRITTO_SBLOCCO = "sblocco";
-
+  // RevenueCat: chiavi SDK pubbliche distinte per Android e iOS.
+  // I pagamenti web restano disattivati: App Store e Google Play si configurano separatamente.
+  const DIRITTO_SBLOCCO = (window.PetaliPayments && window.PetaliPayments.entitlement) || "sblocco";
+  function piattaforma() {
+    return (window.PetaliNative && window.PetaliNative.platform)
+      || (window.Capacitor && window.Capacitor.getPlatform && window.Capacitor.getPlatform())
+      || "web";
+  }
+  function chiaveRevenueCat() {
+    const opzioni = window.PetaliPayments || {};
+    return piattaforma() === "ios" ? opzioni.ios : opzioni.android;
+  }
   function plugin() {
-    return window.Capacitor && window.Capacitor.Plugins && window.Capacitor.Plugins.Purchases;
+    return (window.PetaliNative && window.PetaliNative.Purchases)
+      || (window.Capacitor && window.Capacitor.Plugins && window.Capacitor.Plugins.Purchases);
   }
 
   function haDirittoSblocco(infoCliente) {
@@ -556,9 +624,10 @@
 
   async function configuraPagamenti() {
     const p = plugin();
-    if (!p) return;
+    const apiKey = chiaveRevenueCat();
+    if (!p || piattaforma() === "web" || !apiKey || apiKey.startsWith("INSERISCI_")) return;
     try {
-      await p.configure({ apiKey: CHIAVE_REVENUECAT });
+      await p.configure({ apiKey });
     } catch (errore) {
       return;
     }
