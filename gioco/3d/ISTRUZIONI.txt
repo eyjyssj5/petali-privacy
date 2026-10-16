@@ -1,0 +1,19 @@
+PETALI 3D - ANTEPRIMA WEBGL
+Versione sorgente della nuova anteprima browser, separata dal gioco originale.
+
+Link pubblico:
+https://eyjyssj5.github.io/petali-privacy/gioco/3d/
+
+I fiori sono superfici 3D reali renderizzate con Three.js/WebGL.
+15 tipologie, 6 lingue, gesto di rotazione sopra/sotto/destra/sinistra,
+zoom a due dita, petali singolarmente rimovibili, 9-21 petali variabili.
+
+Per eseguire LOCALMENTE, decomprimi lo ZIP e avvia un server statico
+nella cartella che contiene gioco/:
+  python3 -m http.server 8000
+Quindi apri:
+  http://localhost:8000/gioco/3d/
+
+Serve connessione internet per il modulo Three.js via jsDelivr.
+Questo ZIP è il sorgente WEB, non un APK/AAB/IPA per store.
+Android e iOS sono una fase successiva.
