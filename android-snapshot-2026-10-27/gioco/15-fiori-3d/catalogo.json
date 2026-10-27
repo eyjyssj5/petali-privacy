@@ -1,0 +1,111 @@
+[
+  {
+    "id": "rosa-rossa",
+    "nome": "Rosa rossa",
+    "file": "assets/rosa.glb",
+    "metodo": "rose",
+    "tinta": null,
+    "originale": true,
+    "miniatura": "miniature/rosa-rossa.png"
+  },
+  {
+    "id": "rosa-gialla",
+    "nome": "Rosa gialla",
+    "file": "assets/rosa-gialla.glb",
+    "metodo": "rose",
+    "tinta": null,
+    "originale": true,
+    "miniatura": "miniature/rosa-gialla.png"
+  },
+  {
+    "id": "tulipano",
+    "nome": "Tulipano rosso",
+    "file": "assets/tulipano.glb",
+    "metodo": "tulip",
+    "originale": true
+  },
+  {
+    "id": "orchidea",
+    "nome": "Orchidea",
+    "file": "assets/orchidea.glb",
+    "metodo": "orchid",
+    "originale": true
+  },
+  {
+    "id": "girasole",
+    "nome": "Girasole",
+    "file": "assets/girasole.glb",
+    "metodo": "sunflower",
+    "originale": true
+  },
+  {
+    "id": "ortensia",
+    "nome": "Ortensia",
+    "file": "assets/ortensia.glb",
+    "metodo": "hydrangea",
+    "originale": true
+  },
+  {
+    "id": "lavanda",
+    "nome": "Lavanda",
+    "file": "assets/lavanda.glb",
+    "metodo": "lavender",
+    "originale": false
+  },
+  {
+    "id": "ciliegio",
+    "nome": "Fiore di ciliegio",
+    "file": "assets/ciliegio.glb",
+    "metodo": "petals",
+    "originale": false
+  },
+  {
+    "id": "papavero",
+    "nome": "Papavero",
+    "file": "assets/papavero.glb",
+    "metodo": "petals",
+    "originale": false
+  },
+  {
+    "id": "iris",
+    "nome": "Iris",
+    "file": "assets/iris.glb",
+    "metodo": "petals",
+    "originale": false
+  },
+  {
+    "id": "garofano",
+    "nome": "Garofano rosso",
+    "file": "assets/garofano.glb",
+    "metodo": "petals",
+    "originale": false
+  },
+  {
+    "id": "viola",
+    "nome": "Viola",
+    "file": "assets/viola.glb",
+    "metodo": "petals",
+    "originale": false
+  },
+  {
+    "id": "peonia",
+    "nome": "Peonia",
+    "file": "assets/peonia.glb",
+    "metodo": "petals",
+    "originale": false
+  },
+  {
+    "id": "dalia",
+    "nome": "Dalia",
+    "file": "assets/dalia.glb",
+    "metodo": "petals",
+    "originale": false
+  },
+  {
+    "id": "ibisco",
+    "nome": "Ibisco",
+    "file": "assets/ibisco.glb",
+    "metodo": "petals",
+    "originale": false
+  }
+]

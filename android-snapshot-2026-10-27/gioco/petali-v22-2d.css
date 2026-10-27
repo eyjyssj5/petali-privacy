@@ -1,0 +1,75 @@
+/* Il gioco 2D usa la geometria e le immagini vere del pacchetto v22.
+   Regole limitate alle due schermate 2D: nessuna modifica alle pagine 3D. */
+#scelta #griglia-fiori .carta.petali-v22 {
+  display:block; width:100%; min-width:0; min-height:0; margin:0;
+  font:inherit; color:#3b2a3a; background:rgba(255,255,255,.93);
+  border:1px solid #ead9e6; border-radius:14px;
+  padding:10px 6px; text-align:center; cursor:pointer;
+  box-shadow:0 2px 6px rgba(122,46,92,.08); transform:none;
+}
+#scelta #griglia-fiori .carta.petali-v22 strong {
+  display:block; font:700 13px/1.35 Georgia,serif; margin-top:6px;
+  color:#3b2a3a;
+}
+#scelta #griglia-fiori .carta.petali-v22 small {
+  display:block; margin-top:3px; font:11px/1.3 Georgia,serif;
+  color:#8a6b82;
+}
+#scelta #griglia-fiori .carta.petali-v22 .petali-v22-stato {
+  display:block; font:700 11px/1.4 system-ui,sans-serif;
+  color:#864268; margin-top:7px;
+}
+#scelta #griglia-fiori .carta.petali-v22 .petali-v22-stato.libero{color:#25704b}
+#scelta #griglia-fiori .carta.petali-v22.bloccato {opacity:1}
+#scelta #griglia-fiori .carta.petali-v22:focus-visible {outline:3px solid #a34471;outline-offset:3px}
+#scelta #griglia-fiori {display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:12px}
+#scelta #griglia-fiori .carta.petali-v22 .fiore,
+#gioco #immagine-fiore .fiore {
+  display:block; position:relative; width:300px; height:300px; margin:0 auto;
+  transform:none; transform-style:flat; perspective:none; filter:none;
+  background:none; border:0; box-shadow:none; overflow:visible;
+}
+#scelta #griglia-fiori .carta.petali-v22 .fiore {width:140px;height:140px}
+#gioco #immagine-fiore {display:flex;justify-content:center;align-items:center;min-height:300px}
+#scelta #griglia-fiori .carta.petali-v22 .fiore .petalo-img,
+#gioco #immagine-fiore .fiore .petalo-img {
+  position:absolute; left:50%; bottom:50%; top:auto;
+  height:40%; width:auto; aspect-ratio:901 / 991;
+  border:0; background:none; box-shadow:none; clip-path:none;
+  transform-origin:50% 100%; transform-style:flat;
+  transform:translateX(-50%) rotate(var(--a)) scale(var(--sx),1);
+  transition:transform .9s ease,opacity .9s ease,filter .9s ease,visibility 0s .9s;
+  pointer-events:none; opacity:1; visibility:visible;
+}
+#scelta #griglia-fiori .carta.petali-v22 .fiore .petalo-img img,
+#gioco #immagine-fiore .fiore .petalo-img img {
+  width:100%; height:100%; display:block; object-fit:contain;
+  filter:none; transform:none; opacity:1;
+}
+#scelta #griglia-fiori .carta.petali-v22 .fiore .petalo-img.riserva,
+#gioco #immagine-fiore .fiore .petalo-img.riserva {
+  background:var(--colore);border-radius:50% 50% 50% 50%/75% 75% 25% 25%;
+}
+#scelta #griglia-fiori .carta.petali-v22 .fiore .petalo-img.riserva img,
+#gioco #immagine-fiore .fiore .petalo-img.riserva img {display:none}
+#gioco #immagine-fiore .fiore .petalo-img.tolto {
+  visibility:hidden;opacity:0;
+}
+#gioco #immagine-fiore .fiore .petalo-img.tolto.mama {
+  transform:translateX(calc(-50% + 150px)) rotate(var(--a)) scale(var(--sx),1);
+  filter:saturate(1.4) brightness(1.1)
+}
+#gioco #immagine-fiore .fiore .petalo-img.tolto.nonmama {
+  transform:translateX(calc(-50% - 150px)) rotate(var(--a)) scale(var(--sx),1);
+  filter:grayscale(1) brightness(.9)
+}
+#scelta #griglia-fiori .carta.petali-v22 .fiore .corolla-3d,
+#scelta #griglia-fiori .carta.petali-v22 .fiore .foglia-3d,
+#scelta #griglia-fiori .carta.petali-v22 .fiore .stelo-3d,
+#gioco #immagine-fiore .fiore .corolla-3d,
+#gioco #immagine-fiore .fiore .foglia-3d,
+#gioco #immagine-fiore .fiore .stelo-3d {display:none!important}
+#scelta #griglia-fiori .carta.petali-v22 .fiore.inclina-destra,
+#gioco #immagine-fiore .fiore.inclina-destra {animation:inclina-destra .7s ease}
+#scelta #griglia-fiori .carta.petali-v22 .fiore.inclina-sinistra,
+#gioco #immagine-fiore .fiore.inclina-sinistra {animation:inclina-sinistra .7s ease}

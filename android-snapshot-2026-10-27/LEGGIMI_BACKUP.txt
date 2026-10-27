@@ -1,0 +1,7 @@
+SNAPSHOT ANDROID PETALI PRIMA DELLA PULIZIA - 27/10/2026
+Fonte: cartella di sviluppo ~/petali-compilazione-finale del PC.
+Codice e asset di sviluppo. NON e' una copia dell'APK gia' installato sul telefono.
+Chiavi, segreti, build e APK NON sono inclusi.
+I 2D v22 non devono essere alterati.
+Per un ripristino completo e' necessario conservare anche l'APK locale e il keystore
+in un'area PRIVATA sicura, mai nel repository GitHub pubblico.

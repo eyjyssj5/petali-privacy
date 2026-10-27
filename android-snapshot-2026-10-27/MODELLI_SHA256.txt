@@ -1,0 +1,16 @@
+24de2b9fbaa7d7cebbada76401dd0f9abd726f23dcab662508e1af723b6d6c5d  gioco/15-fiori-3d/assets/ciliegio.glb
+23fe8858071047f66752d0cc357a3a4f8d035a4934e6143cab8cf981b5f7a09d  gioco/15-fiori-3d/assets/dalia.glb
+7c9c1fa2dd49a1b39e81060cff21c5e96cb105d6069b580d3b0fecc5733be23b  gioco/15-fiori-3d/assets/garofano.glb
+80e7ec20adb368529e64dfd877ea56098094719c13cf292d5ec1b0932829ebc2  gioco/15-fiori-3d/assets/girasole.glb
+c8b92e9ca82cc324f29444b66ec5751d0bae98cecb82d2360218c8528a770c88  gioco/15-fiori-3d/assets/ibisco.glb
+d9815ca01b07c8738fca700310e78b7d96da5f17c2fcd061f1dad8d9b5a9bba8  gioco/15-fiori-3d/assets/iris.glb
+2989f2df08a2abdebab351ccc46899be17aaef59d812c45f9549b0c52bf5abd9  gioco/15-fiori-3d/assets/lavanda.glb
+6442d76c5e965ba0e1ddbc4abc67486985de22dec63143d0cd200de1ef53b6d4  gioco/15-fiori-3d/assets/orchidea.glb
+f05f54d6d4c47eb9aaaca01279b5cd0e1096e4117b0fa722916bcb659aed69c6  gioco/15-fiori-3d/assets/ortensia.glb
+91cf5840f570dcd35a6a2479554ae804f294e718bc0d6cb10c1cbcfb0a82976d  gioco/15-fiori-3d/assets/papavero.glb
+b5cb144d5d201b9c4bce103022784897c2afeb978e13cc5ea8fbdaa1f3ca397a  gioco/15-fiori-3d/assets/peonia.glb
+95d10e2da667157ccef1ef5273278c8c455b2c358d7cca801388e74a31062b2b  gioco/15-fiori-3d/assets/rosa-gialla.glb
+55107b95b346c07ac6d97fb0e62ce7ca03197353f350100a6a227e34bd439a53  gioco/15-fiori-3d/assets/rosa.glb
+4b7e6f4bcc337c7a8896173a5242b2532bce59799b0b8b6a219f6eae4147ae92  gioco/15-fiori-3d/assets/tulipano.glb
+74c95faeae8bdfb16228b807c8aa0e09b1b364894528c5d1250d620f6baec71f  gioco/15-fiori-3d/assets/viola.glb
+67add04d18251a9f8dcaf33f384c90088dd0871d789aec32223eb7e605e1a9f5  gioco/15-fiori-3d/player.js

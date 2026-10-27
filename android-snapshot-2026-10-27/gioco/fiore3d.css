@@ -1,0 +1,97 @@
+/* Petali: scena con profondita' CSS 3D, immagini di petali originali e distacco animato. */
+.fiore {
+  isolation:isolate; perspective:800px; transform-style:preserve-3d;
+  overflow:visible;
+  filter:drop-shadow(0 13px 12px rgba(87,38,67,.17));
+}
+.fiore .stelo-3d {
+  position:absolute; left:48.5%; top:48%; width:3.5%; height:48%;
+  z-index:0; border-radius:16px;
+  background:linear-gradient(90deg,#26452a 0%,#639e42 28%,#b2c67b 47%,#2b622d 75%,#1b4726 100%);
+  box-shadow:inset -2px 1px 3px #26512c,4px 5px 5px #513c3d22;
+  transform:rotate(2deg);
+}
+.fiore .foglia-3d {
+  position:absolute; width:24%; height:12%; z-index:1;
+  border-radius:4% 95% 4% 95%; overflow:hidden;
+  background:linear-gradient(145deg,#a5c57c 0%,#2e773b 30%,#144b2c 70%,#5c9c52 100%);
+  box-shadow:inset 1px 1px 2px #bbd99a, 2px 5px 7px #1b4d2d4d;
+}
+.fiore .foglia-3d::after {
+  content:""; position:absolute; height:1px; width:110%; background:#a8c79a;
+  top:55%; left:0; transform:rotate(-14deg); box-shadow:0 1px 1px #1b4523;
+}
+.fiore .foglia-3d.sinistra { left:24%; top:68%; transform:rotate(-37deg) skewY(-7deg); }
+.fiore .foglia-3d.destra { right:23%; top:79%; transform:rotate(137deg) skewY(-6deg); }
+.fiore .petalo-img {
+  z-index:var(--zindex, 3);
+  bottom:50%; left:50%;
+  width:var(--pw,30%); height:var(--ph,42%);
+  aspect-ratio:auto;
+  transform-style:preserve-3d;
+  transform-origin:50% 96%;
+  backface-visibility:visible;
+  transform:translateX(-50%) rotateZ(var(--a)) translateY(var(--radial,0px)) rotateY(var(--twist,0deg)) rotateX(var(--tilt,18deg)) translateZ(var(--z,8px)) scale(var(--sx,1),var(--sy,1));
+  transition:transform .9s cubic-bezier(.17,.67,.22,1),opacity .85s ease,filter .8s ease,visibility 0s .9s;
+  will-change:transform,opacity;
+}
+.fiore .petalo-img img {
+  width:100%; height:100%; object-fit:fill;
+  filter:drop-shadow(3px 4px 3px rgba(73,19,47,.30));
+  pointer-events:none; user-select:none; -webkit-user-drag:none;
+}
+.fiore .petalo-img.riserva {
+  background:radial-gradient(ellipse at 38% 29%,#fff7 0%,transparent 45%),linear-gradient(105deg,#0003,var(--colore),#fff4);
+  border-radius:55% 58% 47% 46% / 78% 78% 26% 26%;
+  box-shadow:inset 1px 2px 3px #fff6, 4px 7px 5px #0002;
+}
+.fiore .petalo-img.tolto {pointer-events:none;opacity:0;visibility:hidden;}
+.fiore .petalo-img.tolto.mama {
+  transform:translateX(calc(-50% + 175px)) rotateZ(calc(var(--a) + 28deg)) translateY(-100px) rotateY(75deg) rotateX(60deg) translateZ(140px) scale(var(--sx,1),var(--sy,1));
+  filter:saturate(1.7) brightness(1.2);
+}
+.fiore .petalo-img.tolto.nonmama {
+  transform:translateX(calc(-50% - 175px)) rotateZ(calc(var(--a) - 28deg)) translateY(-90px) rotateY(-75deg) rotateX(60deg) translateZ(130px) scale(var(--sx,1),var(--sy,1));
+  filter:grayscale(1) brightness(.7);
+}
+.fiore .corolla-3d {
+  position:absolute; left:50%; top:50%; z-index:100; width:14%; height:14%;
+  transform:translate(-50%,-50%) translateZ(55px); border-radius:50%;
+  background:radial-gradient(circle at 28% 25%,#fff6,transparent 28%),
+    radial-gradient(circle at 48% 60%,var(--cuore,#5a2d24),#25131b 95%);
+  box-shadow:inset 2px 3px 4px #fff4, inset -4px -6px 9px #0007, 0 4px 5px #0004;
+  pointer-events:none;
+}
+.fiore[data-specie="girasole"] .corolla-3d {
+  width:31%; height:31%; --cuore:#634022;
+  background:radial-gradient(circle at 50% 50%,#30231c 0 18%,transparent 20%),
+    repeating-radial-gradient(circle at 50% 50%,#e9ab37 0 2px,#4c2a17 2px 5px,#1c181b 5px 7px);
+}
+.fiore[data-specie="papavero"] .corolla-3d { width:20%; height:20%; --cuore:#212020; }
+.fiore[data-specie="viola"] .corolla-3d,
+.fiore[data-specie="iris"] .corolla-3d { --cuore:#f6bb21; }
+.fiore[data-specie="rosa-rossa"] .corolla-3d,
+.fiore[data-specie="rosa-gialla"] .corolla-3d,
+.fiore[data-specie="tulipano-rosso"] .corolla-3d,
+.fiore[data-specie="peonia"] .corolla-3d,
+.fiore[data-specie="garofano-rosso"] .corolla-3d,
+.fiore[data-specie="dalia"] .corolla-3d { width:9%;height:9%;opacity:.8; }
+.fiore[data-specie="lavanda"] .corolla-3d { width:5%;height:8%; }
+.fiore[data-specie="ortensia"] .corolla-3d { width:9%;height:9%; }
+.fiore[data-specie="ibisco"] .corolla-3d { --cuore:#7d112b; }
+.fiore[data-specie="ibisco"] .corolla-3d::after {
+  content:""; position:absolute; width:9%;height:100%;left:46%;bottom:43%;
+  border-radius:10px;background:linear-gradient(90deg,#cf5037,#f8bc4d,#d53d4c);
+  transform:rotate(35deg);transform-origin:bottom;
+}
+.fiore[data-specie="orchidea"] .corolla-3d {--cuore:#eaba46;}
+.fiore[data-specie="ciliegio"] .corolla-3d {--cuore:#f1b82e;}
+.carta .fiore {filter:drop-shadow(0 7px 7px #4e2c4030);}
+.carta .fiore .foglia-3d {box-shadow:none;}
+.carta .fiore .petalo-img img {filter:drop-shadow(1px 2px 2px #0004);}
+@media (prefers-reduced-motion:reduce) {
+  .fiore .petalo-img {transition:opacity .15s ease,visibility 0s .15s;}
+  .fiore.inclina-destra,.fiore.inclina-sinistra {animation:none;}
+}
+
+.carta .foto-fiore-3d { width:140px; height:140px; max-width:100%; object-fit:contain; margin:0 auto; filter:drop-shadow(0 8px 5px rgba(40,24,35,.2)); }
