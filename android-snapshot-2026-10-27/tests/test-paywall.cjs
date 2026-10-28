@@ -6,7 +6,7 @@ const source = fs.readFileSync(require('node:path').join(__dirname, '../gioco/pa
 function scenario(platform='android') {
   let entitlements={}; let chosen=null;
   const sdk={
-    async configure(opts){assert.equal(opts.apiKey,'goog_example');},
+    async configure(opts){assert.equal(opts.apiKey,'goog_example_long_test_1234');},
     async getCustomerInfo(){return {customerInfo:{entitlements:{active:entitlements}}};},
     async getOfferings(){return {all:{
       fiori_2d:{availablePackages:[{identifier:'premium2d',packageType:'LIFETIME'}]},
@@ -20,7 +20,7 @@ function scenario(platform='android') {
     },
     async restorePurchases(){return {customerInfo:{entitlements:{active:entitlements}}};}
   };
-  const window={PetaliPayments:{android:'goog_example',ios:'appl_example',entitlement2d:'fiori_2d',entitlement3d:'fiori_3d',offering2d:'fiori_2d',offering3d:'fiori_3d'},PetaliNative:{platform,Purchases:sdk}};
+  const window={PetaliPayments:{android:'goog_example_long_test_1234',ios:'appl_example_long_test_1234',entitlement2d:'fiori_2d',entitlement3d:'fiori_3d',offering2d:'fiori_2d',offering3d:'fiori_3d'},PetaliNative:{platform,Purchases:sdk}};
   vm.runInNewContext(source,{window});
   return {pay:window.PetaliCommerce, sdk, setEnts:x=>entitlements=x, chosen:()=>chosen};
 }
