@@ -10,7 +10,7 @@
   const sdk = () => window.PetaliNative?.Purchases || window.Capacitor?.Plugins?.Purchases;
   const key = () => platform() === 'ios' ? config.ios : config.android;
   const entName = kind => kind === '3d' ? (config.entitlement3d || 'fiori_3d') : (config.entitlement2d || 'fiori_2d');
-  const validKey = s => typeof s === 'string' && s.length > 6 && !/^(INSERISCI_|YOUR_|TODO)/i.test(s);
+  const validKey = s => typeof s === 'string' && /^(goog_|appl_|test_)/.test(s) && s.length > 12 && !/INSERISCI_|YOUR_|TODO/i.test(s);
   function emit() { for (const fn of listeners) { try { fn({ ...rights }); } catch (_) {} } }
   function apply(info) {
     const active = info?.entitlements?.active || {};
