@@ -11,6 +11,9 @@ jobs:
   android-apk:
     runs-on: ubuntu-latest
     timeout-minutes: 60
+    env:
+      REVENUECAT_ANDROID_PUBLIC_KEY: ${{ vars.REVENUECAT_ANDROID_PUBLIC_KEY }}
+      REVENUECAT_IOS_PUBLIC_KEY: ${{ vars.REVENUECAT_IOS_PUBLIC_KEY }}
     steps:
       - name: Carica sorgenti Petali
         uses: actions/checkout@v4
