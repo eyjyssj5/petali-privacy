@@ -25,7 +25,6 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          cp -a ../gioco/. gioco/
           npm ci --no-audit --no-fund
           npm run build:bridge
           npx cap add ios
