@@ -39,3 +39,16 @@ test('diritto legacy sblocco solo 2D',async()=>{
 test('browser web non concede premium',async()=>{
  const {pay}=scenario('web');await pay.refresh();assert.equal(pay.has('2d'),false);assert.equal(pay.has('3d'),false);await assert.rejects(()=>pay.buy('3d'));
 });
+
+test('chiavi segnaposto disabilitano acquisti senza aprire RevenueCat',async()=>{
+  const window={
+    PetaliPayments:{android:'INSERISCI_CHIAVE_PUBBLICA_REVENUECAT_ANDROID',ios:'INSERISCI_CHIAVE_PUBBLICA_REVENUECAT_IOS'},
+    PetaliNative:{platform:'android',Purchases:{async configure(){throw new Error('NON DEVE CONFIGURARE')}}}
+  };
+  vm.runInNewContext(source,{window});
+  const pay=window.PetaliCommerce;
+  assert.equal(pay.ready(),false);
+  await assert.rejects(()=>pay.buy('2d'),/non sono disponibili/);
+  assert.equal(pay.has('2d'),false);
+  assert.equal(pay.has('3d'),false);
+});
