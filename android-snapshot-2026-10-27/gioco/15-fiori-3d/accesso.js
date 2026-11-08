@@ -38,6 +38,9 @@
     const cap=document.createElement('small');cap.textContent=nome+' · 🔒';cap.style.cssText='display:block;color:#fff;font:11px/1.3 system-ui,sans-serif';
     card.append(img,cap);gallery.append(card);
   }
+  const acquistiDisponibili = commerce?.ready?.() === true;
+  buy.disabled = !acquistiDisponibili;
+  restore.disabled = !acquistiDisponibili;
   gate.append(title, note, gallery, status, buy, restore, back);
 
   document.body.append(gate);
@@ -57,8 +60,8 @@
     try {
       await commerce.refresh();
       if (commerce.has('3d')) { unlock(); return; }
-      status.textContent = commerce.platform() === 'web'
-        ? 'Per acquistare o ripristinare, apri l’app Android/iOS.'
+      status.textContent = !acquistiDisponibili
+        ? 'Gli acquisti 3D non sono disponibili in questa versione di prova.'
         : 'Per giocare in 3D è necessario un acquisto verificato.';
     } catch (e) { status.textContent = 'Impossibile verificare l’acquisto: '+message(e); }
   }
