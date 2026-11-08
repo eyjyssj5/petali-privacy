@@ -20,9 +20,9 @@
     };
     emit();
   }
+  const ready = () => (platform() === 'ios' || platform() === 'android') && Boolean(sdk()) && validKey(key());
   async function init() {
-    if (platform() !== 'ios' && platform() !== 'android') return false;
-    if (!sdk() || !validKey(key())) return false;
+    if (!ready()) return false;
     if (!started) {
       started = sdk().configure({ apiKey: key() }).then(() => true).catch(e => {
         started = null;
@@ -45,7 +45,7 @@
   }
   async function buy(kind) {
     if (!['2d','3d'].includes(kind)) throw new Error('Tipo di acquisto non valido');
-    if (!(await init())) throw new Error('Acquisti non configurati: imposta RevenueCat e usa Android/iOS');
+    if (!(await init())) throw new Error('Gli acquisti non sono disponibili in questa versione di prova. I fiori gratuiti restano utilizzabili.');
     const offerings = await sdk().getOfferings();
     const desired = kind === '3d' ? (config.offering3d || 'fiori_3d') : (config.offering2d || 'fiori_2d');
     const offering = offerings?.all?.[desired] || (offerings?.current?.identifier === desired ? offerings.current : null);
@@ -61,14 +61,14 @@
     return true;
   }
   async function restore() {
-    if (!(await init())) throw new Error('Ripristino disponibile soltanto nell’app con RevenueCat configurato');
+    if (!(await init())) throw new Error('Ripristino non disponibile in questa versione di prova.');
     const restored = await sdk().restorePurchases();
     apply(restored?.customerInfo);
     await refresh();
     return { ...rights };
   }
   window.PetaliCommerce = Object.freeze({
-    platform, init, refresh, buy, restore,
+    platform, ready, init, refresh, buy, restore,
     has: kind => Boolean(rights[kind]),
     subscribe: fn => { listeners.add(fn); return () => listeners.delete(fn); }
   });
