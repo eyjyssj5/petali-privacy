@@ -1,0 +1,49 @@
+name: Petali iOS IPA (non firmato)
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/petali-ios.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  ios:
+    runs-on: macos-15
+    timeout-minutes: 60
+    steps:
+      - name: Carica sorgenti Petali
+        uses: actions/checkout@v4
+        with:
+          ref: release/petali-pagamenti-verifica-2026-10-28
+      - name: Node.js 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Crea e sincronizza iOS
+        working-directory: android-snapshot-2026-10-27
+        shell: bash
+        run: |
+          set -euo pipefail
+          cp -a ../gioco/. gioco/
+          npm ci --no-audit --no-fund
+          npm run build:bridge
+          npx cap add ios
+          npx cap sync ios
+      - name: Compila per iPhone senza firma
+        working-directory: android-snapshot-2026-10-27/ios/App
+        shell: bash
+        run: |
+          set -euo pipefail
+          xcodebuild -workspace App.xcworkspace -scheme App -configuration Release -sdk iphoneos -destination 'generic/platform=iOS' CODE_SIGNING_ALLOWED=NO -derivedDataPath build build
+          mkdir -p export/Payload
+          cp -R build/Build/Products/Release-iphoneos/App.app export/Payload/
+          cd export
+          zip -q -r ../Petali-iOS-UNSIGNED.ipa Payload
+      - name: Pubblica build iOS non firmata
+        uses: actions/upload-artifact@v4
+        with:
+          name: Petali-iOS-UNSIGNED
+          path: android-snapshot-2026-10-27/ios/App/Petali-iOS-UNSIGNED.ipa
+          if-no-files-found: error
+          retention-days: 30
