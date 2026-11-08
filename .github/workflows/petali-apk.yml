@@ -6,7 +6,7 @@ on:
       - '.github/workflows/petali-apk.yml'
   workflow_dispatch:
 permissions:
-  contents: read
+  contents: write
 jobs:
   android-apk:
     runs-on: ubuntu-latest
@@ -46,10 +46,34 @@ jobs:
           printf '\nandroid.useAndroidX=true\nandroid.enableJetifier=true\n' >> gradle.properties
           chmod +x gradlew
           ./gradlew --no-daemon assembleDebug
+      - name: Prepara file APK da distribuire
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p dist
+          cp android-snapshot-2026-10-27/android/app/build/outputs/apk/debug/app-debug.apk dist/Petali-Android-Prova.apk
+          unzip -tq dist/Petali-Android-Prova.apk > /dev/null
+          test -s dist/Petali-Android-Prova.apk
       - name: Pubblica APK scaricabile
         uses: actions/upload-artifact@v4
         with:
           name: Petali-Android-APK
-          path: android-snapshot-2026-10-27/android/app/build/outputs/apk/debug/app-debug.apk
+          path: dist/Petali-Android-Prova.apk
           if-no-files-found: error
           retention-days: 30
+
+      - name: Pubblica link diretto GitHub (release di prova)
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          TAG="petali-android-prova-2026-11-08"
+          if gh release view "$TAG" >/dev/null 2>&1; then
+            gh release upload "$TAG" dist/Petali-Android-Prova.apk --clobber
+          else
+            gh release create "$TAG" dist/Petali-Android-Prova.apk \
+              --title "Petali Android - versione di prova" \
+              --notes "APK debug di prova. I pagamenti Premium sono disabilitati finche RevenueCat e Google Play non risultano configurati e verificati. Non e una release pronta per Play Store." \
+              --prerelease --target "$GITHUB_SHA"
+          fi
