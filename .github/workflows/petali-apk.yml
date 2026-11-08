@@ -34,7 +34,6 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          cp -a ../gioco/. gioco/
           python3 verifica_petali.py
           npm ci --no-audit --no-fund
           npm test
