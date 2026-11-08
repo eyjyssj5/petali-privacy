@@ -267,8 +267,11 @@
   function costruisciGriglia() {
     const griglia = $("griglia-fiori");
     griglia.replaceChildren();
+    const acquistiDisponibili = window.PetaliCommerce?.ready?.() === true;
     $("btn-sblocca").hidden = acquistato;
-    $("btn-sblocca").textContent = t("acquistaFiori") || "Sblocca 12 fiori 2D";
+    $("btn-sblocca").disabled = !acquistiDisponibili;
+    $("btn-sblocca").textContent = acquistiDisponibili ? (t("acquistaFiori") || "Sblocca 12 fiori 2D") : "Acquisti non disponibili in questa versione di prova";
+    $("btn-ripristina").disabled = !acquistiDisponibili;
     Fiori.FIORI.forEach((fiore) => {
       const libero = fioreSbloccato(fiore);
       const carta = document.createElement("button");
@@ -284,9 +287,10 @@
       stato.className = "petali-v22-stato" + (libero ? " libero" : "");
       stato.textContent = libero ? "✓ GRATIS 2D" : "🔒 PREMIUM 2D";
       carta.append(nome, significato, stato);
+      carta.disabled = !libero && !acquistiDisponibili;
       carta.addEventListener("click", () => {
         if (libero) apriFiore(fiore);
-        else void compra();
+        else if (acquistiDisponibili) void compra();
       });
       griglia.appendChild(carta);
     });
