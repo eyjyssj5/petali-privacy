@@ -1,0 +1,50 @@
+name: Petali Android APK
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/petali-apk.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  android-apk:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - name: Carica sorgenti Petali
+        uses: actions/checkout@v4
+        with:
+          ref: release/petali-pagamenti-verifica-2026-10-28
+      - name: Node.js 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Java 21
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+      - name: Android SDK
+        uses: android-actions/setup-android@v3
+      - name: Verifica e compila APK
+        working-directory: android-snapshot-2026-10-27
+        shell: bash
+        run: |
+          set -euo pipefail
+          cp -a ../gioco/. gioco/
+          python3 verifica_petali.py
+          npm ci --no-audit --no-fund
+          npm test
+          npm run build:bridge
+          npx cap sync android
+          cd android
+          chmod +x gradlew
+          ./gradlew --no-daemon assembleDebug
+      - name: Pubblica APK scaricabile
+        uses: actions/upload-artifact@v4
+        with:
+          name: Petali-Android-APK
+          path: android-snapshot-2026-10-27/android/app/build/outputs/apk/debug/app-debug.apk
+          if-no-files-found: error
+          retention-days: 30
