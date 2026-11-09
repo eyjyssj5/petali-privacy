@@ -60,11 +60,12 @@ let removedCount=0;
 function numberPetals(count,previous){const mn=Math.min(9,count),mx=Math.min(21,count);if(mx<=mn)return mx;let n=mn+Math.floor(Math.random()*(mx-mn+1));if(n===previous)n=n<mx?n+1:mn;return n;}
 function shuffle(a){for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
 function previewPay(){return window.PetaliCommerce?.has('3d')===true;} // solo entitlement reale RevenueCat
-function showStage(){const canplay=previewPay();
+function showStage(){const canplay=previewPay();const ready=window.PetaliCommerce?.ready?.()===true;
+ $('buy3d').disabled=!ready;$('restore3d').disabled=!ready;
  if(!canplay&&phase==='play'){phase='pick';remaining=[];parts=[];removedCount=0;model?.groups.forEach(g=>g.visible=true);}
  $('payRow').hidden=canplay;$('playIntro').hidden=!canplay||phase!=='pick'||!model;$('playActive').hidden=!canplay||phase!=='play';$('playResult').hidden=!canplay||phase!=='end';}
  async function refreshPremium(){const commerce=window.PetaliCommerce;if(!commerce){$('payStatus').textContent='Pagamenti non disponibili';showStage();return;}
- try{await commerce.refresh();$('payStatus').textContent=commerce.has('3d')?'Accesso verificato.':'Sblocca i fiori 3D per giocare.';}
+ try{await commerce.refresh();$('payStatus').textContent=commerce.has('3d')?'Accesso verificato.':(!commerce.ready()?'Acquisti Premium non ancora disponibili in questa versione.':'Sblocca tutti i fiori 3D con un unico acquisto.');}
  catch(e){$('payStatus').textContent='Verifica acquisti non riuscita: '+(e?.message||e);}
  showStage();}
 function start(yes){if(!model)return;hideRosePhoto();if(!previewPay()){$('payRow').hidden=false;$('payStatus').textContent='La partita completa richiede lo sblocco Premium.';return;}
