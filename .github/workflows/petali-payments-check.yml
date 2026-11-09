@@ -1,0 +1,32 @@
+name: Petali - test acquisti premium
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/petali-payments-check.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  test-acquisti:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout sorgenti Petali in release
+        uses: actions/checkout@v4
+        with:
+          ref: release/petali-pagamenti-verifica-2026-10-28
+      - name: Node 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Controlla app e pagamenti
+        working-directory: android-snapshot-2026-10-27
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 verifica_petali.py
+          npm ci --no-audit --no-fund
+          npm test
+          npm run build:bridge
+          test -s gioco/native-bridge.js
