@@ -565,6 +565,9 @@
     aggiornaAccesso3D();
   }
 
+  // Il bottone principale Premium deve avviare realmente il flusso di acquisto.
+  $("btn-sblocca").addEventListener('click', () => { void compra(); });
+
   $("btn-ripristina").addEventListener('click', async () => {
     try {
       await commerce.restore();
