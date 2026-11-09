@@ -52,3 +52,41 @@ test('chiavi segnaposto disabilitano acquisti senza aprire RevenueCat',async()=>
   assert.equal(pay.has('2d'),false);
   assert.equal(pay.has('3d'),false);
 });
+
+test('ripristino acquisto non consumabile 3D mantiene 2D separato',async()=>{
+  const {pay,setEnts}=scenario();
+  setEnts({fiori_3d:{isActive:true}});
+  const rights=await pay.restore();
+  assert.equal(rights['3d'],true);
+  assert.equal(rights['2d'],false);
+});
+test('iOS usa la chiave Apple e sblocca solo il 3D pagato',async()=>{
+  let chosen=null;
+  const entitlements={};
+  const sdk={
+    async configure({apiKey}){assert.equal(apiKey,'appl_example_long_test_1234');},
+    async getOfferings(){return {all:{fiori_3d:{lifetime:{identifier:'ios3d',packageType:'LIFETIME'}}}};},
+    async getCustomerInfo(){return {customerInfo:{entitlements:{active:entitlements}}};},
+    async purchasePackage({aPackage}){chosen=aPackage.identifier;entitlements.fiori_3d={isActive:true};return {customerInfo:{entitlements:{active:entitlements}}};}
+  };
+  const window={PetaliPayments:{android:'goog_example_long_test_1234',ios:'appl_example_long_test_1234',entitlement2d:'fiori_2d',entitlement3d:'fiori_3d',offering2d:'fiori_2d',offering3d:'fiori_3d'},PetaliNative:{platform:'ios',Purchases:sdk}};
+  vm.runInNewContext(source,{window});
+  const pay=window.PetaliCommerce;
+  await pay.buy('3d');
+  assert.equal(chosen,'ios3d');
+  assert.equal(pay.has('3d'),true);
+  assert.equal(pay.has('2d'),false);
+});
+test('non compra pacchetti mensili quando manca il pacchetto Lifetime',async()=>{
+  const window={
+    PetaliPayments:{android:'goog_example_long_test_1234',offering3d:'fiori_3d'},
+    PetaliNative:{platform:'android',Purchases:{
+      async configure(){},
+      async getOfferings(){return {all:{fiori_3d:{availablePackages:[{identifier:'mensile',packageType:'MONTHLY'}]}}};},
+      async purchasePackage(){throw Error('NON DEVE ACQUISTARE UN ABBONAMENTO');}
+    }}
+  };
+  vm.runInNewContext(source,{window});
+  await assert.rejects(()=>window.PetaliCommerce.buy('3d'),/Lifetime/);
+  assert.equal(window.PetaliCommerce.has('3d'),false);
+});
