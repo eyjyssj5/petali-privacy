@@ -43,15 +43,20 @@
     }
     return { ...rights };
   }
-  async function buy(kind) {
+  async function product(kind) {
     if (!['2d','3d'].includes(kind)) throw new Error('Tipo di acquisto non valido');
     if (!(await init())) throw new Error('Gli acquisti non sono disponibili in questa versione di prova. I fiori gratuiti restano utilizzabili.');
     const offerings = await sdk().getOfferings();
     const desired = kind === '3d' ? (config.offering3d || 'fiori_3d') : (config.offering2d || 'fiori_2d');
     const offering = offerings?.all?.[desired] || (offerings?.current?.identifier === desired ? offerings.current : null);
-    if (!offering) throw new Error('Offerta '+desired+' non configurata in RevenueCat');
-    const pack = offering.lifetime || offering.availablePackages?.find(p => p.packageType === 'LIFETIME') || offering.availablePackages?.[0];
-    if (!pack) throw new Error('Prodotto non disponibile per '+desired);
+    if (!offering) throw new Error('Offerta ' + desired + ' non configurata in RevenueCat');
+    // Petali vende uno sblocco permanente: mai comprare per errore una sottoscrizione.
+    const pack = offering.lifetime || offering.availablePackages?.find(p => p.packageType === 'LIFETIME');
+    if (!pack) throw new Error('Pacchetto Lifetime non disponibile per ' + desired);
+    return pack;
+  }
+  async function buy(kind) {
+    const pack = await product(kind);
     const purchase = await sdk().purchasePackage({ aPackage: pack });
     apply(purchase?.customerInfo);
     if (!rights[kind]) {
@@ -68,7 +73,7 @@
     return { ...rights };
   }
   window.PetaliCommerce = Object.freeze({
-    platform, ready, init, refresh, buy, restore,
+    platform, ready, init, refresh, product, buy, restore,
     has: kind => Boolean(rights[kind]),
     subscribe: fn => { listeners.add(fn); return () => listeners.delete(fn); }
   });
