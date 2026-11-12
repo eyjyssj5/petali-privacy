@@ -17,11 +17,22 @@ guard let source = NSImage(contentsOfFile: sourcePath),
     fputs("Logo o catalogo icone iOS non trovato.\n", stderr)
     exit(2)
 }
+// Alcuni template Capacitor generano il catalogo senza un filename.
+// In quel caso configuriamo esplicitamente l'icona universale richiesta da iOS.
+let iconEntries = images
+if !images.contains(where: { ($0["filename"] as? String)?.isEmpty == false }) {
+    iconEntries = [["idiom": "universal", "platform": "ios",
+                    "size": "1024x1024", "filename": "AppIcon-512@2x.png"]]
+    var newCatalog = catalog
+    newCatalog["images"] = iconEntries
+    let json = try JSONSerialization.data(withJSONObject: newCatalog, options: [.prettyPrinted, .sortedKeys])
+    try json.write(to: contentsURL, options: .atomic)
+}
 var created = 0
-for entry in images {
+for entry in iconEntries {
     guard let filename = entry["filename"] as? String, !filename.isEmpty else { continue }
     let sizeText = (entry["size"] as? String ?? "1024x1024").split(separator: "x")
-    let points = Double(sizeText.first.map(String.init) ?? "") ?? 1024
+    let points = Double(String(sizeText.first ?? "")) ?? 1024
     let scale = Double((entry["scale"] as? String ?? "1x").replacingOccurrences(of: "x", with: "")) ?? 1
     let pixels = max(16, Int((points * scale).rounded()))
     let side = CGFloat(pixels)
