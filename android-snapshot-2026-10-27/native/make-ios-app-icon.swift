@@ -44,7 +44,7 @@ for entry in images {
     NSGraphicsContext.current = context
     context.imageInterpolation = .high
     NSColor(calibratedRed: 0.99, green: 0.94, blue: 0.97, alpha: 1).setFill()
-    rect.fill()
+    NSBezierPath(rect: rect).fill()
     source.draw(in: rect, from: NSRect(origin: .zero, size: source.size), operation: .sourceOver, fraction: 1)
     context.flushGraphics()
     NSGraphicsContext.restoreGraphicsState()
