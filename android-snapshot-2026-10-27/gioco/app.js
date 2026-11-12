@@ -578,8 +578,14 @@
   }
 
   function aggiornaAccesso3D() {
+    // Il lucchetto compare solo prima dell'acquisto: RevenueCat decide l'accesso.
+    const sbloccato = commerce.has('3d') === true;
     const link = $("btn-apri-3d");
-    link.textContent = commerce.has('3d') ? '✿ Versione 3D Premium' : '🔒 Versione 3D a pagamento';
+    link.textContent = sbloccato ? '✿ Fiori 3D sbloccati' : '🔒 Versione 3D a pagamento';
+    const statoMenu = $("stato-menu-3d");
+    if (statoMenu) {
+      statoMenu.textContent = sbloccato ? '✓ Tutti sbloccati' : '🔒 Tutti Premium';
+    }
   }
 
   async function compra() {
