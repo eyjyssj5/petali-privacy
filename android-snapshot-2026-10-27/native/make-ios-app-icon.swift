@@ -24,7 +24,8 @@ for entry in images {
     let points = Double(sizeText.first.map(String.init) ?? "") ?? 1024
     let scale = Double((entry["scale"] as? String ?? "1x").replacingOccurrences(of: "x", with: "")) ?? 1
     let pixels = max(16, Int((points * scale).rounded()))
-    let rect = NSRect(x: 0, y: 0, width: pixels, height: pixels)
+    let side = CGFloat(pixels)
+    let rect = NSRect(x: 0, y: 0, width: side, height: side)
     guard let bitmap = NSBitmapImageRep(bitmapDataPlanes: nil,
                                        pixelsWide: pixels,
                                        pixelsHigh: pixels,
@@ -39,7 +40,7 @@ for entry in images {
         fputs("Impossibile creare l'icona iOS.\n", stderr)
         exit(2)
     }
-    bitmap.size = NSSize(width: pixels, height: pixels)
+    bitmap.size = NSSize(width: side, height: side)
     NSGraphicsContext.saveGraphicsState()
     NSGraphicsContext.current = context
     context.imageInterpolation = .high
