@@ -9,3 +9,8 @@ main{max-width:1000px;margin:auto;padding:20px 14px 50px}.intro{text-align:cente
 /* Rosa di riferimento identica sul telefono prima dell'interazione 3D. */
 .rose-photo{position:absolute;top:5%;left:5%;width:90%;height:84%;object-fit:contain;pointer-events:none;filter:drop-shadow(0 12px 12px #673b3b20);}
 .tile .emoji{display:flex;justify-content:center;align-items:center;min-height:44px;min-width:44px}.tile .rosa-thumb{display:block;width:44px;height:44px;object-fit:contain}
+
+/* PETALI_IOS_SAFE_AREA_2026: evita che orologio/Dynamic Island coprano il ritorno al 2D. */
+header { padding-top: calc(14px + env(safe-area-inset-top, 0px)); }
+header .home { display: inline-flex; align-items: center; justify-content: flex-start; min-height: 44px; min-width: 82px; touch-action: manipulation; position: relative; z-index: 5; }
+.backup-home { display: inline-flex; min-height: 44px; align-items: center; padding: 10px 15px; margin: 0 0 12px; background: #fff; color: #8e3a68; border: 1px solid #eac4d8; border-radius: 12px; font-weight: 700; text-decoration: none; touch-action: manipulation; }
