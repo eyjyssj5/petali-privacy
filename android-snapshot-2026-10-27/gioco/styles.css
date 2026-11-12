@@ -215,3 +215,10 @@ main {
   touch-action: manipulation;
   -webkit-tap-highlight-color: transparent;
 }
+
+/* PETALI_IOS_STATUSBAR_FINAL_2026: il gioco non ingrandisce l'intera pagina. */
+html, body { touch-action: pan-y; -webkit-text-size-adjust: 100%; overflow-x: hidden; }
+@media (max-width: 640px) {
+  header { padding-top: max(70px, calc(20px + env(safe-area-inset-top, 0px))); }
+}
+#gioco #immagine-fiore.interattivo { touch-action: manipulation; }
