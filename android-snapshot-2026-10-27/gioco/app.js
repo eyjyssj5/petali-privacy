@@ -297,6 +297,7 @@
   }
 
   function apriFiore(fiore) {
+    abilitaToccoFiore(false);
     fioreCorrente = fiore;
     petaliTolti = 0;
     fioreAttuale = null;
@@ -330,6 +331,7 @@
     $("simboli").hidden = false;
     $("btn-petalo").hidden = false;
     $("btn-petalo").disabled = false;
+    abilitaToccoFiore(true);
     aggiornaSimboli(null);
   }
 
@@ -341,8 +343,23 @@
     aggiornaSimboli(risultato);
   }
 
+  // Anche il fiore e' un'area di tocco, non solo il pulsante.
+  function abilitaToccoFiore(attivo) {
+    const area = $("immagine-fiore");
+    area.classList.toggle("interattivo", attivo);
+    if (attivo) {
+      area.setAttribute("role", "button");
+      area.setAttribute("tabindex", "0");
+      area.setAttribute("aria-label", t("togli"));
+    } else {
+      area.removeAttribute("role");
+      area.removeAttribute("tabindex");
+      area.removeAttribute("aria-label");
+    }
+  }
+
   function togliPetalo() {
-    if (petaliTolti >= petaliTotali) return;
+    if (!fioreAttuale || petaliTolti >= petaliTotali) return;
     const petalo = fioreAttuale.petali[petaliTolti];
     petaliTolti += 1;
 
@@ -358,6 +375,7 @@
 
     if (petaliTolti === petaliTotali) {
       $("btn-petalo").hidden = true;
+      abilitaToccoFiore(false);
       mostraEsito(etichettaPetalo(petaliTotali));
     }
   }
@@ -446,6 +464,16 @@
   $("btn-inizia-mama").addEventListener("click", () => iniziaCon(true));
   $("btn-inizia-non-mama").addEventListener("click", () => iniziaCon(false));
   $("btn-petalo").addEventListener("click", togliPetalo);
+  $("immagine-fiore").addEventListener("click", () => {
+    if ($("immagine-fiore").classList.contains("interattivo")) togliPetalo();
+  });
+  $("immagine-fiore").addEventListener("keydown", (event) => {
+    if (!$("immagine-fiore").classList.contains("interattivo")) return;
+    if (event.key === "Enter" || event.key === " ") {
+      event.preventDefault();
+      togliPetalo();
+    }
+  });
   $("btn-indietro").addEventListener("click", () => mostra("scelta"));
   $("btn-ricomincia").addEventListener("click", () => apriFiore(fioreCorrente));
   $("btn-suono").addEventListener("click", () => {
