@@ -14,3 +14,12 @@ main{max-width:1000px;margin:auto;padding:20px 14px 50px}.intro{text-align:cente
 header { padding-top: calc(14px + env(safe-area-inset-top, 0px)); }
 header .home { display: inline-flex; align-items: center; justify-content: flex-start; min-height: 44px; min-width: 82px; touch-action: manipulation; position: relative; z-index: 5; }
 .backup-home { display: inline-flex; min-height: 44px; align-items: center; padding: 10px 15px; margin: 0 0 12px; background: #fff; color: #8e3a68; border: 1px solid #eac4d8; border-radius: 12px; font-weight: 700; text-decoration: none; touch-action: manipulation; }
+
+/* PETALI_3D_IOS_STATUSBAR_FINAL_2026: ritorno 2D sempre sotto orologio/notch. */
+html, body { touch-action: pan-y; -webkit-text-size-adjust: 100%; overflow-x: hidden; }
+@media (max-width: 640px) {
+  header { padding-top: max(72px, calc(14px + env(safe-area-inset-top, 0px))); }
+  header .home { min-height: 48px; min-width: 88px; font-size: 14px; }
+  .backup-home { min-height: 48px; font-size: 15px; }
+}
+.viewer canvas { touch-action: none; }
