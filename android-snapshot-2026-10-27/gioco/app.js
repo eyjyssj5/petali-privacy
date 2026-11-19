@@ -185,6 +185,7 @@
   function t(chiave) {
     return T[lingua][chiave];
   }
+  const ui=(key,params)=>window.PetaliUI.t(lingua,key,params);
 
   // Lingua salvata, altrimenti quella del telefono se disponibile, altrimenti italiano.
   function linguaIniziale() {
@@ -270,14 +271,15 @@
     const acquistiDisponibili = window.PetaliCommerce?.ready?.() === true;
     $("btn-sblocca").hidden = acquistato;
     $("btn-sblocca").disabled = !acquistiDisponibili;
-    $("btn-sblocca").textContent = acquistiDisponibili ? (t("acquistaFiori") || "Sblocca 12 fiori 2D") : "Acquisti non disponibili in questa versione di prova";
+    $("btn-sblocca").textContent = acquistiDisponibili ? t("acquistaFiori") : ui("noPurchases");
     $("btn-ripristina").disabled = !acquistiDisponibili;
     Fiori.FIORI.forEach((fiore) => {
       const libero = fioreSbloccato(fiore);
       const carta = document.createElement("button");
       carta.type = "button";
       carta.className = "carta petali-v22" + (libero ? "" : " bloccato");
-      carta.setAttribute("aria-label", fiore.nome[lingua] + (libero ? ", gratis" : ", Premium"));
+      const statusKey = FIORI_GRATIS.includes(fiore.id) ? "free2d" : libero ? "unlocked2d" : "locked2d";
+      carta.setAttribute("aria-label", fiore.nome[lingua] + ", " + ui(statusKey));
       carta.appendChild(costruisciFiore(fiore, 12).cont);
       const nome = document.createElement("strong");
       nome.textContent = fiore.nome[lingua];
@@ -285,7 +287,7 @@
       significato.textContent = fiore.significato[lingua];
       const stato = document.createElement("span");
       stato.className = "petali-v22-stato" + (libero ? " libero" : "");
-      stato.textContent = libero ? "✓ GRATIS 2D" : "🔒 PREMIUM 2D";
+      stato.textContent = ui(statusKey);
       carta.append(nome, significato, stato);
       carta.disabled = !libero && !acquistiDisponibili;
       carta.addEventListener("click", () => {
@@ -304,7 +306,7 @@
     $("immagine-fiore").replaceChildren(costruisciFiore(fiore, 12).cont);
 
     $("nome-fiore").textContent = fiore.nome[lingua];
-    $("btn-apri-3d").href = "15-fiori-3d/index.html?fiore=" + encodeURIComponent(fiore.id === "tulipano-rosso" ? "tulipano" : fiore.id);
+    $("btn-apri-3d").href = "15-fiori-3d/index.html?fiore=" + encodeURIComponent(fiore.id === "tulipano-rosso" ? "tulipano" : fiore.id === "garofano-rosso" ? "garofano" : fiore.id);
     $("significato-fiore").textContent = t("significato") + " " + fiore.significato[lingua];
     mostraDescrizione(fiore);
     $("esito").hidden = true;
@@ -438,6 +440,7 @@
     localStorage.setItem("petali.lingua", lingua);
     document.documentElement.lang = lingua;
     document.title = t("titolo");
+    window.PetaliUI.apply(document,lingua);
     document.querySelectorAll("[data-i18n]").forEach((el) => {
       el.textContent = t(el.dataset.i18n);
     });
@@ -449,8 +452,10 @@
     });
     document.querySelectorAll("details.menu-lingue").forEach((d) => { d.open = false; });
     aggiornaPulsanteSuono();
-    $("btn-ripristina").textContent = t("ripristina") || "Ripristina acquisti";
+    $("btn-ripristina").textContent = t("ripristina");
     costruisciGriglia();
+    aggiornaAccesso3D();
+    if ($("immagine-fiore").classList.contains("interattivo")) abilitaToccoFiore(true);
     if (fioreCorrente) {
       $("nome-fiore").textContent = fioreCorrente.nome[lingua];
       $("significato-fiore").textContent = t("significato") + " " + fioreCorrente.significato[lingua];
@@ -581,10 +586,10 @@
     // Il lucchetto compare solo prima dell'acquisto: RevenueCat decide l'accesso.
     const sbloccato = commerce.has('3d') === true;
     const link = $("btn-apri-3d");
-    link.textContent = sbloccato ? '✿ Fiori 3D sbloccati' : '🔒 Versione 3D a pagamento';
+    link.textContent = ui(sbloccato ? 'unlocked3d' : 'locked3d');
     const statoMenu = $("stato-menu-3d");
     if (statoMenu) {
-      statoMenu.textContent = sbloccato ? '✓ Tutti sbloccati' : '🔒 Tutti Premium';
+      statoMenu.textContent = ui(sbloccato ? 'allUnlocked' : 'allPremium');
     }
   }
 
@@ -593,7 +598,7 @@
       await commerce.buy('2d');
       acquistato = commerce.has('2d');
     } catch (errore) {
-      if (!errore?.userCancelled) alert(errore?.message || t('pagamentoErrore'));
+      if (!errore?.userCancelled) { console.error(errore); alert(t('pagamentoErrore')); }
     }
     costruisciGriglia();
     aggiornaAccesso3D();
@@ -604,8 +609,8 @@
       await commerce.restore();
       acquistato = commerce.has('2d');
       alert(acquistato || commerce.has('3d')
-        ? 'Acquisti ripristinati.' : 'Nessun acquisto trovato.');
-    } catch (errore) { alert(errore?.message || t('pagamentoErrore')); }
+        ? ui('restored') : ui('noRestore'));
+    } catch (errore) { console.error(errore); alert(ui('restoreError')); }
     costruisciGriglia();
     aggiornaAccesso3D();
   });
