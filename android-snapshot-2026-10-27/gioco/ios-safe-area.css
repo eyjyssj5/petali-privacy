@@ -1,0 +1,38 @@
+/* iOS: keep the scrollable view below the native status bar at all scroll offsets.
+   On other platforms keep the existing layout. The WebKit fallback covers native
+   webviews which report a zero safe-area inset while the status bar is overlaid. */
+@supports (-webkit-touch-callout: none) {
+  html {
+    --petali-safe-top: max(env(safe-area-inset-top, 0px), 64px);
+    --petali-safe-bottom: env(safe-area-inset-bottom, 0px);
+    height: 100%;
+    overflow: hidden;
+    background: #fff5fa;
+  }
+  html.petali-3d { background: #fff; }
+  body {
+    position: fixed;
+    top: var(--petali-safe-top);
+    bottom: var(--petali-safe-bottom);
+    left: env(safe-area-inset-left, 0px);
+    right: env(safe-area-inset-right, 0px);
+    width: auto;
+    height: auto;
+    min-height: 0;
+    margin: 0;
+    padding-top: 0;
+    padding-bottom: 0;
+    overflow-x: hidden;
+    overflow-y: auto;
+    overscroll-behavior-y: none;
+    -webkit-overflow-scrolling: touch;
+  }
+  body > header { padding-top: 20px; }
+  html.petali-3d body > header { padding-top: 14px; }
+  html.petali-3d header .home { min-width: 0; }
+  html.petali-3d header .counter { text-align: right; }
+  html.petali-3d header b { text-align: center; }
+  @media (orientation: landscape) {
+    html { --petali-safe-top: max(env(safe-area-inset-top, 0px), 24px); }
+  }
+}

@@ -255,6 +255,7 @@
   function mostra(idSchermata) {
     document.querySelectorAll(".schermata").forEach((s) => s.classList.remove("attiva"));
     $(idSchermata).classList.add("attiva");
+    document.body.scrollTop = 0;
     window.scrollTo(0, 0);
   }
 
