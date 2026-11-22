@@ -199,6 +199,8 @@
   function mostraDescrizione(fiore) {
     $("desc-testo").textContent = fiore.descrizione[lingua];
     $("storia-testo").textContent = fiore.storia[lingua];
+    $("uso-fiore-etichetta").textContent = window.PetaliUsiFiori.label(lingua) + ":";
+    $("uso-fiore-testo").textContent = window.PetaliUsiFiori.get(fiore.id, lingua);
   }
 
   // Numero di petali casuale, diverso dall'ultima volta.
