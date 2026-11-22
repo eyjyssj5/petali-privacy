@@ -42,6 +42,8 @@
     if (!f) return;
     $("regalo-preview-fiore").textContent = icons[f.id] || "🌷";
     $("regalo-preview-nome").textContent = nameOf(f);
+    $("regalo-uso-etichetta").textContent = window.PetaliUsiFiori.label(lang);
+    $("regalo-uso-testo").textContent = window.PetaliUsiFiori.get(f.id, lang);
     $("regalo-preview-occasione").textContent = occasion().name[lang];
     $("regalo-preview-dedica").textContent = message();
     $("regalo-preview-destinatario").textContent = safeText("regalo-a") || "";
