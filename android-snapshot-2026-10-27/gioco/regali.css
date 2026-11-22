@@ -125,3 +125,8 @@ a.regali-indietro {
   padding: 0;
 }
 #regali-page .regali-contenuto {padding: 15px 17px;}
+
+/* Spiegazione del fiore consigliato per l'occasione scelta. */
+#regali-page .regalo-uso {background:#fff;border:1px solid #e4bbd4;border-radius:13px;padding:12px 14px;margin:10px 0 17px;color:#62364e;}
+#regali-page .regalo-uso strong {color:#863b65;font-size:15px;}
+#regali-page .regalo-uso p {margin:7px 0 0;line-height:1.5;font-size:14px;}
