@@ -66,7 +66,7 @@
       const name = document.createElement("strong");
       name.textContent = nameOf(f);
       const status = document.createElement("small");
-      status.textContent = unlocked(id) ? t("free") + (premium(id) ? " ✓" : "") : "🔒 " + t("premium");
+      status.textContent = premium(id) ? (unlocked(id) ? "✓ " + t("premium") : "🔒 " + t("premium")) : t("free");
       b.append(icon, name, status);
       b.addEventListener("click", () => {
         chosenFlower = id; drawChoices(); syncPreview();
@@ -181,6 +181,7 @@
   $("regalo-sblocca").addEventListener("click",()=>$("btn-sblocca")?.click());
   $("regalo-condividi").addEventListener("click",()=>void share());
   $("regalo-copia").addEventListener("click",async()=>{
+    if (!unlocked(chosenFlower)) { paintStatus(t("locked")); return; }
     try { await navigator.clipboard.writeText(giftText());paintStatus(t("copied")); }
     catch (_) { paintStatus(t("failed")); }
   });
