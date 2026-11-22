@@ -7,6 +7,7 @@ public class MainActivity extends BridgeActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         registerPlugin(PetaliSharePlugin.class);
+        registerPlugin(PetaliBillingPlugin.class);
         super.onCreate(savedInstanceState);
     }
 }
