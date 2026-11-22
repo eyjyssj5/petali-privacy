@@ -3,6 +3,7 @@
  const strings={
   "it": {
     "mode2d": "🌷 Fiori 2D",
+    "giftMode": "🎁 Regala un fiore",
     "mode3d": "🌻 Fiori 3D",
     "freeCount": "3 gratis · 12 Premium",
     "allUnlocked": "✓ Tutti sbloccati",
@@ -58,6 +59,7 @@
   },
   "en": {
     "mode2d": "🌷 2D flowers",
+    "giftMode": "🎁 Send a flower",
     "mode3d": "🌻 3D flowers",
     "freeCount": "3 free · 12 Premium",
     "allUnlocked": "✓ All unlocked",
@@ -113,6 +115,7 @@
   },
   "es": {
     "mode2d": "🌷 Flores 2D",
+    "giftMode": "🎁 Regala una flor",
     "mode3d": "🌻 Flores 3D",
     "freeCount": "3 gratis · 12 prémium",
     "allUnlocked": "✓ Todas desbloqueadas",
@@ -168,6 +171,7 @@
   },
   "pt": {
     "mode2d": "🌷 Flores 2D",
+    "giftMode": "🎁 Oferece uma flor",
     "mode3d": "🌻 Flores 3D",
     "freeCount": "3 gratuitas · 12 Premium",
     "allUnlocked": "✓ Todas desbloqueadas",
@@ -223,6 +227,7 @@
   },
   "fr": {
     "mode2d": "🌷 Fleurs 2D",
+    "giftMode": "🎁 Offrir une fleur",
     "mode3d": "🌻 Fleurs 3D",
     "freeCount": "3 gratuites · 12 Premium",
     "allUnlocked": "✓ Toutes débloquées",
@@ -278,6 +283,7 @@
   },
   "de": {
     "mode2d": "🌷 2D-Blumen",
+    "giftMode": "🎁 Blume verschenken",
     "mode3d": "🌻 3D-Blumen",
     "freeCount": "3 kostenlos · 12 Premium",
     "allUnlocked": "✓ Alle freigeschaltet",
