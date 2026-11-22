@@ -7,8 +7,8 @@ android {
         applicationId "com.aivevia.petali"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 1
-        versionName "1.0"
+        versionCode Integer.parseInt(System.getenv("PETALI_ANDROID_VERSION_CODE") ?: "20261124")
+        versionName "1.1.2"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         aaptOptions {
              // Files and dirs to omit from the packaged assets dir, modified to accommodate modern web apps.
@@ -16,9 +16,30 @@ android {
             ignoreAssetsPattern = '!.svn:!.git:!.ds_store:!*.scc:.*:!CVS:!thumbs.db:!picasa.ini:!*~'
         }
     }
+    // Play Console: firma esclusivamente con la chiave di upload PETALI preesistente.
+    // In Codemagic le variabili CM_* vengono fornite dal keystore registrato.
+    def releaseKeystorePath = System.getenv("CM_KEYSTORE_PATH")
+    def releaseKeystorePassword = System.getenv("CM_KEYSTORE_PASSWORD")
+    def releaseKeyAlias = System.getenv("CM_KEY_ALIAS")
+    def releaseKeyPassword = System.getenv("CM_KEY_PASSWORD")
+    def hasReleaseSigning = [releaseKeystorePath, releaseKeystorePassword,
+                             releaseKeyAlias, releaseKeyPassword].every { it != null && !it.isEmpty() }
+    signingConfigs {
+        release {
+            if (hasReleaseSigning) {
+                storeFile file(releaseKeystorePath)
+                storePassword releaseKeystorePassword
+                keyAlias releaseKeyAlias
+                keyPassword releaseKeyPassword
+            }
+        }
+    }
     buildTypes {
         release {
             minifyEnabled false
+            if (hasReleaseSigning) {
+                signingConfig signingConfigs.release
+            }
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
@@ -36,6 +57,7 @@ dependencies {
     implementation "androidx.coordinatorlayout:coordinatorlayout:$androidxCoordinatorLayoutVersion"
     implementation "androidx.core:core-splashscreen:$coreSplashScreenVersion"
     implementation project(':capacitor-android')
+    implementation "com.android.billingclient:billing:9.1.0"
     testImplementation "junit:junit:$junitVersion"
     androidTestImplementation "androidx.test.ext:junit:$androidxJunitVersion"
     androidTestImplementation "androidx.test.espresso:espresso-core:$androidxEspressoCoreVersion"

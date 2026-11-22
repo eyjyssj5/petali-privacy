@@ -222,3 +222,7 @@ html, body { touch-action: pan-y; -webkit-text-size-adjust: 100%; overflow-x: hi
   header { padding-top: max(70px, calc(20px + env(safe-area-inset-top, 0px))); }
 }
 #gioco #immagine-fiore.interattivo { touch-action: manipulation; }
+
+/* Indicazione sul significato pratico del fiore, leggibile anche su mobile. */
+.petali-uso {padding:13px 15px;margin:13px 0 14px;border:1px solid #e2bfd3;border-radius:13px;background:#fff8fb;line-height:1.5;font-size:15px;color:#65354e;}
+.petali-uso strong {color:#823861;}

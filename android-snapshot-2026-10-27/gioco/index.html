@@ -9,6 +9,7 @@
 <style id="petali-critical">*{box-sizing:border-box}html{font-family:system-ui,-apple-system,Arial,sans-serif}body{margin:0;color:#473044;background:linear-gradient(160deg,#fff5fa,#f7e9f2);min-height:100vh}header{text-align:center;padding:20px 18px}header h1{font-size:32px;margin:4px 0;color:#883b64}header p{margin:0;color:#92627d}main{max-width:740px;margin:auto;padding:12px 15px}.schermata{display:none}.schermata.attiva{display:block}[hidden]{display:none!important}.griglia{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.carta{background:#fff;border:1px solid #ecd5e2;border-radius:18px;padding:10px;min-width:0}button{cursor:pointer} .petali-modalita{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:17px auto;max-width:740px}.petali-modalita>*{display:flex;flex-direction:column;gap:5px;padding:14px 9px;border-radius:16px;text-align:center;background:white;border:2px solid #e5bcd4;color:#813856;text-decoration:none}.petali-modalita .petali-modalita-3d{background:#a6477e;color:#fff;border-color:#a6477e}.petali-modalita span{font-size:12px}.carta img.fiore-preview{display:block;width:100%;max-width:165px;height:150px;object-fit:contain;margin:auto}.petali-tag{display:block;font-size:12px;font-weight:700;margin:7px 0 3px}.petali-tag.premium{color:#923f6c}.petali-tag.free{color:#26734c}</style>
   <link rel="stylesheet" href="petali-v22-2d.css">
   <link rel="stylesheet" href="ios-safe-area.css">
+  <link rel="stylesheet" href="regali.css">
 </head>
 <body>
   <header>
@@ -80,6 +81,8 @@
         <div class="petali-modalita-2d"><strong data-ui="mode2d">🌷 Fiori 2D</strong><span data-ui="freeCount">3 gratis · 12 Premium</span></div>
         <a class="petali-modalita-3d" href="15-fiori-3d/index.html" id="btn-menu-3d"><strong data-ui="mode3d">🌻 Fiori 3D</strong><span id="stato-menu-3d">15 fiori · Premium 3D</span></a>
       </nav>
+      <a id="btn-menu-regali" class="petali-regali-link" href="regali.html" data-ui="giftMode">🎁 Regala un fiore</a>
+
       <button id="btn-suono" class="secondario" type="button"></button>
       <button id="btn-sblocca" type="button" class="secondario" hidden></button>
       <button id="btn-ripristina" class="secondario" type="button">Ripristina acquisti</button>
@@ -99,6 +102,7 @@
       <h2 id="nome-fiore"></h2>
       <a id="btn-apri-3d" class="collegamento-3d" href="15-fiori-3d/index.html">🔒 Versione 3D Premium</a>
       <p id="significato-fiore" class="significato"></p>
+      <p id="uso-fiore" class="petali-uso"><strong id="uso-fiore-etichetta">Quando regalarlo:</strong> <span id="uso-fiore-testo"></span></p>
       <div id="descrizione-fiore" class="descrizione">
         <p><strong data-i18n="aspetto"></strong> <span id="desc-testo"></span></p>
         <p><strong data-i18n="storia"></strong> <span id="storia-testo"></span></p>
@@ -137,6 +141,7 @@
   <script src="native-bridge.js"></script>
   <script src="paywall.js"></script>
   <script src="ui-i18n.js"></script>
+  <script src="usi-fiori.js"></script>
   <script src="app.js"></script>
 <noscript>Per utilizzare Petali occorre JavaScript attivo.</noscript>
 </body>

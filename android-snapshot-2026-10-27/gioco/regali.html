@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+  <meta name="theme-color" content="#fff5fb">
+  <title>PETALI · Regala un fiore</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="ios-safe-area.css">
+  <link rel="stylesheet" href="regali.css">
+</head>
+<body class="regali-body">
+  <header class="regali-header">
+    <a id="regalo-torna" class="regali-indietro" href="index.html">← Torna ai fiori</a>
+    <h1 id="regali-titolo">🎁 Regala un fiore</h1>
+    <p>✿ PETALI ✿</p>
+  </header>
+  <main id="regali-page" aria-labelledby="regali-titolo">
+<div class="regali-contenuto">
+          <p id="regali-intro">Scegli l'occasione e invia un biglietto digitale.</p>
+          <label id="regali-label-occasione" for="regalo-occasione">Per quale occasione?</label>
+          <select id="regalo-occasione"></select>
+          <label id="regali-label-fiori">Fiori consigliati</label>
+          <div id="regalo-fiori" role="group" aria-labelledby="regali-label-fiori"></div>
+          <section class="regalo-uso" aria-live="polite"><strong id="regalo-uso-etichetta">Quando regalarlo</strong><p id="regalo-uso-testo"></p></section>
+          <label id="regali-label-a" for="regalo-a">A chi è dedicato?</label>
+          <input id="regalo-a" type="text" maxlength="50" autocomplete="off" placeholder="Nome della persona">
+          <label id="regali-label-da" for="regalo-da">Da chi?</label>
+          <input id="regalo-da" type="text" maxlength="50" autocomplete="off" placeholder="Il tuo nome">
+          <label id="regali-label-messaggio" for="regalo-messaggio">La tua dedica</label>
+          <textarea id="regalo-messaggio" maxlength="350" rows="3"></textarea>
+          <div class="regalo-preview" aria-labelledby="regali-label-preview">
+            <strong id="regali-label-preview">Anteprima regalo</strong>
+            <div id="regalo-preview-fiore" aria-hidden="true">🌹</div>
+            <small id="regalo-preview-occasione"></small>
+            <strong id="regalo-preview-nome"></strong>
+            <p id="regalo-preview-destinatario"></p>
+            <p id="regalo-preview-dedica"></p>
+            <p id="regalo-preview-mittente"></p>
+          </div>
+          <button id="regalo-sblocca" type="button" hidden>Sblocca i fiori Premium 2D</button>
+          <div class="regali-azioni">
+            <button id="regalo-condividi" type="button">Regala e condividi</button>
+            <button id="regalo-copia" type="button" class="secondario">Copia la dedica</button>
+          </div>
+          <p id="regalo-stato" role="status" aria-live="polite"></p>
+        </div>
+  </main>
+  <script src="fiori.js"></script>
+  <script src="lingue-extra.js"></script>
+  <script src="fiori-pt.js"></script>
+  <script src="fiori-fr.js"></script>
+  <script src="fiori-de.js"></script>
+  <script src="pagamenti-config.js"></script>
+  <script src="native-bridge.js"></script>
+  <script src="paywall.js"></script>
+  <script src="regali-catalogo.js"></script>
+  <script src="usi-fiori.js"></script>
+  <script src="regali.js"></script>
+  <noscript>Per utilizzare PETALI occorre JavaScript attivo.</noscript>
+</body>
+</html>
