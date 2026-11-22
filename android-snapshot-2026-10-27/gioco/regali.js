@@ -3,7 +3,7 @@
   "use strict";
   const data = window.PetaliRegaliCatalogo;
   const $ = (id) => document.getElementById(id);
-  if (!data || !$("regali-panel") || !window.Fiori?.FIORI) return;
+  if (!data || !$("regali-page") || !window.Fiori?.FIORI) return;
 
   const TR = {
     it: { title:"🎁 Regala un fiore", intro:"Scegli l'occasione, personalizza la dedica e invia un biglietto floreale digitale.", occasion:"Per quale occasione?", choose:"Fiori consigliati", free:"Gratis", premium:"Premium 2D", to:"A chi è dedicato?", from:"Da chi?", message:"La tua dedica", toPlaceholder:"Nome della persona", fromPlaceholder:"Il tuo nome", preview:"Anteprima regalo", share:"Regala e condividi", unlock:"Sblocca i fiori Premium 2D", locked:"Per regalare questo fiore devi prima sbloccare il pacchetto 2D. I fiori gratuiti sono sempre disponibili.", ready:"Biglietto pronto! Puoi condividerlo o salvarlo.", copy:"Copia la dedica", copied:"Dedica copiata.", fallback:"Il biglietto è stato scaricato; condividilo dalla galleria o dai file.", failed:"Condivisione non disponibile. Riprova o copia la dedica.", fromLabel:"Da", toLabel:"Per", gift:"Un fiore digitale da PETALI", cancel:"Condivisione annullata." },
@@ -18,7 +18,7 @@
   let lang = "it";
   let chosenFlower = data.free2d[0];
   const pickLocale = () => {
-    const l = (document.documentElement.lang || localStorage.getItem("petali.lingua") || "it").slice(0,2).toLowerCase();
+    const l = (localStorage.getItem("petali.lingua") || navigator.language || document.documentElement.lang || "it").slice(0,2).toLowerCase();
     return TR[l] ? l : "it";
   };
   const t = (k) => TR[lang][k] || TR.it[k] || k;
@@ -76,6 +76,9 @@
   }
   function relabel() {
     lang = pickLocale();
+    document.documentElement.lang = lang;
+    document.title = "PETALI · " + t("title");
+    $("regalo-torna").textContent = ({it:"← Torna ai fiori",en:"← Back to flowers",es:"← Volver a las flores",pt:"← Voltar às flores",fr:"← Retour aux fleurs",de:"← Zurück zu den Blumen"})[lang];
     const keys = { "regali-titolo":"title", "regali-intro":"intro", "regali-label-occasione":"occasion",
       "regali-label-fiori":"choose", "regali-label-a":"to", "regali-label-da":"from",
       "regali-label-messaggio":"message", "regali-label-preview":"preview" };
@@ -157,17 +160,44 @@
     setTimeout(()=>URL.revokeObjectURL(url),10000);
   }
   async function share() {
-    if (!unlocked(chosenFlower)) {paintStatus(t("locked"));return;}
+    if (!unlocked(chosenFlower)) { paintStatus(t("locked")); return; }
     try {
-      const text=giftText(), blob=await pngBlob(imageCard());
-      const file=blob && typeof File !== "undefined" ? new File([blob],"petali-regalo.png",{type:"image/png"}) : null;
-      if (file && navigator.share && navigator.canShare?.({ files:[file] })) {
-        await navigator.share({title:"PETALI",text,files:[file]});paintStatus(t("ready"));return;
+      const text = giftText();
+      const platform = window.PetaliNative?.platform || "web";
+      // Android WebView non supporta in modo affidabile Web Share.
+      // Passiamo il PNG al plugin nativo: apre ACTION_SEND con selettore app.
+      if (platform === "android") {
+        const nativeShare = window.PetaliNative?.ShareGift;
+        if (!nativeShare?.shareImage) throw new Error("PetaliShare Android non registrato");
+        const encoded = imageCard().toDataURL("image/png").split(",")[1];
+        if (!encoded) throw new Error("PNG non generato");
+        await nativeShare.shareImage({ pngBase64: encoded, text });
+        paintStatus(t("ready"));
+        return;
       }
-      if (navigator.share) {await navigator.share({title:"PETALI",text});paintStatus(t("ready"));return;}
-      if (blob) {downloadBlob(blob);paintStatus(t("fallback"));return;}
+      const blob = await pngBlob(imageCard());
+      const file = blob && typeof File !== "undefined"
+        ? new File([blob], "petali-regalo.png", { type: "image/png" }) : null;
+      if (file && navigator.share && navigator.canShare?.({ files: [file] })) {
+        await navigator.share({ title: "PETALI", text, files: [file] });
+        paintStatus(t("ready"));
+        return;
+      }
+      if (navigator.share) {
+        await navigator.share({ title: "PETALI", text });
+        paintStatus(t("ready"));
+        return;
+      }
+      // Solo nel browser normale si scarica il biglietto. Su Android nativo
+      // non si deve nascondere un errore dietro a un download automatico.
+      if (platform === "web" && blob) {
+        downloadBlob(blob);
+        paintStatus(t("fallback"));
+        return;
+      }
       paintStatus(t("failed"));
     } catch (error) {
+      console.error("[PETALI regalo]", error);
       paintStatus(error?.name === "AbortError" ? t("cancel") : t("failed"));
     }
   }
@@ -178,7 +208,17 @@
       syncPreview();
     });
   }
-  $("regalo-sblocca").addEventListener("click",()=>$("btn-sblocca")?.click());
+  $("regalo-sblocca").addEventListener("click", async () => {
+    const commerce = window.PetaliCommerce;
+    if (!commerce?.ready?.()) { paintStatus(t("failed")); return; }
+    try {
+      await commerce.buy("2d");
+      drawChoices();
+      syncPreview();
+    } catch (error) {
+      if (!error?.userCancelled) { console.error("[PETALI 2D]", error); paintStatus(t("failed")); }
+    }
+  });
   $("regalo-condividi").addEventListener("click",()=>void share());
   $("regalo-copia").addEventListener("click",async()=>{
     if (!unlocked(chosenFlower)) { paintStatus(t("locked")); return; }
@@ -189,5 +229,8 @@
   observer.observe(document.documentElement,{attributes:true,attributeFilter:["lang"]});
   window.PetaliCommerce?.subscribe?.(()=>{drawChoices();syncPreview();});
   relabel();
-  if (location.hash === "#regali") $("regali-panel").open = true;
+  // In una pagina separata l'accesso 2D va riletto dallo store.
+  void Promise.resolve(window.PetaliCommerce?.refresh?.())
+    .then(() => { drawChoices(); syncPreview(); })
+    .catch((error) => console.warn("[PETALI regalo: acquisti]", error));
 })();
