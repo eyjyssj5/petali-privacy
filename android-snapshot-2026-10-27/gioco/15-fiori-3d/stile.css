@@ -23,3 +23,8 @@ html, body { touch-action: pan-y; -webkit-text-size-adjust: 100%; overflow-x: hi
   .backup-home { min-height: 48px; font-size: 15px; }
 }
 .viewer canvas { touch-action: none; }
+
+/* Ogni specie 3D mostra anche quando e perche regalarla. */
+.petali-uso-3d {border:1px solid #dab6ce;border-radius:13px;background:#fff8fb;color:#58334c;padding:12px 14px;margin:12px 0 17px;line-height:1.5;}
+.petali-uso-3d strong {color:#893b65;}
+.petali-uso-3d p {font-size:14px;margin:5px 0 0;}
