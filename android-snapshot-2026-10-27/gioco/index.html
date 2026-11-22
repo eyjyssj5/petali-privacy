@@ -9,6 +9,7 @@
 <style id="petali-critical">*{box-sizing:border-box}html{font-family:system-ui,-apple-system,Arial,sans-serif}body{margin:0;color:#473044;background:linear-gradient(160deg,#fff5fa,#f7e9f2);min-height:100vh}header{text-align:center;padding:20px 18px}header h1{font-size:32px;margin:4px 0;color:#883b64}header p{margin:0;color:#92627d}main{max-width:740px;margin:auto;padding:12px 15px}.schermata{display:none}.schermata.attiva{display:block}[hidden]{display:none!important}.griglia{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.carta{background:#fff;border:1px solid #ecd5e2;border-radius:18px;padding:10px;min-width:0}button{cursor:pointer} .petali-modalita{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:17px auto;max-width:740px}.petali-modalita>*{display:flex;flex-direction:column;gap:5px;padding:14px 9px;border-radius:16px;text-align:center;background:white;border:2px solid #e5bcd4;color:#813856;text-decoration:none}.petali-modalita .petali-modalita-3d{background:#a6477e;color:#fff;border-color:#a6477e}.petali-modalita span{font-size:12px}.carta img.fiore-preview{display:block;width:100%;max-width:165px;height:150px;object-fit:contain;margin:auto}.petali-tag{display:block;font-size:12px;font-weight:700;margin:7px 0 3px}.petali-tag.premium{color:#923f6c}.petali-tag.free{color:#26734c}</style>
   <link rel="stylesheet" href="petali-v22-2d.css">
   <link rel="stylesheet" href="ios-safe-area.css">
+  <link rel="stylesheet" href="regali.css">
 </head>
 <body>
   <header>
@@ -80,6 +81,37 @@
         <div class="petali-modalita-2d"><strong data-ui="mode2d">🌷 Fiori 2D</strong><span data-ui="freeCount">3 gratis · 12 Premium</span></div>
         <a class="petali-modalita-3d" href="15-fiori-3d/index.html" id="btn-menu-3d"><strong data-ui="mode3d">🌻 Fiori 3D</strong><span id="stato-menu-3d">15 fiori · Premium 3D</span></a>
       </nav>
+      <details id="regali-panel" class="petali-regali">
+        <summary id="regali-titolo">🎁 Regala un fiore</summary>
+        <div class="regali-contenuto">
+          <p id="regali-intro">Scegli l'occasione e invia un biglietto digitale.</p>
+          <label id="regali-label-occasione" for="regalo-occasione">Per quale occasione?</label>
+          <select id="regalo-occasione"></select>
+          <label id="regali-label-fiori">Fiori consigliati</label>
+          <div id="regalo-fiori" role="group" aria-labelledby="regali-label-fiori"></div>
+          <label id="regali-label-a" for="regalo-a">A chi è dedicato?</label>
+          <input id="regalo-a" type="text" maxlength="50" autocomplete="off" placeholder="Nome della persona">
+          <label id="regali-label-da" for="regalo-da">Da chi?</label>
+          <input id="regalo-da" type="text" maxlength="50" autocomplete="off" placeholder="Il tuo nome">
+          <label id="regali-label-messaggio" for="regalo-messaggio">La tua dedica</label>
+          <textarea id="regalo-messaggio" maxlength="350" rows="3"></textarea>
+          <div class="regalo-preview" aria-labelledby="regali-label-preview">
+            <strong id="regali-label-preview">Anteprima regalo</strong>
+            <div id="regalo-preview-fiore" aria-hidden="true">🌹</div>
+            <small id="regalo-preview-occasione"></small>
+            <strong id="regalo-preview-nome"></strong>
+            <p id="regalo-preview-destinatario"></p>
+            <p id="regalo-preview-dedica"></p>
+            <p id="regalo-preview-mittente"></p>
+          </div>
+          <button id="regalo-sblocca" type="button" hidden>Sblocca i fiori Premium 2D</button>
+          <div class="regali-azioni">
+            <button id="regalo-condividi" type="button">Regala e condividi</button>
+            <button id="regalo-copia" type="button" class="secondario">Copia la dedica</button>
+          </div>
+          <p id="regalo-stato" role="status" aria-live="polite"></p>
+        </div>
+      </details>
       <button id="btn-suono" class="secondario" type="button"></button>
       <button id="btn-sblocca" type="button" class="secondario" hidden></button>
       <button id="btn-ripristina" class="secondario" type="button">Ripristina acquisti</button>
@@ -138,6 +170,8 @@
   <script src="paywall.js"></script>
   <script src="ui-i18n.js"></script>
   <script src="app.js"></script>
+  <script src="regali-catalogo.js"></script>
+  <script src="regali.js"></script>
 <noscript>Per utilizzare Petali occorre JavaScript attivo.</noscript>
 </body>
 </html>
