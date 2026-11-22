@@ -1,5 +1,5 @@
 /* PETALI - sezione regali. Isolata dal gioco, dal 3D e dai pagamenti. */
-#regali-panel {
+#regali-page {
   margin: 20px auto 22px;
   max-width: 700px;
   background: linear-gradient(145deg, #fff8fb, #fbe8f3);
@@ -9,26 +9,12 @@
   color: #65364f;
   overflow: hidden;
 }
-#regali-panel summary {
-  cursor: pointer;
-  display: block;
-  list-style: none;
-  padding: 18px 20px;
-  font-size: clamp(19px, 5vw, 24px);
-  font-weight: 700;
-  text-align: center;
-  background: linear-gradient(110deg, #ac4c78, #863c76);
-  color: #fff;
-}
-#regali-panel summary::-webkit-details-marker { display: none; }
-#regali-panel summary::after { content: " ＋"; }
-#regali-panel[open] summary::after { content: " −"; }
-#regali-panel .regali-contenuto { padding: 15px; }
-#regali-panel p { margin: 4px 0 16px; line-height: 1.45; }
-#regali-panel label { display: block; text-align: left; font-weight: 700; margin: 12px 0 5px; }
-#regali-panel input,
-#regali-panel select,
-#regali-panel textarea {
+#regali-page .regali-contenuto { padding: 15px; }
+#regali-page p { margin: 4px 0 16px; line-height: 1.45; }
+#regali-page label { display: block; text-align: left; font-weight: 700; margin: 12px 0 5px; }
+#regali-page input,
+#regali-page select,
+#regali-page textarea {
   display: block;
   width: 100%;
   min-height: 46px;
@@ -39,14 +25,14 @@
   border-radius: 11px;
   padding: 11px;
 }
-#regali-panel textarea { resize: vertical; min-height: 95px; }
+#regali-page textarea { resize: vertical; min-height: 95px; }
 #regalo-fiori {
   display: grid;
   grid-template-columns: repeat(3, minmax(0,1fr));
   gap: 9px;
   margin: 9px 0 15px;
 }
-#regali-panel .regalo-fiore {
+#regali-page .regalo-fiore {
   min-width: 0;
   margin: 0;
   padding: 12px 5px;
@@ -61,7 +47,7 @@
   gap: 4px;
   line-height: 1.2;
 }
-#regali-panel .regalo-fiore.selezionato {
+#regali-page .regalo-fiore.selezionato {
   background: #fff0f7;
   border-color: #b63d7d;
   box-shadow: inset 0 0 0 1px #b63d7d;
@@ -82,11 +68,60 @@
 #regalo-preview-occasione { font-size: 13px; letter-spacing:.05em; color:#82516d; }
 #regalo-preview-dedica { font-style: italic; font-size: 16px; line-height: 1.5; margin:12px auto; max-width:420px; overflow-wrap:anywhere; }
 #regalo-preview-destinatario, #regalo-preview-mittente { font-size: 13px; margin: 3px; overflow-wrap:anywhere; }
-#regali-panel .regali-azioni { display:flex; flex-wrap:wrap; gap:9px; justify-content:center; }
-#regali-panel .regali-azioni button { margin: 0; border-radius:12px; flex:1 1 155px; min-height:45px; padding:10px; }
+#regali-page .regali-azioni { display:flex; flex-wrap:wrap; gap:9px; justify-content:center; }
+#regali-page .regali-azioni button { margin: 0; border-radius:12px; flex:1 1 155px; min-height:45px; padding:10px; }
 #regalo-sblocca { background:#fff; border:1px solid #923f6c; color:#813856; width:100%; }
 #regalo-stato { min-height:23px; margin-top:12px; font-size:13px; color:#853557; }
 @media (max-width:360px) {
   #regalo-fiori { grid-template-columns: repeat(2,minmax(0,1fr)); }
-  #regali-panel .regali-contenuto {padding:11px;}
+  #regali-page .regali-contenuto {padding:11px;}
 }
+
+/* Ingressso regalo nella schermata principale, senza aprire il gioco sotto. */
+a.petali-regali-link {
+  display: block;
+  margin: 14px auto 22px;
+  max-width: 700px;
+  padding: 18px 16px;
+  color: #fff;
+  text-decoration: none;
+  text-align: center;
+  font-size: 21px;
+  font-weight: 700;
+  border-radius: 18px;
+  background: linear-gradient(125deg, #ad447e, #743b78);
+  box-shadow: 0 5px 15px rgba(113, 42, 92, .2);
+}
+a.petali-regali-link:focus-visible,
+a.regali-indietro:focus-visible {outline:3px solid #6a2b60;outline-offset:3px;}
+.regali-body { min-height: 100dvh; }
+header.regali-header {
+  max-width: 740px;
+  margin: 0 auto;
+  padding: 18px 16px 8px;
+  text-align: center;
+}
+header.regali-header h1 {
+  margin: 12px 0 5px;
+  font-size: clamp(23px, 6vw, 31px);
+  color: #7b2f5b;
+  text-wrap: balance;
+}
+header.regali-header p {margin:0;color:#995777;font-size:13px;letter-spacing:.06em;}
+a.regali-indietro {
+  display: inline-block;
+  margin: 0 auto 6px;
+  padding: 10px 14px;
+  background: #fff;
+  color: #7a2e5c;
+  border: 1px solid #d49bbb;
+  border-radius: 999px;
+  font-size: 15px;
+  font-weight: bold;
+  text-decoration: none;
+}
+#regali-page {
+  margin: 14px auto 32px;
+  padding: 0;
+}
+#regali-page .regali-contenuto {padding: 15px 17px;}
