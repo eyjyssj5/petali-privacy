@@ -53,6 +53,6 @@ test('schermata 3D mostra quando regalare la specie selezionata',()=>{
 
 test('versione Android incrementata rispetto alla release precedente',()=>{
   const gradle=read('android/app/build.gradle');
-  assert.match(gradle, /versionName "1\.1\.1"/);
-  assert.match(gradle, /20261123/);
+  assert.match(gradle, /versionName "1\.1\.2"/);
+  assert.match(gradle, /20261124/);
 });
