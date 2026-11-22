@@ -7,8 +7,8 @@ android {
         applicationId "com.aivevia.petali"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode Integer.parseInt(System.getenv("PETALI_ANDROID_VERSION_CODE") ?: "20261123")
-        versionName "1.1.1"
+        versionCode Integer.parseInt(System.getenv("PETALI_ANDROID_VERSION_CODE") ?: "20261124")
+        versionName "1.1.2"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         aaptOptions {
              // Files and dirs to omit from the packaged assets dir, modified to accommodate modern web apps.
