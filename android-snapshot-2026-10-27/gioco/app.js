@@ -269,6 +269,7 @@
 
   // PETALI_RECUPERO_SCHERMATA: 15 anteprime botaniche DIVERSE, mai lo stesso fiore ripetuto.
   function costruisciGriglia() {
+    window.PetaliRewards.render();
     const griglia = $("griglia-fiori");
     griglia.replaceChildren();
     const acquistiDisponibili = window.PetaliCommerce?.ready?.() === true;
@@ -282,7 +283,8 @@
       carta.type = "button";
       carta.className = "carta petali-v22" + (libero ? "" : " bloccato");
       const statusKey = FIORI_GRATIS.includes(fiore.id) ? "free2d" : libero ? "unlocked2d" : "locked2d";
-      carta.setAttribute("aria-label", fiore.nome[lingua] + ", " + ui(statusKey));
+      const label = !acquistato && !FIORI_GRATIS.includes(fiore.id) && libero ? window.PetaliRewards.label(10) : ui(statusKey);
+      carta.setAttribute("aria-label", fiore.nome[lingua] + ", " + label);
       carta.appendChild(costruisciFiore(fiore, 12).cont);
       const nome = document.createElement("strong");
       nome.textContent = fiore.nome[lingua];
@@ -290,12 +292,11 @@
       significato.textContent = fiore.significato[lingua];
       const stato = document.createElement("span");
       stato.className = "petali-v22-stato" + (libero ? " libero" : "");
-      stato.textContent = ui(statusKey);
+      stato.textContent = label;
       carta.append(nome, significato, stato);
-      carta.disabled = !libero && !acquistiDisponibili;
       carta.addEventListener("click", () => {
-        if (libero) apriFiore(fiore);
-        else if (acquistiDisponibili) void compra();
+        if (fioreSbloccato(fiore)) apriFiore(fiore);
+        else window.PetaliRewards.showOffer("2d", fiore.id, () => { costruisciGriglia(); apriFiore(fiore); }, compra);
       });
       griglia.appendChild(carta);
     });
@@ -503,7 +504,7 @@
   const FIORI_GRATIS = ["rosa-rossa", "rosa-gialla", "girasole"];
 
   function fioreSbloccato(fiore) {
-    return acquistato || FIORI_GRATIS.includes(fiore.id);
+    return acquistato || FIORI_GRATIS.includes(fiore.id) || window.PetaliRewards.isUnlocked("2d",fiore.id);
   }
 
   function leggiStato() {
