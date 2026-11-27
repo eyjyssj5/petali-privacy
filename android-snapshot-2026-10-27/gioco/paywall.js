@@ -10,6 +10,21 @@
   const sdk = () => window.PetaliNative?.Purchases || window.Capacitor?.Plugins?.Purchases;
   const play = () => window.PetaliNative?.Billing || window.Capacitor?.Plugins?.PetaliBilling;
   const key = () => config.ios;
+  // iOS Ad Hoc reward tests must start without historical StoreKit entitlements.
+  // Purchase/restore are still available explicitly; live builds always auto-refresh.
+  const isolatedTest = () => platform() === 'ios' && window.PetaliAdConfig?.test === true;
+  const TEST_STORE_KEY = 'petali.test.store.explicit.v2';
+  let explicitStore = false;
+  function storeEnabled() {
+    if (!isolatedTest()) return true;
+    try { return explicitStore || window.sessionStorage?.getItem(TEST_STORE_KEY) === '1'; }
+    catch (_) { return explicitStore; }
+  }
+  function enableStore() {
+    explicitStore = true;
+    try { window.sessionStorage?.setItem(TEST_STORE_KEY, '1'); } catch (_) {}
+  }
+  const activeRight = entitlement => entitlement?.isActive === true;
   const productId = kind => kind === '3d' ? (config.androidProduct3d || 'fiori_3d') : (config.androidProduct2d || 'fiori_2d');
   const entName = kind => kind === '3d' ? (config.entitlement3d || 'fiori_3d') : (config.entitlement2d || 'fiori_2d');
   const validKey = s => typeof s === 'string' && /^(appl_|test_)/.test(s) && s.length > 12 && !/INSERISCI_|YOUR_|TODO/i.test(s);
@@ -17,8 +32,8 @@
   function apply(info) {
     const active = info?.entitlements?.active || {};
     rights = {
-      '2d': Boolean(active[entName('2d')] || active[config.entitlementLegacy2d || 'sblocco']),
-      '3d': Boolean(active[entName('3d')])
+      '2d': activeRight(active[entName('2d')]) || activeRight(active[config.entitlementLegacy2d || 'sblocco']),
+      '3d': activeRight(active[entName('3d')])
     };
     emit();
   }
@@ -43,6 +58,7 @@
     return started;
   }
   async function refresh() {
+    if (!storeEnabled()) { rights = { '2d': false, '3d': false }; emit(); return { ...rights }; }
     if (!(await init())) { rights = { '2d': false, '3d': false }; emit(); return { ...rights }; }
     try {
       if (platform() === 'android') {
@@ -78,6 +94,7 @@
       await refresh();
     } else {
       const purchase = await sdk().purchasePackage({ aPackage: pack });
+      enableStore();
       apply(purchase?.customerInfo);
       if (!rights[kind]) await refresh();
     }
@@ -90,6 +107,7 @@
       return refresh();
     }
     const restored = await sdk().restorePurchases();
+    enableStore();
     apply(restored?.customerInfo);
     await refresh();
     return { ...rights };

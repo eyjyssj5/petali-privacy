@@ -34,3 +34,13 @@ test('no negative balance and no double grant with concurrent video calls',async
   assert.equal(r.useCredits('2d','extra'),false);assert.equal(r.state().balance,0);
   const a=await Promise.all([r.watch('3d','a'),r.watch('3d','b')]);assert.equal(a.filter(Boolean).length,1);
 });
+
+test('no ad or credit operation on selecting a flower, cancellation leaves all premium locked',async()=>{
+ const {r}=setup();assert.equal(r.isUnlocked('3d','girasole'),false);assert.equal(r.isUnlocked('3d','orchidea'),false);
+ assert.equal(r.isUnlocked('2d','orchidea'),false);assert.equal(r.state().balance,100);assert.equal(Object.keys(r.state().unlocks).length,0);
+});
+test('one rewarded video leaves every other 3D and 2D flower locked',async()=>{
+ const {r}=setup(undefined,new Map(),async()=>true);await r.watch('3d','orchidea');assert.equal(r.isUnlocked('3d','orchidea'),true);
+ for(const id of ['rosa-rossa','rosa-gialla','girasole','tulipano','lavanda','papavero','iris','garofano','viola','ortensia','peonia','dalia','ciliegio','ibisco'])assert.equal(r.isUnlocked('3d',id),false);
+ assert.equal(r.isUnlocked('2d','orchidea'),false);assert.deepEqual(Object.keys(r.state().unlocks),['3d:orchidea']);assert.equal(r.state().balance,100);
+});

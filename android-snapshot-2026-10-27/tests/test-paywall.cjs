@@ -92,3 +92,20 @@ test('plugin Android gestisce solo acquisti Google Play realmente effettuati e r
  assert.match(build,/com\.android\.billingclient:billing:9\.1\.0/);
  assert.match(bridge,/registerPlugin\('PetaliBilling'\)/);
 });
+
+// Regression: a clean rewarded-ad test must not inherit previous iOS purchases.
+test('iOS Ad Hoc test ignores historical purchases on every automatic refresh; explicit restore remains available',async()=>{
+ const stored=new Map();let calls=0;
+ const sdk={async configure(){},async getCustomerInfo(){calls++;return {customerInfo:{entitlements:{active:{fiori_2d:{isActive:true},fiori_3d:{isActive:true}}}}}},async restorePurchases(){return this.getCustomerInfo()}};
+ const window={PetaliPayments:payments,PetaliAdConfig:{test:true},sessionStorage:{getItem:k=>stored.get(k),setItem:(k,v)=>stored.set(k,v)},PetaliNative:{platform:'ios',Purchases:sdk}};
+ vm.runInNewContext(source,{window});const pay=window.PetaliCommerce;
+ await pay.refresh();await pay.refresh();assert.equal(calls,0);assert.equal(pay.has('2d'),false);assert.equal(pay.has('3d'),false);
+ await pay.restore();assert.equal(pay.has('2d'),true);assert.equal(pay.has('3d'),true);
+ vm.runInNewContext(source,{window});await window.PetaliCommerce.refresh();assert.equal(window.PetaliCommerce.has('3d'),true);
+});
+test('iOS rejects inactive or malformed entitlement entries even inside active map',async()=>{
+ const {pay,setEnts}=iosScenario();setEnts({fiori_2d:{isActive:false},fiori_3d:{}});await pay.refresh();assert.equal(pay.has('2d'),false);assert.equal(pay.has('3d'),false);
+});
+test('iOS live continues to automatically restore verified permanent rights',async()=>{
+ const {pay,setEnts}=iosScenario();setEnts({fiori_2d:{isActive:true},fiori_3d:{isActive:true}});await pay.refresh();assert.equal(pay.has('2d'),true);assert.equal(pay.has('3d'),true);
+});
