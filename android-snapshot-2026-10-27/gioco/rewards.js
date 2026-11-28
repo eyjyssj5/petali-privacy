@@ -19,6 +19,7 @@
     fr:["Connexion quotidienne","Jours consécutifs","Récompense tous les 10 jours : +100 crédits","Récompense reçue !","Fermer","100 crédits de bienvenue ; +10 par jour ; +100 tous les 10 jours consécutifs."],
     de:["Täglicher Login","Aufeinanderfolgende Tage","Belohnung alle 10 Tage: +100 Credits","Belohnung erhalten!","Schließen","100 Willkommens-Credits; +10 pro Tag; +100 alle 10 aufeinanderfolgenden Tage."]
   };
+  for(const [lang,p] of Object.entries(w.PetaliExtendedLocales||{})){labels[lang]=p.rewards;loyaltyLabels[lang]=p.loyalty}
   function lang(){return (w.document?.documentElement?.lang||'it').split('-')[0]}
   function t(i){return (labels[lang()]||labels.en)[i]}
   function day(now){return Math.floor(now/DAY)}

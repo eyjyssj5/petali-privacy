@@ -133,6 +133,7 @@
     "de": "Für Charme, Freude und Bewunderung; passend zu Geburtstagen, Feiern und fröhlichen Überraschungen."
   }
 };
+  for(const [lang,p] of Object.entries(root.PetaliExtendedLocales||{})){labels[lang]=p.when;for(const [id,row] of Object.entries(p.flowerById))flowers[id][lang]=row[4]}
   const aliases = {"tulipano":"tulipano-rosso","garofano":"garofano-rosso"};
   function get(id, lang) {
     const row = flowers[aliases[id] || id];

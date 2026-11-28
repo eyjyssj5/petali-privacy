@@ -226,3 +226,6 @@ html, body { touch-action: pan-y; -webkit-text-size-adjust: 100%; overflow-x: hi
 /* Indicazione sul significato pratico del fiore, leggibile anche su mobile. */
 .petali-uso {padding:13px 15px;margin:13px 0 14px;border:1px solid #e2bfd3;border-radius:13px;background:#fff8fb;line-height:1.5;font-size:15px;color:#65354e;}
 .petali-uso strong {color:#823861;}
+
+/* 16 locales, long labels and RTL. */
+details.menu-lingue .menu-voci{max-height:min(65vh,480px);overflow-y:auto;overscroll-behavior:contain;max-width:min(86vw,340px)}details.menu-lingue .menu-voci .lingua{white-space:normal;overflow-wrap:anywhere;text-align:start}html[dir="rtl"] details.menu-lingue{right:auto;left:12px}html[dir="rtl"] details.menu-lingue .menu-voci{left:0;right:auto}html[dir="rtl"] input,html[dir="rtl"] textarea{text-align:start}

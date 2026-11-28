@@ -23,6 +23,7 @@
     fr:["Fond","Rose","Ivoire","Nuit","Créer un GIF animé","Regarder une vidéo pour créer le GIF","Partager le GIF","GIF prêt, touchez pour partager.","Vidéo indisponible ou incomplète.","Préparation du GIF…","Créer une carte"],
     de:["Hintergrund","Rosé","Elfenbein","Nacht","Animiertes GIF erstellen","Video ansehen, um das GIF zu erstellen","GIF teilen","GIF fertig, zum Teilen tippen.","Video nicht verfügbar oder unvollständig.","GIF wird erstellt…","Karte erstellen"]
   };
+  for(const [lang,p] of Object.entries(window.PetaliExtendedLocales||{})){TR[lang]=p.gift;animationLabels[lang]=p.animation}
   const photos=new Map();
   function flowerSrc(id){return ['rosa-rossa','rosa-gialla'].includes(id)?'15-fiori-3d/miniature/'+id+'.png':'img/anteprime/'+id+'.svg'}
   function flowerImage(id){if(!photos.has(id))photos.set(id,new Promise((resolve,reject)=>{const img=new Image();img.onload=()=>resolve(img);img.onerror=()=>{photos.delete(id);reject(Error('Flower image unavailable'))};img.src=flowerSrc(id)}));return photos.get(id)}
@@ -97,8 +98,9 @@
   function relabel() {
     lang = pickLocale();
     document.documentElement.lang = lang;
+    document.documentElement.dir=lang==="ar"?"rtl":"ltr";
     document.title = "PETALI · " + t("title");
-    $("regalo-torna").textContent = ({it:"← Torna ai fiori",en:"← Back to flowers",es:"← Volver a las flores",pt:"← Voltar às flores",fr:"← Retour aux fleurs",de:"← Zurück zu den Blumen"})[lang];
+    $("regalo-torna").textContent = ({it:"← Torna ai fiori",en:"← Back to flowers",es:"← Volver a las flores",pt:"← Voltar às flores",fr:"← Retour aux fleurs",de:"← Zurück zu den Blumen"})[lang] || "← "+window.PetaliExtendedLocales[lang].app.indietro;
     const keys = { "regali-titolo":"title", "regali-intro":"intro", "regali-label-occasione":"occasion",
       "regali-label-fiori":"choose", "regali-label-a":"to", "regali-label-da":"from",
       "regali-label-messaggio":"message", "regali-label-preview":"preview" };
@@ -142,6 +144,7 @@
     const ctx = c.getContext("2d");
     if (!ctx) throw Error("Canvas unavailable");
     ctx.scale(c.width/900,c.height/1200);
+    ctx.direction=lang==="ar"?"rtl":"ltr";
     const f = flowers.get(chosenFlower);
     const bg = ctx.createLinearGradient(0,0,900,1200);
     const themes={rose:["#fff4f7","#e9d6ed","#8a3e67","#554052"],ivory:["#fffbef","#e7d8ba","#775438","#4e3b2b"],night:["#24192e","#4f3358","#f4d8c8","#fff1e9"]};
@@ -150,7 +153,7 @@
     ctx.fillStyle = bg; ctx.fillRect(0,0,900,1200);
     ctx.fillStyle = theme[2]; ctx.textAlign = "center";
     ctx.font = "bold 40px Georgia, serif"; ctx.fillText("✿ PETALI ✿",450,100);
-    ctx.font = "30px Arial, sans-serif"; ctx.fillText((occasion().name[lang] || "").slice(0,35),450,160);
+    ctx.font = "30px Arial, sans-serif"; ctx.fillText(occasion().name[lang] || "",450,160,770);
     if(!img)throw Error("Flower image unavailable");
     const scale=1+0.035*Math.sin(phase*Math.PI*2);
     const w=415*scale,h=415*scale, ratio=Math.min(w/img.naturalWidth,h/img.naturalHeight);
@@ -159,20 +162,15 @@
     // Fine drifting highlights, not an emoji or generic flower drawing.
     if(size<900){for(let i=0;i<9;i++){const a=i*2.399963,progress=(phase+i/9)%1;ctx.beginPath();ctx.fillStyle=theme[2];ctx.globalAlpha=.12+.20*Math.sin(Math.PI*progress);ctx.arc(450+Math.cos(a)*(.75+progress*.25)*250,410+Math.sin(a)*(.75+progress*.25)*235,3+3*Math.sin(Math.PI*progress),0,Math.PI*2);ctx.fill()}ctx.globalAlpha=1}
     ctx.fillStyle=theme[2];ctx.textAlign="center";
-    ctx.font = "bold 37px Georgia, serif"; ctx.fillText(nameOf(f).slice(0,35),450,670);
+    ctx.font = "bold 37px Georgia, serif"; ctx.fillText(nameOf(f),450,670,770);
     ctx.font="24px Arial, sans-serif";
-    if (safeText("regalo-a")) ctx.fillText(t("toLabel") + ": " + safeText("regalo-a").slice(0,45),450,726);
-    const words=message().replace(/\s+/g," ").split(" ");
-    const lines=[];let line="";
-    for (const w of words) {
-      const test=line?line+" "+w:w;
-      if (ctx.measureText(test).width>735 && line) {lines.push(line);line=w;} else line=test;
-    }
-    if (line) lines.push(line);
-    ctx.font="27px Georgia, serif";
-    ctx.fillStyle=theme[3];
-    lines.slice(0,6).forEach((l,i)=>ctx.fillText(l,450,805+i*47));
-    if (safeText("regalo-da")) {ctx.font="24px Arial, sans-serif";ctx.fillStyle=theme[2];ctx.fillText(t("fromLabel") + ": " + safeText("regalo-da").slice(0,45),450,1130);}
+    if (safeText("regalo-a")) ctx.fillText(t("toLabel") + ": " + safeText("regalo-a"),450,726,770);
+    const content=message().replace(/\s+/gu," ").trim();
+    const chars=typeof Intl.Segmenter==="function"?Array.from(new Intl.Segmenter(lang,{granularity:"grapheme"}).segment(content),x=>x.segment):Array.from(content);
+    function wrap(size){ctx.font=size+"px system-ui, sans-serif";const lines=[];let line="";for(const ch of chars){const next=line+ch;if(line&&ctx.measureText(next).width>735){lines.push(line.trimEnd());line=ch.trimStart()}else line=next}if(line)lines.push(line);return lines}
+    let sizeText=32,lines=wrap(sizeText);while(lines.length*sizeText*1.28>295&&sizeText>16){sizeText--;lines=wrap(sizeText)}
+    ctx.fillStyle=theme[3];const lineHeight=Math.min(sizeText*1.28,295/Math.max(1,lines.length));lines.forEach((line,i)=>ctx.fillText(line,450,785+i*lineHeight,735));
+    if (safeText("regalo-da")) {ctx.font="24px Arial, sans-serif";ctx.fillStyle=theme[2];ctx.fillText(t("fromLabel") + ": " + safeText("regalo-da"),450,1130,770);}
     return c;
   }
   function pngBlob(canvas) {

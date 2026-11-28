@@ -16,7 +16,7 @@ const RewardAds={
    const info=await AdMob.requestConsentInfo();
    if(info.status===AdmobConsentStatus.REQUIRED&&info.isConsentFormAvailable)await AdMob.showConsentForm();
    else if(String(info.privacyOptionsRequirementStatus).toUpperCase()==='REQUIRED')await AdMob.showPrivacyOptionsForm();
-   else window.alert(document.documentElement.lang==='it'?'Nessuna preferenza pubblicitaria richiesta.':'No ad privacy choices required.');
+   else {const l=document.documentElement.lang;const basic={it:'Nessuna preferenza pubblicitaria richiesta.',en:'No ad privacy choices required.',es:'No se requieren preferencias de privacidad publicitaria.',pt:'Não são necessárias preferências de privacidade de anúncios.',fr:'Aucun réglage de confidentialité publicitaire requis.',de:'Keine Werbedatenschutzeinstellungen erforderlich.'};window.alert(window.PetaliExtendedLocales?.[l]?.adPrivacy||basic[l]||basic.en);}
  },
  async watch(){
    if(busy||!this.available())return false;

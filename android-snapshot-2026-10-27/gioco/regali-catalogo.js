@@ -33,6 +33,7 @@
     fr: ["Chaque jour avec toi est un cadeau. Joyeux anniversaire de couple !", "Joyeux anniversaire ! Que ta journée soit lumineuse.", "Pour toi, avec tout mon amour.", "Je vous souhaite une vie de bonheur et d'amour.", "Ton amitié rend la vie plus belle.", "Merci du fond du cœur d'être là.", "Je suis désolé. J'espère que cette fleur te fera sourire.", "Félicitations pour cette réussite !", "Bienvenue à ce nouveau-né ! Tous mes vœux.", "Une fleur pour te dire combien tu es précieuse.", "Je te souhaite un prompt rétablissement.", "Une fleur pour se souvenir avec tendresse.", "Juste une petite fleur pour te faire sourire."],
     de: ["Jeder Tag mit dir ist ein Geschenk. Alles Gute zum Jahrestag!", "Herzlichen Glückwunsch zum Geburtstag!", "Für dich, mit all meiner Liebe.", "Ich wünsche euch ein Leben voller Liebe und Freude.", "Deine Freundschaft macht das Leben schöner.", "Danke von ganzem Herzen.", "Es tut mir leid. Ich hoffe, diese Blume zaubert dir ein Lächeln.", "Herzlichen Glückwunsch zu deinem Erfolg!", "Herzlich willkommen, kleines Wunder!", "Eine Blume, weil du so besonders bist.", "Ich wünsche dir gute und schnelle Besserung.", "Eine Blume in liebevoller Erinnerung.", "Eine kleine Überraschung, einfach so."]
   };
+  for(const [lang,p] of Object.entries(root.PetaliExtendedLocales||{})){labels[lang]=p.occasionNames;phrases[lang]=p.occasionMessages}
   const data = occasions.map((item, index) => ({
     id: item.id, flowers: item.flowers,
     name: Object.fromEntries(Object.keys(labels).map(lang => [lang, labels[lang][index]])),

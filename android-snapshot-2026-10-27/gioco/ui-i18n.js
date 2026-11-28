@@ -338,10 +338,11 @@
     "buyError": "Kauf fehlgeschlagen. Versuche es erneut."
   }
 };
+ for(const [lang,p] of Object.entries(root.PetaliExtendedLocales||{}))strings[lang]=p.ui;
  const available=Object.keys(strings);
  function language(){const saved=root.localStorage?.getItem('petali.lingua'),system=(root.navigator?.language||'it').slice(0,2).toLowerCase();return available.includes(saved)?saved:available.includes(system)?system:'it';}
  function t(code,key,params={}){const value=(strings[code]||strings.it)[key];if(typeof value!=='string')throw Error('Missing translation: '+code+'/'+key);return value.replace(/\{(\w+)\}/g,(match,n)=>Object.prototype.hasOwnProperty.call(params,n)?String(params[n]):match);}
- function apply(doc,code){doc.documentElement.lang=code;for(const el of doc.querySelectorAll('[data-ui]'))el.textContent=t(code,el.dataset.ui);for(const attr of ['aria-label','title','alt'])for(const el of doc.querySelectorAll('[data-ui-'+attr+']'))el.setAttribute(attr,t(code,el.getAttribute('data-ui-'+attr)));}
+ function apply(doc,code){doc.documentElement.lang=code;doc.documentElement.dir=code==="ar"?"rtl":"ltr";for(const el of doc.querySelectorAll('[data-ui]'))el.textContent=t(code,el.dataset.ui);for(const attr of ['aria-label','title','alt'])for(const el of doc.querySelectorAll('[data-ui-'+attr+']'))el.setAttribute(attr,t(code,el.getAttribute('data-ui-'+attr)));}
  function flowerName(id,code,fallback){const alias={tulipano:'tulipano-rosso',garofano:'garofano-rosso'};return root.Fiori?.FIORI?.find(f=>f.id===(alias[id]||id))?.nome?.[code]||fallback;}
  root.PetaliUI=Object.freeze({available,t,language,apply,flowerName});
 })(typeof window!=='undefined'?window:globalThis);

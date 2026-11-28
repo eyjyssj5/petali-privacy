@@ -132,10 +132,16 @@
     "nonMama": "Er liebt mich nicht"
   }
 };
+  for(const [lang,p] of Object.entries(root.PetaliExtendedLocales||{}))UI[lang]=p.app;
   const FIORI_EXTRA = {};
   const applica = () => {
     if (!root.Fiori || !Array.isArray(root.Fiori.FIORI)) return;
     for (const fiore of root.Fiori.FIORI) {
+      for(const [lang,p] of Object.entries(root.PetaliExtendedLocales||{})){
+        const row=p.flowerById[fiore.id];if(!row)throw Error('Missing flower '+lang+'/'+fiore.id);
+        for(const [i,key] of ['nome','significato','descrizione','storia'].entries())fiore[key][lang]=row[i];
+        fiore.messaggi.mama[lang]=row[5];fiore.messaggi.nonMama[lang]=row[6];
+      }
       if (!FIORI_EXTRA[fiore.id]) continue;
       const tr = FIORI_EXTRA[fiore.id];
       for (const key of ["nome","significato","descrizione","storia"]) Object.assign(fiore[key], tr[key]);
