@@ -15,6 +15,21 @@
   };
   const flowers = new Map(window.Fiori.FIORI.map((f) => [f.id, f]));
   const icons = { "rosa-rossa":"🌹", "rosa-gialla":"🌹", "girasole":"🌻", "tulipano-rosso":"🌷", "orchidea":"🌸", "lavanda":"🪻", "papavero":"🌺", "iris":"🪻", "garofano-rosso":"🌺", "viola":"🌺", "ortensia":"💠", "peonia":"🌺", "dalia":"🌼", "ciliegio":"🌸", "ibisco":"🌺" };
+  const animationLabels = {
+    it:["Sfondo","Rosa","Avorio","Notte","Crea GIF animata","Guarda un video per creare la GIF","Condividi GIF","GIF pronta, tocca per condividerla.","Video non disponibile o non completato.","Preparazione GIF…","Crea un biglietto"],
+    en:["Background","Rose","Ivory","Night","Create animated GIF","Watch a video to create the GIF","Share GIF","GIF ready, tap to share.","Video unavailable or incomplete.","Preparing GIF…","Create a card"],
+    es:["Fondo","Rosa","Marfil","Noche","Crear GIF animado","Mira un vídeo para crear el GIF","Compartir GIF","GIF listo, toca para compartir.","Vídeo no disponible o incompleto.","Preparando GIF…","Crear una tarjeta"],
+    pt:["Fundo","Rosa","Marfim","Noite","Criar GIF animado","Vê um vídeo para criar o GIF","Partilhar GIF","GIF pronto, toca para partilhar.","Vídeo indisponível ou incompleto.","A preparar GIF…","Criar um cartão"],
+    fr:["Fond","Rose","Ivoire","Nuit","Créer un GIF animé","Regarder une vidéo pour créer le GIF","Partager le GIF","GIF prêt, touchez pour partager.","Vidéo indisponible ou incomplète.","Préparation du GIF…","Créer une carte"],
+    de:["Hintergrund","Rosé","Elfenbein","Nacht","Animiertes GIF erstellen","Video ansehen, um das GIF zu erstellen","GIF teilen","GIF fertig, zum Teilen tippen.","Video nicht verfügbar oder unvollständig.","GIF wird erstellt…","Karte erstellen"]
+  };
+  const photos=new Map();
+  function flowerSrc(id){return ['rosa-rossa','rosa-gialla'].includes(id)?'15-fiori-3d/miniature/'+id+'.png':'img/anteprime/'+id+'.svg'}
+  function flowerImage(id){if(!photos.has(id))photos.set(id,new Promise((resolve,reject)=>{const img=new Image();img.onload=()=>resolve(img);img.onerror=()=>{photos.delete(id);reject(Error('Flower image unavailable'))};img.src=flowerSrc(id)}));return photos.get(id)}
+  let preparedGif=null, gifBusy=false;
+  const hasPremium=()=>window.PetaliCommerce?.has?.("2d")===true||window.PetaliCommerce?.has?.("3d")===true;
+  function refreshGif(){const l=animationLabels[lang]||animationLabels.en;$("regalo-gif").textContent=hasPremium()?l[4]:l[5];$("regalo-gif-invia").textContent=l[6];$("regalo-gif-invia").hidden=!preparedGif}
+  function invalidateGif(){preparedGif=null;refreshGif()}
   let lang = "it";
   let chosenFlower = data.free2d[0];
   const pickLocale = () => {
@@ -40,7 +55,10 @@
   function syncPreview() {
     const f = flowers.get(chosenFlower);
     if (!f) return;
-    $("regalo-preview-fiore").textContent = icons[f.id] || "🌷";
+    $("regalo-preview-foto").src = flowerSrc(f.id);
+    void flowerImage(f.id).catch(()=>{});
+    $("regalo-preview-fiore").dataset.background=$("regalo-sfondo").value;
+    refreshGif();
     $("regalo-preview-nome").textContent = nameOf(f);
     $("regalo-uso-etichetta").textContent = window.PetaliUsiFiori.label(lang);
     $("regalo-uso-testo").textContent = window.PetaliUsiFiori.get(f.id, lang);
@@ -62,16 +80,16 @@
       b.type = "button";
       b.className = "regalo-fiore" + (chosenFlower === id ? " selezionato" : "");
       b.setAttribute("aria-pressed", String(chosenFlower === id));
-      const icon = document.createElement("span");
+      const icon = document.createElement("img");
       icon.className = "regalo-fiore-emoji";
-      icon.textContent = icons[id] || "🌷";
+      icon.alt="";icon.src=flowerSrc(id);
       const name = document.createElement("strong");
       name.textContent = nameOf(f);
       const status = document.createElement("small");
       status.textContent = premium(id) ? (unlocked(id) ? "✓ " + t("premium") : "🔒 " + t("premium")) : t("free");
       b.append(icon, name, status);
       b.addEventListener("click", () => {
-        chosenFlower = id; drawChoices(); syncPreview();
+        if(gifBusy)return; chosenFlower = id; invalidateGif(); drawChoices(); syncPreview();
       });
       list.append(b);
     }
@@ -86,6 +104,11 @@
       "regali-label-messaggio":"message", "regali-label-preview":"preview" };
     for (const [id, key] of Object.entries(keys)) $(id).textContent = t(key);
     $("regalo-condividi").textContent = t("share");
+    const l=animationLabels[lang]||animationLabels.en;
+    $("regali-label-sfondo").textContent=l[0];
+    Array.from($("regalo-sfondo").options).forEach((opt,i)=>opt.textContent=l[i+1]);
+    if(new URLSearchParams(location.search).get("card")==="1")$("regali-titolo").textContent=l[10];
+    refreshGif();
     $("regalo-copia").textContent = t("copy");
     $("regalo-sblocca").textContent = t("unlock");
     $("regalo-a").placeholder = t("toPlaceholder");
@@ -105,6 +128,7 @@
     drawChoices(); syncPreview();
   }
   function selectOccasion() {
+    invalidateGif();
     const possible = occasion().flowers;
     chosenFlower = possible.find((id) => !premium(id)) || possible[0];
     $("regalo-messaggio").dataset.edited = "";
@@ -112,30 +136,29 @@
     drawChoices(); syncPreview();
   }
   // A full flower illustration is drawn locally, with no remote upload.
-  function imageCard() {
+  function imageCard(img, phase=0, size=900) {
     const c = document.createElement("canvas");
-    c.width = 900; c.height = 1200;
+    c.width = size; c.height = Math.round(size*4/3);
     const ctx = c.getContext("2d");
-    if (!ctx) return c;
+    if (!ctx) throw Error("Canvas unavailable");
+    ctx.scale(c.width/900,c.height/1200);
     const f = flowers.get(chosenFlower);
     const bg = ctx.createLinearGradient(0,0,900,1200);
-    bg.addColorStop(0, "#fff4f7"); bg.addColorStop(1, "#e9d6ed");
+    const themes={rose:["#fff4f7","#e9d6ed","#8a3e67","#554052"],ivory:["#fffbef","#e7d8ba","#775438","#4e3b2b"],night:["#24192e","#4f3358","#f4d8c8","#fff1e9"]};
+    const theme=themes[$("regalo-sfondo").value]||themes.rose;
+    bg.addColorStop(0,theme[0]);bg.addColorStop(1,theme[1]);
     ctx.fillStyle = bg; ctx.fillRect(0,0,900,1200);
-    ctx.fillStyle = "#8a3e67"; ctx.textAlign = "center";
+    ctx.fillStyle = theme[2]; ctx.textAlign = "center";
     ctx.font = "bold 40px Georgia, serif"; ctx.fillText("✿ PETALI ✿",450,100);
     ctx.font = "30px Arial, sans-serif"; ctx.fillText((occasion().name[lang] || "").slice(0,35),450,160);
-    const fill = f?.colore || "#d62839";
-    ctx.save(); ctx.translate(450,420);
-    ctx.fillStyle = fill;
-    for (let i=0;i<14;i++) {
-      ctx.save(); ctx.rotate(i*Math.PI*2/14);
-      ctx.beginPath(); ctx.ellipse(0,-140,64,155,0,0,Math.PI*2); ctx.fill();
-      ctx.restore();
-    }
-    ctx.fillStyle = "#f6c85b"; ctx.beginPath(); ctx.arc(0,0,60,0,Math.PI*2); ctx.fill();
-    ctx.fillStyle = "#ae8035"; ctx.beginPath(); ctx.arc(0,0,26,0,Math.PI*2); ctx.fill();
-    ctx.restore();
-    ctx.fillStyle="#813856"; ctx.textAlign="center";
+    if(!img)throw Error("Flower image unavailable");
+    const scale=1+0.035*Math.sin(phase*Math.PI*2);
+    const w=415*scale,h=415*scale, ratio=Math.min(w/img.naturalWidth,h/img.naturalHeight);
+    const dw=img.naturalWidth*ratio,dh=img.naturalHeight*ratio;
+    ctx.save();ctx.translate(450,410);ctx.rotate(.035*Math.sin(phase*Math.PI*2));ctx.drawImage(img,-dw/2,-dh/2,dw,dh);ctx.restore();
+    // Fine drifting highlights, not an emoji or generic flower drawing.
+    if(size<900){for(let i=0;i<9;i++){const a=i*2.399963,progress=(phase+i/9)%1;ctx.beginPath();ctx.fillStyle=theme[2];ctx.globalAlpha=.12+.20*Math.sin(Math.PI*progress);ctx.arc(450+Math.cos(a)*(.75+progress*.25)*250,410+Math.sin(a)*(.75+progress*.25)*235,3+3*Math.sin(Math.PI*progress),0,Math.PI*2);ctx.fill()}ctx.globalAlpha=1}
+    ctx.fillStyle=theme[2];ctx.textAlign="center";
     ctx.font = "bold 37px Georgia, serif"; ctx.fillText(nameOf(f).slice(0,35),450,670);
     ctx.font="24px Arial, sans-serif";
     if (safeText("regalo-a")) ctx.fillText(t("toLabel") + ": " + safeText("regalo-a").slice(0,45),450,726);
@@ -147,9 +170,9 @@
     }
     if (line) lines.push(line);
     ctx.font="27px Georgia, serif";
-    ctx.fillStyle="#554052";
+    ctx.fillStyle=theme[3];
     lines.slice(0,6).forEach((l,i)=>ctx.fillText(l,450,805+i*47));
-    if (safeText("regalo-da")) {ctx.font="24px Arial, sans-serif";ctx.fillStyle="#813856";ctx.fillText(t("fromLabel") + ": " + safeText("regalo-da").slice(0,45),450,1130);}
+    if (safeText("regalo-da")) {ctx.font="24px Arial, sans-serif";ctx.fillStyle=theme[2];ctx.fillText(t("fromLabel") + ": " + safeText("regalo-da").slice(0,45),450,1130);}
     return c;
   }
   function pngBlob(canvas) {
@@ -165,19 +188,20 @@
     if (!unlocked(chosenFlower)) { paintStatus(t("locked")); return; }
     try {
       const text = giftText();
+      const img=await flowerImage(chosenFlower);
       const platform = window.PetaliNative?.platform || "web";
       // Android WebView non supporta in modo affidabile Web Share.
       // Passiamo il PNG al plugin nativo: apre ACTION_SEND con selettore app.
       if (platform === "android") {
         const nativeShare = window.PetaliNative?.ShareGift;
         if (!nativeShare?.shareImage) throw new Error("PetaliShare Android non registrato");
-        const encoded = imageCard().toDataURL("image/png").split(",")[1];
+        const encoded = imageCard(img).toDataURL("image/png").split(",")[1];
         if (!encoded) throw new Error("PNG non generato");
         await nativeShare.shareImage({ pngBase64: encoded, text });
         paintStatus(t("ready"));
         return;
       }
-      const blob = await pngBlob(imageCard());
+      const blob = await pngBlob(imageCard(img));
       const file = blob && typeof File !== "undefined"
         ? new File([blob], "petali-regalo.png", { type: "image/png" }) : null;
       if (file && navigator.share && navigator.canShare?.({ files: [file] })) {
@@ -185,11 +209,7 @@
         paintStatus(t("ready"));
         return;
       }
-      if (navigator.share) {
-        await navigator.share({ title: "PETALI", text });
-        paintStatus(t("ready"));
-        return;
-      }
+      // Never report a text-only share as a successfully shared card.
       // Solo nel browser normale si scarica il biglietto. Su Android nativo
       // non si deve nascondere un errore dietro a un download automatico.
       if (platform === "web" && blob) {
@@ -203,11 +223,52 @@
       paintStatus(error?.name === "AbortError" ? t("cancel") : t("failed"));
     }
   }
+  async function prepareAnimation(){
+    if(gifBusy)return;
+    const l=animationLabels[lang]||animationLabels.en;
+    gifBusy=true;preparedGif=null;refreshGif();
+    const controls=[...document.querySelectorAll('#regali-page input,#regali-page select,#regali-page textarea,#regalo-fiori button,#regalo-gif,#regalo-condividi,#regalo-sblocca')];
+    const previous=controls.map(x=>x.disabled);controls.forEach(x=>x.disabled=true);
+    try{
+      const img=await flowerImage(chosenFlower);
+      if(!hasPremium()){
+        const ads=window.PetaliNative?.RewardAds;
+        if(!ads?.available?.()||await ads.watch()!==true){paintStatus(l[8]);return}
+      }
+      paintStatus(l[9]);
+      await new Promise(resolve=>setTimeout(resolve,30));
+      const frames=[];for(let i=0;i<12;i++){const c=imageCard(img,i/12,360);frames.push(c.getContext("2d").getImageData(0,0,c.width,c.height).data)}
+      const bytes=window.PetaliGif.encode(360,480,frames,15);
+      const blob=new Blob([bytes],{type:"image/gif"});
+      preparedGif={blob,text:giftText()};
+      refreshGif();paintStatus(l[7]);
+    }catch(error){console.error("[PETALI GIF]",error);paintStatus(t("failed"))}
+    finally{gifBusy=false;controls.forEach((x,i)=>x.disabled=previous[i]);$("regalo-condividi").disabled=!unlocked(chosenFlower)}
+  }
+  async function shareAnimation(){
+    if(!preparedGif||gifBusy)return;
+    try{
+      const {blob,text}=preparedGif,platform=window.PetaliNative?.platform||"web";
+      if(platform==="android"){
+        const base64=await new Promise((resolve,reject)=>{const reader=new FileReader();reader.onload=()=>resolve(String(reader.result).split(",")[1]);reader.onerror=reject;reader.readAsDataURL(blob)});
+        await window.PetaliNative.ShareGift.shareImage({gifBase64:base64,text});
+      }else{
+        const file=new File([blob],"petali-regalo.gif",{type:"image/gif"});
+        if(navigator.share&&navigator.canShare?.({files:[file]}))await navigator.share({title:"PETALI",text,files:[file]});
+        else if(platform==="web"){const link=document.createElement("a");const url=URL.createObjectURL(blob);link.href=url;link.download=file.name;document.body.append(link);link.click();link.remove();setTimeout(()=>URL.revokeObjectURL(url),10000)}
+        else{paintStatus(t("failed"));return}
+      }
+      preparedGif=null;refreshGif();paintStatus(t("ready"));
+    }catch(error){paintStatus(error?.name==="AbortError"?t("cancel"):t("failed"))}
+  }
+  $("regalo-sfondo").addEventListener("change",()=>{invalidateGif();syncPreview()});
+  $("regalo-gif").addEventListener("click",()=>void prepareAnimation());
+  $("regalo-gif-invia").addEventListener("click",()=>void shareAnimation());
   $("regalo-occasione").addEventListener("change",selectOccasion);
   for (const id of ["regalo-a","regalo-da","regalo-messaggio"]) {
     $(id).addEventListener("input", () => {
       if (id === "regalo-messaggio") $("regalo-messaggio").dataset.edited = "yes";
-      syncPreview();
+      invalidateGif();syncPreview();
     });
   }
   $("regalo-sblocca").addEventListener("click", async () => {

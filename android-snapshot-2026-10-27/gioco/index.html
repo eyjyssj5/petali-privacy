@@ -83,6 +83,8 @@
         <a class="petali-modalita-3d" href="15-fiori-3d/index.html" id="btn-menu-3d"><strong data-ui="mode3d">🌻 Fiori 3D</strong><span id="stato-menu-3d">15 fiori · Premium 3D</span></a>
       </nav>
       <a id="btn-menu-regali" class="petali-regali-link" href="regali.html" data-ui="giftMode">🎁 Regala un fiore</a>
+      <a id="btn-menu-biglietto" class="petali-regali-link" href="regali.html?card=1"></a>
+      <script>document.addEventListener("DOMContentLoaded",()=>{const labels={it:"✉ Crea un biglietto",en:"✉ Create a card",es:"✉ Crear una tarjeta",pt:"✉ Criar um cartão",fr:"✉ Créer une carte",de:"✉ Karte erstellen"};const apply=()=>document.getElementById("btn-menu-biglietto").textContent=labels[document.documentElement.lang]||labels.en;apply();new MutationObserver(apply).observe(document.documentElement,{attributes:true,attributeFilter:["lang"]})});</script>
 
 <section class="petali-credit-wallet" style="border:1px solid #e5bcd4;border-radius:16px;background:#fff;padding:12px;margin:12px 0;color:#713858"><strong id="petali-credit-status" aria-live="polite"></strong><p id="petali-credit-info" style="font-size:13px;margin:5px 0"></p><small id="petali-test-ad" hidden></small></section>
       <button id="btn-suono" class="secondario" type="button"></button>

@@ -25,20 +25,24 @@ public class PetaliSharePlugin extends Plugin {
 
     @PluginMethod
     public void shareImage(PluginCall call) {
-        String encoded = call.getString("pngBase64");
+        String gif = call.getString("gifBase64");
+        boolean animated = gif != null;
+        String encoded = animated ? gif : call.getString("pngBase64");
+        byte[] expected = animated ? new byte[]{71,73,70,56,57,97} : PNG_HEADER;
+        String mime = animated ? "image/gif" : "image/png";
         if (encoded == null || encoded.isEmpty() || encoded.length() > MAX_BASE64_LENGTH) {
-            call.reject("PNG non valido o troppo grande.");
+            call.reject("Invalid image or image too large.");
             return;
         }
         try {
             byte[] png = Base64.decode(encoded, Base64.DEFAULT);
-            if (png.length < PNG_HEADER.length) {
-                call.reject("Immagine PNG mancante.");
+            if (png.length < expected.length) {
+                call.reject("Missing image.");
                 return;
             }
-            for (int i = 0; i < PNG_HEADER.length; i++) {
-                if (png[i] != PNG_HEADER[i]) {
-                    call.reject("Il biglietto non è un PNG valido.");
+            for (int i = 0; i < expected.length; i++) {
+                if (png[i] != expected[i]) {
+                    call.reject("Invalid image signature.");
                     return;
                 }
             }
@@ -47,7 +51,7 @@ public class PetaliSharePlugin extends Plugin {
                 call.reject("Impossibile preparare il biglietto.");
                 return;
             }
-            File image = File.createTempFile("petali-regalo-", ".png", folder);
+            File image = File.createTempFile("petali-regalo-", animated ? ".gif" : ".png", folder);
             try (FileOutputStream stream = new FileOutputStream(image)) {
                 stream.write(png);
             }
@@ -55,13 +59,13 @@ public class PetaliSharePlugin extends Plugin {
                 getContext(), getContext().getPackageName() + ".fileprovider", image
             );
             Intent send = new Intent(Intent.ACTION_SEND);
-            send.setType("image/png");
+            send.setType(mime);
             send.putExtra(Intent.EXTRA_STREAM, contentUri);
             String message = call.getString("text", "");
             if (!message.isEmpty()) send.putExtra(Intent.EXTRA_TEXT, message);
             send.setClipData(ClipData.newRawUri("PETALI", contentUri));
             send.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-            Intent chooser = Intent.createChooser(send, "Condividi il fiore PETALI");
+            Intent chooser = Intent.createChooser(send, null);
             chooser.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
             getActivity().runOnUiThread(() -> {
                 try {

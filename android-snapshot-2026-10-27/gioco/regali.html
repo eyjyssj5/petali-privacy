@@ -29,9 +29,11 @@
           <input id="regalo-da" type="text" maxlength="50" autocomplete="off" placeholder="Il tuo nome">
           <label id="regali-label-messaggio" for="regalo-messaggio">La tua dedica</label>
           <textarea id="regalo-messaggio" maxlength="350" rows="3"></textarea>
+          <label id="regali-label-sfondo" for="regalo-sfondo"></label>
+          <select id="regalo-sfondo"><option value="rose"></option><option value="ivory"></option><option value="night"></option></select>
           <div class="regalo-preview" aria-labelledby="regali-label-preview">
             <strong id="regali-label-preview">Anteprima regalo</strong>
-            <div id="regalo-preview-fiore" aria-hidden="true">🌹</div>
+            <div id="regalo-preview-fiore" aria-hidden="true"><img id="regalo-preview-foto" alt=""></div>
             <small id="regalo-preview-occasione"></small>
             <strong id="regalo-preview-nome"></strong>
             <p id="regalo-preview-destinatario"></p>
@@ -41,6 +43,8 @@
           <button id="regalo-sblocca" type="button" hidden>Sblocca i fiori Premium 2D</button>
           <div class="regali-azioni">
             <button id="regalo-condividi" type="button">Regala e condividi</button>
+            <button id="regalo-gif" type="button"></button>
+            <button id="regalo-gif-invia" type="button" hidden></button>
             <button id="regalo-copia" type="button" class="secondario">Copia la dedica</button>
           </div>
           <p id="regalo-stato" role="status" aria-live="polite"></p>
@@ -57,6 +61,7 @@
   <script src="paywall.js"></script>
   <script src="regali-catalogo.js"></script>
   <script src="usi-fiori.js"></script>
+  <script src="gif-encoder.js"></script>
   <script src="regali.js"></script>
   <noscript>Per utilizzare PETALI occorre JavaScript attivo.</noscript>
 </body>
