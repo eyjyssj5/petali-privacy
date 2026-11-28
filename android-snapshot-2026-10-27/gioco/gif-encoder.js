@@ -2,10 +2,9 @@
 (function(root,factory){const api=factory();if(typeof module==='object'&&module.exports)module.exports=api;else root.PetaliGif=api})(typeof globalThis==='object'?globalThis:this,function(){
   'use strict';
   function palette(frames){
-    // Weighted median-cut on the first frame; all frames share one palette.
+    // Weighted median-cut across sampled frames; all frames share one palette.
     const counts=new Uint32Array(32768), rr=new Uint32Array(32768),gg=new Uint32Array(32768),bb=new Uint32Array(32768);
-    const rgba=frames[0];
-    for(let i=0;i<rgba.length;i+=4){const r=rgba[i],g=rgba[i+1],b=rgba[i+2],k=(r>>3)*1024+(g>>3)*32+(b>>3);counts[k]++;rr[k]+=r;gg[k]+=g;bb[k]+=b}
+    for(const [index,rgba] of frames.entries())for(let i=0;i<rgba.length;i+=index===0?4:32){const r=rgba[i],g=rgba[i+1],b=rgba[i+2],k=(r>>3)*1024+(g>>3)*32+(b>>3);counts[k]++;rr[k]+=r;gg[k]+=g;bb[k]+=b}
     let colors=[];for(let i=0;i<counts.length;i++)if(counts[i])colors.push([rr[i]/counts[i],gg[i]/counts[i],bb[i]/counts[i],counts[i]]);
     function describe(a){let lo=[255,255,255],hi=[0,0,0],n=0;for(const c of a){n+=c[3];for(let j=0;j<3;j++){lo[j]=Math.min(lo[j],c[j]);hi[j]=Math.max(hi[j],c[j])}}let axis=0;for(let j=1;j<3;j++)if(hi[j]-lo[j]>hi[axis]-lo[axis])axis=j;return {a,n,axis,score:a.length>1?(hi[axis]-lo[axis])*Math.sqrt(n):0}}
     let boxes=[describe(colors)];while(boxes.length<256){boxes.sort((a,b)=>b.score-a.score);const x=boxes.shift();if(!x||!x.score){if(x)boxes.unshift(x);break}x.a.sort((a,b)=>a[x.axis]-b[x.axis]);let sum=0,k=1;for(;k<x.a.length-1;k++){sum+=x.a[k-1][3];if(sum>=x.n/2)break}boxes.push(describe(x.a.slice(0,k)),describe(x.a.slice(k)))}

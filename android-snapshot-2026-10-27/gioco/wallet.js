@@ -10,8 +10,8 @@ if(enabled){const stored=storage.get(KEY);if(stored?.access_token&&stored?.refre
 function lang(){return doc.documentElement.lang||'it'}
 function t(k,params={}){const d=w.PetaliWalletLabels[lang()]||w.PetaliWalletLabels.en;return d[k].replace(/\{(\w+)\}/g,(_,x)=>String(params[x]??''))}
 function notify(){w.dispatchEvent(new Event('petali-wallet-change'));renderMenu()}
-function setSession(s){session=s;snap=null;storage.set(KEY,s);if(!s){storage.set(INVITE,null);storage.set(PENDING,null)}notify()}
-function normalSession(d){if(!d?.access_token||!d?.refresh_token)throw Error('AUTH_REQUIRED');return {access_token:d.access_token,refresh_token:d.refresh_token,expires_at:Number(d.expires_at)||Math.floor(Date.now()/1000)+Number(d.expires_in||3600),user_id:d.user?.id||null}}
+function setSession(s){session=s;snap=null;storage.set(KEY,s);if(!s){storage.set(INVITE,null)}notify()}
+function normalSession(d){if(!d?.access_token||!d?.refresh_token||!(d.user?.id||session?.user_id))throw Error('AUTH_REQUIRED');return {access_token:d.access_token,refresh_token:d.refresh_token,expires_at:Number(d.expires_at)||Math.floor(Date.now()/1000)+Number(d.expires_in||3600),user_id:d.user?.id||session?.user_id||null}}
 class WalletError extends Error{constructor(status,code){super(code);this.status=status;this.code=code}}
 async function request(path,body,token){
  if(!enabled)throw new WalletError(503,'UNAVAILABLE');
@@ -29,19 +29,20 @@ function accept(d){if(!d||!Number.isSafeInteger(d.balance)||d.balance<0||!/^PET-
 async function checkin(invite){const p=invite??storage.get(INVITE);const d=accept(await rpc('petali_checkin',{p_invite:p||null}));storage.set(INVITE,null);return d}
 async function requestOtp(email,invite){if(!/^\S+@\S+\.\S+$/.test(email)||email.length>254||invite&&!/^PET-[0-9A-F]{16}$/.test(invite))throw new WalletError(400,'INVALID');await request('/auth/v1/otp',{email,create_user:true});pendingLogin={email,invite};}
 async function verifyOtp(code){if(!pendingLogin||!/^\d{6}$/.test(code))throw new WalletError(400,'INVALID');const {email,invite}=pendingLogin;const d=await request('/auth/v1/verify',{email,token:code,type:'email'});const s=normalSession(d);setSession(s);storage.set(INVITE,invite||null);pendingLogin=null;return checkin(invite)}
+const pendingKey=()=>PENDING+':'+(session?.user_id||'none');
 async function sendCredits(code,amount){
  if(!/^PET-[0-9A-F]{16}$/.test(code)||!Number.isInteger(amount)||amount<1||amount>100000||!snap||snap.code===code)throw new WalletError(400,'INVALID');
- let pending=storage.get(PENDING);
+ let pending=storage.get(pendingKey());
  if(pending&&pending.user!==session?.user_id)throw new WalletError(409,'PENDING');
  if(pending&&(pending.code!==code||pending.amount!==amount))throw new WalletError(409,'PENDING');
- if(!pending){if(snap.balance<amount)throw new WalletError(400,'INVALID');pending={user:session?.user_id,code,amount,id:crypto.randomUUID()};storage.set(PENDING,pending)}
- try{const d=accept(await rpc('petali_send_credits',{p_code:code,p_amount:amount,p_request_id:pending.id}));storage.set(PENDING,null);return d}catch(e){if(e.status>=400&&e.status<500&&e.status!==401&&e.status!==429)storage.set(PENDING,null);throw e}
+ if(!pending){if(snap.balance<amount)throw new WalletError(400,'INVALID');pending={user:session?.user_id,code,amount,id:crypto.randomUUID()};storage.set(pendingKey(),pending)}
+ try{const d=accept(await rpc('petali_send_credits',{p_code:code,p_amount:amount,p_request_id:pending.id}));storage.set(pendingKey(),null);return d}catch(e){if(e.status>=400&&e.status<500&&e.status!==401&&e.status!==429)storage.set(pendingKey(),null);throw e}
 }
 const canon=id=>id==='tulipano'?'tulipano-rosso':id==='garofano'?'garofano-rosso':id;
 function isUnlocked(mode,id,now=Date.now()){return !!snap?.unlocks?.some(x=>x.mode===mode&&x.flower_id===canon(id)&&Date.parse(x.expires_at)>now)}
 async function unlock(mode,id){try{accept(await rpc('petali_unlock_flower',{p_mode:mode,p_flower_id:canon(id)}));return true}catch(e){if(e.code.includes('INSUFFICIENT_CREDITS'))return false;throw e}}
 async function logout(){try{if(session){const token=await refresh();await request('/auth/v1/logout?scope=local',{},token)}}finally{setSession(null)}}
-async function deleteAccount(){await rpc('petali_delete_account');setSession(null)}
+async function deleteAccount(){await rpc('petali_delete_account');storage.set(pendingKey(),null);setSession(null)}
 function errorText(e){if(e?.code==='PENDING')return t('pendingRetry');if(e?.status===400||e?.status===409||e?.status===422)return t('invalid');if(e?.status===401)return t('authRequired');return t('unavailable')}
 function el(tag,txt){const x=doc.createElement(tag);if(txt!==undefined)x.textContent=txt;return x}
 function btn(txt,fn){const b=el('button',txt);b.type='button';b.onclick=fn;return b}
@@ -68,7 +69,7 @@ function paint(){
   const own=el('p',t('code')+': '+snap.code);own.dir='ltr';
   d.append(balance,own,btn(t('copyCode'),()=>void run(async()=>{if(navigator.share&&dialogKind==='invite')await navigator.share({text:t('inviteTitle')+': '+snap.code});else if(navigator.clipboard)await navigator.clipboard.writeText(snap.code);else throw new WalletError(503,'UNAVAILABLE')},t('copied'))));
   if(dialogKind==='invite')d.append(el('p',t('inviteProgress',{n:snap.referrals,reward:snap.referral_credits})),el('p',t('rewardDesc')));
-  if(dialogKind==='send'){const p=storage.get(PENDING);const rec=field(t('recipient'),'text',p?.code||''),amt=field(t('amount'),'number',p?String(p.amount):'');rec.input.maxLength=20;rec.input.dir='ltr';amt.input.min='1';amt.input.max='100000';amt.input.step='1';d.append(rec.wrap,amt.wrap,btn(t('send'),()=>{const code=rec.input.value.trim().toUpperCase(),amount=Number(amt.input.value);if(!rec.input.reportValidity()||!amt.input.reportValidity())return;if(!w.confirm(t('confirmSend',{amount,code})))return;void run(()=>sendCredits(code,amount),t('sent'))}));}
+  if(dialogKind==='send'){const p=storage.get(pendingKey());const rec=field(t('recipient'),'text',p?.code||''),amt=field(t('amount'),'number',p?String(p.amount):'');rec.input.maxLength=20;rec.input.dir='ltr';amt.input.min='1';amt.input.max='100000';amt.input.step='1';d.append(rec.wrap,amt.wrap,btn(t('send'),()=>{const code=rec.input.value.trim().toUpperCase(),amount=Number(amt.input.value);if(!rec.input.reportValidity()||!amt.input.reportValidity())return;if(!w.confirm(t('confirmSend',{amount,code})))return;void run(()=>sendCredits(code,amount),t('sent'))}));}
   d.append(el('small',t('legacy')),btn(t('logout'),()=>void run(logout)),btn(t('delete'),()=>{if(w.confirm(t('delete')+'?'))void run(deleteAccount)}));
  }d.append(close)
 }
