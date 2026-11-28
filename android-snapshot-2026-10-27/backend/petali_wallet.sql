@@ -143,12 +143,12 @@ begin
   return petali_private.summary(u);
 end $$;
 create function petali_private.delete_account() returns jsonb
-language plpgsql security definer set search_path='' as $
+language plpgsql security definer set search_path='' as $$
 declare u uuid:=petali_private.actor();
 begin
   delete from auth.users where id=u;
   return jsonb_build_object('ok',true);
-end $;
+end $$;
 revoke all on all functions in schema petali_private from public,anon,authenticated;
 grant execute on function petali_private.checkin(text),petali_private.send_credits(text,integer,uuid),petali_private.unlock_flower(text,text) to authenticated;
 -- Public wrappers are SECURITY INVOKER. Privileged implementations are not exposed as RPC endpoints.
@@ -158,7 +158,7 @@ create function public.petali_unlock_flower(p_mode text,p_flower_id text) return
 revoke all on function public.petali_checkin(text),public.petali_send_credits(text,integer,uuid),public.petali_unlock_flower(text,text) from public,anon,authenticated;
 grant execute on function public.petali_checkin(text),public.petali_send_credits(text,integer,uuid),public.petali_unlock_flower(text,text) to authenticated;
 grant execute on function petali_private.delete_account() to authenticated;
-create function public.petali_delete_account() returns jsonb language sql security invoker set search_path='' as $select petali_private.delete_account()$;
+create function public.petali_delete_account() returns jsonb language sql security invoker set search_path='' as $$select petali_private.delete_account()$$;
 revoke all on function public.petali_delete_account() from public,anon,authenticated;
 grant execute on function public.petali_delete_account() to authenticated;
 commit;
