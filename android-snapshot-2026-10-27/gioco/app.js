@@ -625,8 +625,10 @@
     aggiornaAccesso3D();
   });
 
-  $("btn-cancella").addEventListener("click", () => {
+  window.addEventListener("petali-wallet-change",()=>{costruisciGriglia();window.PetaliRewards.render()});
+  $("btn-cancella").addEventListener("click", async () => {
     if (!confirm(t("confermaCancella"))) return;
+    if(window.PetaliWallet?.isAuthenticated?.()){try{await window.PetaliWallet.deleteAccount()}catch(_){alert(t("pagamentoErrore"));return}}
     localStorage.removeItem(CHIAVE_STATO);
     costruisciGriglia();
     mostra("benvenuto");

@@ -11,6 +11,8 @@ create table petali_private.wallets (
   balance bigint not null check(balance >= 0),
   last_day date not null,
   streak integer not null check(streak between 1 and 10),
+  referral_count integer not null default 0 check(referral_count>=0),
+  referral_credits integer not null default 0 check(referral_credits between 0 and 200),
   created_at timestamptz not null default now()
 );
 create table petali_private.referrals (
@@ -59,8 +61,8 @@ end $$;
 create function petali_private.summary(p_uid uuid) returns jsonb
 language sql stable security definer set search_path='' as $$
   select jsonb_build_object('code',w.personal_code,'balance',w.balance,'streak',w.streak,'last_day',w.last_day,
-    'referrals',(select count(*) from petali_private.referrals r where r.inviter=w.user_id),
-    'referral_credits',coalesce((select sum(r.award) from petali_private.referrals r where r.inviter=w.user_id),0),
+    'referrals',w.referral_count,
+    'referral_credits',w.referral_credits,
     'unlocks',coalesce((select jsonb_agg(jsonb_build_object('mode',a.mode,'flower_id',a.flower_id,'expires_at',a.expires_at)) from petali_private.unlocks a where a.user_id=w.user_id and a.expires_at>now()),'[]'::jsonb))
   from petali_private.wallets w where w.user_id=p_uid
 $$;
@@ -85,10 +87,10 @@ begin
       values(u,'PET-'||upper(substr(replace(gen_random_uuid()::text,'-',''),1,16)),110,today,1)
       on conflict(user_id) do nothing returning user_id into inserted;
     if inserted is not null and inviter_id is not null then
-      select count(*) into n from petali_private.referrals where inviter=inviter_id;
+      select referral_count into n from petali_private.wallets where user_id=inviter_id;
       bonus:=case when n in (0,1) then 50 when n=2 then 100 else 0 end;
       insert into petali_private.referrals(invited,inviter,award) values(u,inviter_id,bonus);
-      update petali_private.wallets set balance=balance+bonus where user_id=inviter_id;
+      update petali_private.wallets set balance=balance+bonus,referral_count=referral_count+1,referral_credits=referral_credits+bonus where user_id=inviter_id;
     end if;
     select * into w from petali_private.wallets where user_id=u for update;
   elsif code is not null then
@@ -140,6 +142,13 @@ begin
     on conflict(user_id,mode,flower_id) do update set expires_at=excluded.expires_at;
   return petali_private.summary(u);
 end $$;
+create function petali_private.delete_account() returns jsonb
+language plpgsql security definer set search_path='' as $
+declare u uuid:=petali_private.actor();
+begin
+  delete from auth.users where id=u;
+  return jsonb_build_object('ok',true);
+end $;
 revoke all on all functions in schema petali_private from public,anon,authenticated;
 grant execute on function petali_private.checkin(text),petali_private.send_credits(text,integer,uuid),petali_private.unlock_flower(text,text) to authenticated;
 -- Public wrappers are SECURITY INVOKER. Privileged implementations are not exposed as RPC endpoints.
@@ -148,4 +157,8 @@ create function public.petali_send_credits(p_code text,p_amount integer,p_reques
 create function public.petali_unlock_flower(p_mode text,p_flower_id text) returns jsonb language sql security invoker set search_path='' as $$select petali_private.unlock_flower(p_mode,p_flower_id)$$;
 revoke all on function public.petali_checkin(text),public.petali_send_credits(text,integer,uuid),public.petali_unlock_flower(text,text) from public,anon,authenticated;
 grant execute on function public.petali_checkin(text),public.petali_send_credits(text,integer,uuid),public.petali_unlock_flower(text,text) to authenticated;
+grant execute on function petali_private.delete_account() to authenticated;
+create function public.petali_delete_account() returns jsonb language sql security invoker set search_path='' as $select petali_private.delete_account()$;
+revoke all on function public.petali_delete_account() from public,anon,authenticated;
+grant execute on function public.petali_delete_account() to authenticated;
 commit;

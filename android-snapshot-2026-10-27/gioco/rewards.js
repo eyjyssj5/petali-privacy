@@ -31,7 +31,7 @@
     }
     let dirty=false;
     if(!Number.isSafeInteger(s.streak)||s.streak<0||s.streak>10){s.streak=1;dirty=true}
-    if(day(now)>s.lastDay){
+    if(!w.PetaliWallet?.isAuthenticated?.()&&day(now)>s.lastDay){
       s.streak=day(now)===s.lastDay+1?(s.streak%10)+1:1;
       s.balance+=10+(s.streak===10?100:0);s.lastDay=day(now);dirty=true;
     }
@@ -39,8 +39,9 @@
     return dirty?write(s):s;
   }
   function key(kind,id){if(!['2d','3d'].includes(kind)||typeof id!=='string'||!/^[a-z0-9-]{1,80}$/i.test(id))throw Error('Invalid flower');return kind+':'+id}
-  function isUnlocked(kind,id,now=Date.now()){try{return (state(now).unlocks[key(kind,id)]||0)>now}catch(_){return false}}
+  function isUnlocked(kind,id,now=Date.now()){try{return w.PetaliWallet?.isUnlocked?.(kind,id,now)===true||(state(now).unlocks[key(kind,id)]||0)>now}catch(_){return false}}
   function useCredits(kind,id,now=Date.now()){
+    if(w.PetaliWallet?.isAuthenticated?.())return w.PetaliWallet.unlock(kind,id);
     const k=key(kind,id),s=state(now);
     if((s.unlocks[k]||0)>now)return true;
     if(s.balance<COST)return false;
@@ -60,8 +61,10 @@
       const now=Date.now(),s=state(now);s.unlocks[k]=now+DAY;write(s);return true;
     }finally{busy=false}
   }
+  function visibleState(){return w.PetaliWallet?.isAuthenticated?.()?w.PetaliWallet.snapshot():state()}
   function showLoyalty(){
-    const doc=w.document, l=loyaltyLabels[lang()]||loyaltyLabels.en,s=state();
+    const doc=w.document, l=loyaltyLabels[lang()]||loyaltyLabels.en,s=visibleState();
+    if(!s){w.PetaliWallet?.open("account");return}
     if(doc.getElementById("petali-loyalty-dialog"))return;
     const d=doc.createElement("dialog");d.id="petali-loyalty-dialog";
     d.style.cssText="max-width:min(360px,90vw);border:1px solid #e5bcd4;border-radius:20px;background:#fff5fa;color:#713858;padding:22px;text-align:center";
@@ -78,11 +81,11 @@
     const doc=w.document;
     if(!doc)return;
     const status=doc.getElementById('petali-credit-status');
-    if(status){try{status.textContent=t(0)+': '+state().balance+' · '+t(1)}catch(_){status.textContent=t(14)}}
+    if(status){try{status.textContent=t(0)+': '+(visibleState()?.balance??'…')+' · '+t(1)}catch(_){status.textContent=t(14)}}
     const l=loyaltyLabels[lang()]||loyaltyLabels.en;
     const info=doc.getElementById('petali-credit-info');if(info)info.textContent=l[5];
     const loyalty=doc.getElementById('petali-daily-login');
-    if(loyalty){loyalty.textContent=l[0]+" · "+state().streak+"/10";loyalty.onclick=showLoyalty;}
+    if(loyalty){loyalty.textContent=l[0]+" · "+(visibleState()?.streak??"…")+"/10";loyalty.onclick=showLoyalty;}
     const privacy=doc.getElementById('petali-ad-privacy');
     if(privacy){privacy.textContent=t(9);privacy.hidden=!w.PetaliNative?.RewardAds?.available?.();privacy.onclick=async()=>{try{await w.PetaliNative.RewardAds.privacy()}catch(_){w.alert(t(14))}}}
     const privacyMenu=doc.getElementById('petali-privacy-menu');
@@ -106,10 +109,10 @@
     function lock(v){buttons.forEach(b=>b.disabled=v)}
     function done(){close();onUnlock()}
     panel.append(heading,desc,status);
-    let balance=0;try{balance=state().balance}catch(_){}
+    let balance=0;try{balance=visibleState()?.balance??0}catch(_){}
     status.textContent=t(0)+': '+balance;
     button(t(2),async()=>{lock(true);status.textContent=t(12);try{if(await watch(kind,id)){done();return}status.textContent=t(7)}catch(_){status.textContent=t(7)}finally{lock(false)}});
-    button(t(3),()=>{try{if(useCredits(kind,id)){done();return}status.textContent=t(8)}catch(_){status.textContent=t(14)}});
+    button(t(3),async()=>{lock(true);try{if(await useCredits(kind,id)){done();return}status.textContent=t(8)}catch(_){status.textContent=t(14)}finally{lock(false)}});
     button(t(5),async()=>{lock(true);try{await onPurchase();if(w.PetaliCommerce?.has(kind)){done();return}status.textContent=t(14)}catch(_){status.textContent=t(14)}finally{lock(false)}});
     button(t(6),close);
     overlay.append(panel);doc.body.append(overlay);buttons[0].focus();
