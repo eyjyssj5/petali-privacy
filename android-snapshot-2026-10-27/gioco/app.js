@@ -451,7 +451,7 @@
     document.querySelectorAll("[data-i18n-placeholder]").forEach((el) => {
       el.placeholder = t(el.dataset.i18nPlaceholder);
     });
-    document.querySelectorAll(".lingua").forEach((b) => {
+    document.querySelectorAll(".lingua[data-lingua]").forEach((b) => {
       b.classList.toggle("attiva", b.dataset.lingua === lingua);
     });
     document.querySelectorAll("details.menu-lingue").forEach((d) => { d.open = false; });
@@ -490,7 +490,7 @@
     localStorage.setItem("petali.suono", suonoAttivo ? "si" : "no");
     aggiornaPulsanteSuono();
   });
-  document.querySelectorAll(".lingua").forEach((b) => {
+  document.querySelectorAll(".lingua[data-lingua]").forEach((b) => {
     b.addEventListener("click", () => applicaLingua(b.dataset.lingua));
   });
 

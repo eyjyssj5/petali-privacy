@@ -11,6 +11,14 @@
     fr:['Crédits','Bonus quotidien : +10','Regarder une vidéo pour débloquer','Utiliser 10 crédits','Déblocage pendant 24 heures','Acheter Premium permanent','Annuler','Vidéo indisponible ou incomplète. Réessayez.','Crédits insuffisants.','Préférences publicitaires','Débloqué pendant 24 heures','100 crédits au départ, +10 par jour.','Chargement de la vidéo…','Débloquer cette fleur','Échec. Réessayez.','Vidéo de test (aucun revenu)'],
     de:['Credits','Tagesbonus: +10','Video ansehen und freischalten','10 Credits verwenden','24 Stunden freischalten','Dauerhaft Premium kaufen','Abbrechen','Video nicht verfügbar oder unvollständig. Erneut versuchen.','Nicht genug Credits.','Werbedatenschutz','24 Stunden freigeschaltet','100 Credits zu Beginn, +10 pro Tag.','Video wird geladen…','Diese Blume freischalten','Vorgang fehlgeschlagen. Erneut versuchen.','Testvideo (keine Einnahmen)']
   };
+  const loyaltyLabels={
+    it:["Accesso giornaliero","Giorni consecutivi","Premio ogni 10 giorni: +100 crediti","Premio ricevuto!","Chiudi","Crediti di benvenuto: 100; +10 ogni giorno; +100 ogni 10 giorni consecutivi."],
+    en:["Daily check-in","Consecutive days","Reward every 10 days: +100 credits","Reward received!","Close","100 welcome credits; +10 each day; +100 every 10 consecutive days."],
+    es:["Acceso diario","Días consecutivos","Premio cada 10 días: +100 créditos","¡Premio recibido!","Cerrar","100 créditos de bienvenida; +10 cada día; +100 cada 10 días consecutivos."],
+    pt:["Acesso diário","Dias consecutivos","Prémio a cada 10 dias: +100 créditos","Prémio recebido!","Fechar","100 créditos de boas-vindas; +10 por dia; +100 a cada 10 dias consecutivos."],
+    fr:["Connexion quotidienne","Jours consécutifs","Récompense tous les 10 jours : +100 crédits","Récompense reçue !","Fermer","100 crédits de bienvenue ; +10 par jour ; +100 tous les 10 jours consécutifs."],
+    de:["Täglicher Login","Aufeinanderfolgende Tage","Belohnung alle 10 Tage: +100 Credits","Belohnung erhalten!","Schließen","100 Willkommens-Credits; +10 pro Tag; +100 alle 10 aufeinanderfolgenden Tage."]
+  };
   function lang(){return (w.document?.documentElement?.lang||'it').split('-')[0]}
   function t(i){return (labels[lang()]||labels.en)[i]}
   function day(now){return Math.floor(now/DAY)}
@@ -18,10 +26,14 @@
   function state(now=Date.now()){
     let s;try{s=JSON.parse(w.localStorage.getItem(KEY)||'null')}catch(_){s=null}
     if(!s||s.version!==1||!Number.isSafeInteger(s.balance)||s.balance<0||!Number.isSafeInteger(s.lastDay)||!s.unlocks||typeof s.unlocks!=='object'){
-      return write({version:1,balance:100,lastDay:day(now),unlocks:{}});
+      return write({version:1,balance:110,lastDay:day(now),streak:1,unlocks:{}});
     }
     let dirty=false;
-    if(day(now)>s.lastDay){s.balance+=10;s.lastDay=day(now);dirty=true}
+    if(!Number.isSafeInteger(s.streak)||s.streak<0||s.streak>10){s.streak=1;dirty=true}
+    if(day(now)>s.lastDay){
+      s.streak=day(now)===s.lastDay+1?(s.streak%10)+1:1;
+      s.balance+=10+(s.streak===10?100:0);s.lastDay=day(now);dirty=true;
+    }
     for(const k of Object.keys(s.unlocks)){if(!Number.isFinite(s.unlocks[k])||s.unlocks[k]<=now){delete s.unlocks[k];dirty=true}}
     return dirty?write(s):s;
   }
@@ -47,16 +59,33 @@
       const now=Date.now(),s=state(now);s.unlocks[k]=now+DAY;write(s);return true;
     }finally{busy=false}
   }
+  function showLoyalty(){
+    const doc=w.document, l=loyaltyLabels[lang()]||loyaltyLabels.en,s=state();
+    if(doc.getElementById("petali-loyalty-dialog"))return;
+    const d=doc.createElement("dialog");d.id="petali-loyalty-dialog";
+    d.style.cssText="max-width:min(360px,90vw);border:1px solid #e5bcd4;border-radius:20px;background:#fff5fa;color:#713858;padding:22px;text-align:center";
+    const title=doc.createElement("h2");title.textContent=l[0];
+    const balance=doc.createElement("p");balance.textContent=t(0)+": "+s.balance;
+    const progress=doc.createElement("p");progress.textContent=l[1]+": "+s.streak+" / 10";
+    const bar=doc.createElement("progress");bar.max=10;bar.value=s.streak;bar.setAttribute("aria-label",l[1]);bar.style.width="100%";
+    const desc=doc.createElement("p");desc.textContent=l[2]+(s.streak===10?" · "+l[3]:"");
+    const close=doc.createElement("button");close.type="button";close.textContent=l[4];close.onclick=()=>d.close();
+    d.append(title,balance,progress,bar,desc,close);doc.body.append(d);
+    d.addEventListener("close",()=>d.remove(),{once:true});d.showModal();
+  }
   function render(){
     const doc=w.document;
     if(!doc)return;
     const status=doc.getElementById('petali-credit-status');
     if(status){try{status.textContent=t(0)+': '+state().balance+' · '+t(1)}catch(_){status.textContent=t(14)}}
-    const info=doc.getElementById('petali-credit-info');if(info)info.textContent=t(11);
+    const l=loyaltyLabels[lang()]||loyaltyLabels.en;
+    const info=doc.getElementById('petali-credit-info');if(info)info.textContent=l[5];
+    const loyalty=doc.getElementById('petali-daily-login');
+    if(loyalty){loyalty.textContent=l[0]+" · "+state().streak+"/10";loyalty.onclick=showLoyalty;}
     const privacy=doc.getElementById('petali-ad-privacy');
     if(privacy){privacy.textContent=t(9);privacy.hidden=!w.PetaliNative?.RewardAds?.available?.();privacy.onclick=async()=>{try{await w.PetaliNative.RewardAds.privacy()}catch(_){w.alert(t(14))}}}
     const privacyMenu=doc.getElementById('petali-privacy-menu');
-    if(privacyMenu){privacyMenu.hidden=!w.PetaliNative?.RewardAds?.available?.();const toggle=doc.getElementById('petali-privacy-menu-toggle');if(toggle)toggle.setAttribute('aria-label',t(9))}
+    if(privacyMenu){privacyMenu.hidden=false;const toggle=doc.getElementById('petali-privacy-menu-toggle');if(toggle)toggle.setAttribute('aria-label',l[0]+' / '+t(9))}
     const test=doc.getElementById('petali-test-ad');if(test){test.textContent=t(15);test.hidden=w.PetaliAdConfig?.test!==true}
   }
   function showOffer(kind,id,onUnlock,onPurchase){

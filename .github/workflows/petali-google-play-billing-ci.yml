@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - feature/petali-regali-occasioni-2026-11-22
+      - feature/petali-regali-gif-fedelta-20261128
   workflow_dispatch:
 
 permissions:
@@ -31,11 +32,22 @@ jobs:
           set -euo pipefail
           python3 verifica_petali.py
           npm ci --no-audit --no-fund
+          npm install --save-exact @capacitor-community/admob@8.4.2 --no-audit --no-fund
           npm test
+          PETALI_ADS_PLATFORM=android PETALI_ADS_MODE=test node native/configure-ads.mjs web
           npm run build:bridge
           npx cap sync android
+          PETALI_ADS_PLATFORM=android PETALI_ADS_MODE=test node native/configure-ads.mjs native
           printf '\nandroid.useAndroidX=true\nandroid.enableJetifier=true\n' >> android/gradle.properties
           cd android
           chmod +x gradlew
           ./gradlew --no-daemon --stacktrace bundleRelease
           test -s app/build/outputs/bundle/release/app-release.aab
+
+      - name: Save verification AAB (not for Play publication)
+        uses: actions/upload-artifact@v4
+        with:
+          name: Petali-Android-verification
+          path: android-snapshot-2026-10-27/android/app/build/outputs/bundle/release/app-release.aab
+          if-no-files-found: error
+          retention-days: 7
